@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	log.Println("Starting server...")
+	log.Println("Starting server on port " + os.Getenv("PORT") + "...")
 	mux := bone.New()
 
 	mux.Handle(

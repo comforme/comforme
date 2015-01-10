@@ -1,2 +1,20 @@
 # comfor.me
 Everyone's personal community
+
+## Deploying to Heroku
+TODO
+
+## Using Vagrant for Development
+* First install VirtualBox and Vagrant
+* Vagrant will be able to create a virtual machine hosting the
+  comfor.me application locally. The application is installed
+  via a shell script when the machine is provisioned, and starts
+  the application on port 8080, which is forwarded to the local
+  machine. Just run `vagrant up`.
+* While developing, you can redeploy your changes to the code to
+  the vagrant environment by changing to the /vagrant directory
+  and executing the redeploy script `./vagrant_redeploy.sh` This
+  will update the local copy, clear Go's cache, and reinstall
+  the application.
+* When you are finished developing you can dispose of the virtual
+  machine by executing `vagrant destroy`.
