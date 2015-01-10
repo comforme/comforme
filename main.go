@@ -1,13 +1,14 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/go-zoo/bone"
 	
+	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/login"
 	"github.com/comforme/comforme/profile"
 )
@@ -40,9 +41,7 @@ func main() {
 	mux.Handle(
 		"/",
 		http.HandlerFunc(
-			func(w http.ResponseWriter, r *http.Request) {
-				fmt.Fprintln(w, "It works!")
-			},
+            home.HomeHandler,
 		),
 	)
 
