@@ -13,9 +13,14 @@ func main() {
 	log.Println("Starting server...")
 	mux := bone.New()
 
-	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "It works!")
-	}))
+	mux.Handle(
+		"/",
+		http.HandlerFunc(
+			func(w http.ResponseWriter, r *http.Request) {
+				fmt.Fprintln(w, "It works!")
+			},
+		),
+	)
 
 	// Start the server
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), mux)
