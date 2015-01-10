@@ -4,10 +4,20 @@ basic site
 			by the communities of the current user
 		types
 			ex: articles, businesses, events, organizations, websites
-
+			implicit
+				description should imply what type of information the page is for
+				fieldless
 	users
 		identify communities
 		post information
 		register
 		search information
 future site
+	types
+		combined
+			explicit with custom fields
+		explicit
+			specific fields
+				ex: location of a business, time of an event
+		implicit
+			custom fields can be defined
