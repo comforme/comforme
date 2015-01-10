@@ -19,19 +19,23 @@ basic site
 			fields
 				[title]
 				[description]
+			[done button]
 		entry
 			toggle
-				[Login]
+				["Login"]
 					fields
 						[email, password]
-				[Register]
+					[continue button]
+				["Register"]
 					part 1
 						fields
 							[username, email, password]
+						[continue button]
 					part 2
-						[Identify your Communities]
+						["Identify your Communities"]
 							[search field]
 							[top results for search query]
+						[continue button]
 		main
 			buttons
 				[main, create page, settings, logout]
@@ -44,6 +48,7 @@ basic site
 			buttons
 				[main, create page, settings, logout]
 			[change communities] *based on part 2 of registration
+				[save button]
 		view page
 			buttons
 				[main, create page, settings, logout]
@@ -55,6 +60,7 @@ basic site
 					text
 			contribute
 				[text field]
+				[done button]
 future site
 	types
 		combined
