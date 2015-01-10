@@ -1,4 +1,9 @@
 * Pages
+** TODO Global Navigation
 ** TODO Main Page
+   Search textbox and button
+   Mockup search results
+   - Title and truncated page content
+   - Meta data such as how many comments on the page
 ** DONE Sign Up/Log In
    CLOSED: [2015-01-10 Sat 11:41]
