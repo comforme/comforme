@@ -3,18 +3,34 @@ package common
 import (
 	"math/rand"
 	"time"
+	"fmt"
+	"log"
+	"net/http"
+	"html/template"
+	"os"
+	"regexp"
+	"errors"
+	
+	"github.com/keighl/mandrill"
 )
 
 const (
 	alphaNumeric            = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	sessionIdLength         = 25
 	generatedPasswordLength = 15
+	fromEmail = "donotreply@comfor.me"
+	fromName  = "ComFor.Me"
 )
 
+// Errors
+var EmailFailed = errors.New("Sending email failed.")
+
 var mandrillKey = os.Getenv("MANDRILL_APIKEY")
+var emailRegex *regexp.Regexp
 
 func init() {
-	rand.Seed(time.Now().Nanosecond())
+	rand.Seed(time.Now().Unix() ^ int64(time.Now().Nanosecond()))
+	emailRegex = regexp.MustCompile("^.+@.+\\..+$")
 }
 
 func RandSeq(n int) string {
@@ -26,11 +42,11 @@ func RandSeq(n int) string {
 }
 
 func NewSessionID() string {
-	return randSeq(sessionIdLength)
+	return RandSeq(sessionIdLength)
 }
 
 func GenPassword() string {
-	return randSeq(generatedPasswordLength)
+	return RandSeq(generatedPasswordLength)
 }
 
 func ExecTemplate(tmpl *template.Template, w http.ResponseWriter, pc map[string]interface{}) {
@@ -63,7 +79,7 @@ If you did not request this password reset please contact support.
 	return sendEmail(email, "ComFor.Me Password Reset", "", emailText)
 }
 
-func SendEmail(recipient, subject, html, text string) error {
+func sendEmail(recipient, subject, html, text string) error {
 	log.Printf("Sending email to: %s\n", recipient)
 	log.Printf("Subject: %s\nText:\n%s\n", subject, text)
 
@@ -93,4 +109,11 @@ func SendEmail(recipient, subject, html, text string) error {
 
 func ValidEmail(email string) bool {
 	return emailRegex.Match([]byte(email))
+}
+
+func SetSessionCookie(req *http.Request, sessionid string) {
+	expire := time.Now().AddDate(0, 3, 0)
+	rawcookie := fmt.Sprintf("sessionid=%s", sessionid)
+    cookie := http.Cookie{"sessionid", sessionid, "/", "www.comfor.me", expire, expire.Format(time.UnixDate), 86400, true, true, rawcookie, []string{rawcookie}}
+    req.AddCookie(&cookie)
 }

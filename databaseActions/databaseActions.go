@@ -3,13 +3,8 @@ package databaseActions
 import (
 	"errors"
 	"fmt"
-	"html/template"
 	"log"
-	"net/http"
 	"os"
-	"regexp"
-
-	"github.com/keighl/mandrill"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/database"
@@ -17,7 +12,8 @@ import (
 
 // Errors
 var InvalidEmail = errors.New("The provided email address is not valid.")
-var PasswordTooShort = errors.New(fmp.Sprintf("The supplied password is too short. Minimum password length is %d characters.", minPasswordLength))
+var PasswordTooShort = errors.New(fmt.Sprintf("The supplied password is too short. Minimum password length is %d characters.", minPasswordLength))
+var UsernameTooShort = errors.New(fmt.Sprintf("The supplied username is too short. Minimum username length is %d characters.", minUsernameLength))
 var EmailFailed = errors.New("Sending email failed.")
 var InvalidSessionID = errors.New("Invalid sessionid.")
 var InvalidPassword = errors.New("Invalid password.")
@@ -25,22 +21,25 @@ var DatabaseError = errors.New("Unknown database error.")
 
 const (
 	minPasswordLength = 6
+	minUsernameLength = 3
 )
 
-var emailRegex *regexp.Regexp
 var db database.DB
 
 func init() {
-	db = database.NewDB(os.Getenv("DATABASE_URL"))
-	emailRegex = regexp.MustCompile("^.+@.+\\..+$")
+	var err error
+	db, err = database.NewDB(os.Getenv("DATABASE_URL"))
+	if err != nil {
+		panic(err)
+	}
 }
 
-func ResetPassword(username string) error {
-	password, err := db.ResetPassword(username)
+func ResetPassword(email string) error {
+	password, err := db.ResetPassword(email)
 	if err != nil {
 		return err
 	}
-	return sendResetEmail(email, password)
+	return common.SendResetEmail(email, password)
 }
 
 func ChangePassword(sessionid, oldPassword, newPassword string) error {
@@ -84,17 +83,17 @@ func GetEmail(sessionid string) (email string, err error) {
 }
 
 func Login(email string, password string) (sessionid string, err error) {
-	userid, err := db.GetUserID(username, password)
+	userid, err := db.GetUserID(email, password)
 	if err != nil {
-		log.Printf("Error while logging in user (%s): %s\n", username, err.Error())
-		err = InvalidUsernameOrPassword
+		log.Printf("Error while logging in user (%s): %s\n", email, err.Error())
+		err = database.InvalidUsernameOrPassword
 		return
 	}
 
 	sessionid, err = db.NewSession(userid)
 	if err != nil {
-		log.Printf("Error while creating session for user (%s): %s\n", username, err.Error())
-		err = InvalidUsernameOrPassword
+		log.Printf("Error while creating session for user (%s): %s\n", email, err.Error())
+		err = database.InvalidUsernameOrPassword
 		return
 	}
 
@@ -102,6 +101,16 @@ func Login(email string, password string) (sessionid string, err error) {
 }
 
 func Register(username, email string) (sessionid string, err error) {
+	if !common.ValidEmail(email) {
+		err = InvalidEmail
+		return
+	}
+	
+	if len(username) < minUsernameLength {
+		err = UsernameTooShort
+		return 
+	}
+	
 	password, err := db.RegisterUser(username, email)
 	if err != nil {
 		return

@@ -7,6 +7,8 @@ import (
 
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
+	
+	"github.com/comforme/comforme/common"
 )
 
 // Errors
@@ -57,7 +59,7 @@ func (db DB) GetSessionUserID(sessionid string) (userid int, err error) {
 func (db DB) NewSession(userid int) (sessionid string, err error) {
 	// Create a new unique sessionid
 	for numRows := 0; ; {
-		sessionid = newSessionID()
+		sessionid = common.NewSessionID()
 		err = db.conn.QueryRow("SELECT count(*) FROM sessions WHERE sessions.id = $1", sessionid).Scan(&numRows)
 		if err != nil {
 			return
@@ -100,7 +102,7 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 	}
 
 	// Add new user
-	password = genPassword()
+	password = common.GenPassword()
 	hashed, err := hashPassword(password)
 	if err != nil {
 		return
@@ -132,7 +134,7 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 }
 
 func (db DB) ResetPassword(email string) (password string, err error) {
-	password = genPassword()
+	password = common.GenPassword()
 	hashed, err := hashPassword(password)
 	if err != nil {
 		return
