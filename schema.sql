@@ -19,7 +19,7 @@ CREATE TABLE pages (
    date_created     TIMESTAMP      NOT NULL  DEFAULT now()
 );
 
-CREATE TABLE categorys (
+CREATE TABLE categories (
    id               SERIAL                   PRIMARY KEY,
    name             TEXT           NOT NULL
 );
