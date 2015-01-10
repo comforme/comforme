@@ -5,12 +5,12 @@ import (
 	"log"
 	"net/http"
 	"os"
-	
+
 	"github.com/go-zoo/bone"
 )
 
 func main() {
-	log.Println("Starting server...")
+	log.Println("Starting server on port " + os.Getenv("PORT") + "...")
 	mux := bone.New()
 
 	mux.Handle(
