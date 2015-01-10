@@ -23,7 +23,8 @@ wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin
-for repo in lib/pq go-zoo/bone comforme/comforme; do
+go get golang.org/x/crypto/bcrypt
+for repo in lib/pq go-zoo/bone keighl/mandrill comforme/comforme; do
     go get github.com/$repo
 done
 
