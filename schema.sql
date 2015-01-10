@@ -11,7 +11,7 @@ CREATE TABLE pages (
    id               SERIAL                   PRIMARY KEY,
    title            TEXT           NOT NULL,
    slug             TEXT           NOT NULL,
-   category         INT            NOT NULL  REFERENCES categorys(id),
+   category         INT            NOT NULL  REFERENCES categories(id),
    description      TEXT           NOT NULL,
    user_id          INT            NOT NULL  REFERENCES users(id),
    location         POINT          NOT NULL,
