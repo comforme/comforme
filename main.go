@@ -31,6 +31,13 @@ func main() {
 	)
 
 	mux.Handle(
+		"/pages",
+		http.HandlerFunc(
+			profile.ProfileHandler,
+		),
+	)
+
+	mux.Handle(
 		"/",
 		http.HandlerFunc(
 			func(w http.ResponseWriter, r *http.Request) {
