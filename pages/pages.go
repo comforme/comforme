@@ -10,11 +10,11 @@ import (
 func PagesHandler(res http.ResponseWriter, req *http.Request) {
 	var data map[string]interface{}
 	if req.Method == "POST" {
-        // TODO uncomment when put to use
+		// TODO uncomment when put to use
 		//title := req.PostFormValue("title")
 		//description := req.PostFormValue("description")
 		//address := req.PostFormValue("address")
-        //categories := req.PostFormValue("categories")
+		//categories := req.PostFormValue("categories")
 	}
 
 	// TODO: Add template and compile it.

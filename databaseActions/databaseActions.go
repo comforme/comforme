@@ -105,12 +105,12 @@ func Register(username, email string) (sessionid string, err error) {
 		err = InvalidEmail
 		return
 	}
-	
+
 	if len(username) < minUsernameLength {
 		err = UsernameTooShort
-		return 
+		return
 	}
-	
+
 	password, err := db.RegisterUser(username, email)
 	if err != nil {
 		return

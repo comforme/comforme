@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/go-zoo/bone"
-	
+
 	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/login"
 	"github.com/comforme/comforme/profile"
@@ -41,7 +41,7 @@ func main() {
 	mux.Handle(
 		"/",
 		http.HandlerFunc(
-            home.HomeHandler,
+			home.HomeHandler,
 		),
 	)
 

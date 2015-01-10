@@ -10,7 +10,7 @@ import (
 func ProfileHandler(res http.ResponseWriter, req *http.Request) {
 	var data map[string]interface{}
 	if req.Method == "POST" {
-        // TODO uncomment when put to use
+		// TODO uncomment when put to use
 		//username := req.PostFormValue("username")
 		//password := req.PostFormValue("password")
 		//newPassword := req.PostFormValue("newPassword")

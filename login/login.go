@@ -1,6 +1,6 @@
 package login
 
-import (	
+import (
 	"net/http"
 
 	"github.com/comforme/comforme/common"
@@ -14,12 +14,12 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 		password := req.PostFormValue("password")
 		sessionid, err := databaseActions.Login(email, password)
 		if err != nil {
-			
+
 		}
-		
+
 		common.SetSessionCookie(req, sessionid)
 	}
-	
+
 	// TODO: Add template and compile it.
 	common.ExecTemplate(nil, res, data)
 }
