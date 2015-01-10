@@ -4,7 +4,8 @@ CREATE TABLE users (
    email            TEXT           NOT NULL  UNIQUE,
    password         TEXT           NOT NULL,
    join_date        TIMESTAMP      NOT NULL  DEFAULT now(),
-   default_location POINT          NOT NULL
+   default_location POINT          NOT NULL,
+   reset_required   BOOLEAN        NOT NULL  DEFAULT true
 );
 
 CREATE TABLE pages (
