@@ -10,7 +10,8 @@ import (
 )
 
 // Errors
-var UsernameInUse = errors.New("You have already registered with this email address.")
+var EmailInUse = errors.New("You have already registered with this email address.")
+var UsernameInUse = errors.New("This username is in use. Please select a different one.")
 var InvalidUsernameOrPassword = errors.New("Invalid username or password.")
 
 type DB struct {
@@ -76,10 +77,21 @@ func (db DB) NewSession(userid int) (sessionid string, err error) {
 	return
 }
 
-func (db DB) RegisterUser(email, username string) (password string, err error) {
+func (db DB) RegisterUser(username, email string) (password string, err error) {
 	// Check if email is already in use
 	var numRows int
 	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE email = $1", email).Scan(&numRows)
+	if err != nil {
+		return
+	}
+	if numRows != 0 {
+		err = EmailInUse
+		return
+	}
+
+	// Check if username is already in use
+	var numRows int
+	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE username = $1", username).Scan(&numRows)
 	if err != nil {
 		return
 	}
@@ -192,36 +204,4 @@ func checkSingleRow(result sql.Result) error {
 	}
 
 	return nil
-}
-
-func Login(db database.DB, username string, password string) (sessionid string, err error) {
-	userid, err := db.GetUserID(username, password)
-	if err != nil {
-		log.Printf("Error while logging in user (%s): %s\n", username, err.Error())
-		err = InvalidUsernameOrPassword
-		return
-	}
-
-	sessionid, err = db.NewSession(userid)
-	if err != nil {
-		log.Printf("Error while creating session for user (%s): %s\n", username, err.Error())
-		err = InvalidUsernameOrPassword
-		return
-	}
-
-	return
-}
-
-func Register(username string) (sessionid string, err error) {
-	password, err := db.RegisterUser(username)
-	if err != nil {
-		return
-	}
-
-	err = common.SendRegEmail(username, password)
-	if err != nil {
-		return
-	}
-
-	return Login(db, username, password)
 }

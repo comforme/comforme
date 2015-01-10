@@ -44,7 +44,6 @@ func ExecTemplate(tmpl *template.Template, w http.ResponseWriter, pc map[string]
 func SendRegEmail(email, password string) error {
 	emailText := fmt.Sprintf(`Thank you for registerering with ComFor.Me.
 
-Your username is: %s
 Your temporary password is: %s
 
 Please change your password after logging in.
@@ -55,7 +54,6 @@ Please change your password after logging in.
 func SendResetEmail(email, password string) error {
 	emailText := fmt.Sprintf(`We received a password reset request for your account on ComFor.Me.
 
-Your username is: %s
 Your new temporary password is: %s
 
 Please change your password after logging in.

@@ -40,7 +40,7 @@ func ResetPassword(username string) error {
 	if err != nil {
 		return err
 	}
-	return sendResetEmail(username, password)
+	return sendResetEmail(email, password)
 }
 
 func ChangePassword(sessionid, oldPassword, newPassword string) error {
@@ -79,6 +79,38 @@ func Logout(sessionid string) error {
 	return db.Logout(sessionid)
 }
 
-func GetEmailFromSessionid(sessionid string) (email string, err error) {
+func GetEmail(sessionid string) (email string, err error) {
 	return db.GetEmail(sessionid)
+}
+
+func Login(email string, password string) (sessionid string, err error) {
+	userid, err := db.GetUserID(username, password)
+	if err != nil {
+		log.Printf("Error while logging in user (%s): %s\n", username, err.Error())
+		err = InvalidUsernameOrPassword
+		return
+	}
+
+	sessionid, err = db.NewSession(userid)
+	if err != nil {
+		log.Printf("Error while creating session for user (%s): %s\n", username, err.Error())
+		err = InvalidUsernameOrPassword
+		return
+	}
+
+	return
+}
+
+func Register(username, email string) (sessionid string, err error) {
+	password, err := db.RegisterUser(username, email)
+	if err != nil {
+		return
+	}
+
+	err = common.SendRegEmail(email, password)
+	if err != nil {
+		return
+	}
+
+	return Login(email, password)
 }
