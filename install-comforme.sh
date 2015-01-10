@@ -12,6 +12,7 @@ cat >> ~/.bashrc <<-HERE
 export GOROOT=/usr/local/go
 export GOPATH=\$HOME/go
 export PATH=\$PATH:\$GOROOT/bin
+export PORT=8080
 HERE
 source ~/.bashrc
 

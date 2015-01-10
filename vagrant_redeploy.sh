@@ -5,10 +5,10 @@
 
 COMFORME_PATH=~/go/src/github.com/comforme/comforme
 COMFORME_BIN=~/go/bin/comforme
-PORT=8080
+export PORT=8080
 
 rsync -avc --exclude *~ --exclude *.sw[op] /vagrant/ ${COMFORME_PATH}/
 cd $COMFORME_PATH
-go clean && go install
 pkill comforme
-PORT=$PORT $COMFORME_BIN &
+go clean && go install
+$COMFORME_BIN &
