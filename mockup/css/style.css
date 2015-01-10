@@ -1,3 +1,40 @@
+/* ---------- font-face ---------- */
+@font-face {
+  font-family: 'GeneralFoundicons';
+  src: url('http://fonts.comfor.me/general_foundicons.eot');
+  src: url('http://fonts.comfor.me/general_foundicons.eot?#iefix') format('embedded-opentype'),
+       url('http://fonts.comfor.me/general_foundicons.woff') format('woff'),
+       url('http://fonts.comfor.me/general_foundicons.ttf') format('truetype'),
+       url('http://fonts.comfor.me/general_foundicons.svg#GeneralFoundicons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+ 
+[class*="foundicon-"] {
+  display: inline;
+  width: auto;
+  height: auto;
+  line-height: inherit;
+  vertical-align: baseline;
+  background-image: none;
+  background-position: 0 0;
+  background-repeat: repeat;
+}
+ 
+[class*="foundicon-"]:before {
+  font-family: "GeneralFoundicons";
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+}
+/* ---------- end font-face ---------- */
+
+/* ---------- Sign Up/Log In ---------- */
+
+.sign-up-and-log-in.content {
+	margin-top: 4rem;
+}
+
 .login-tabs {
 	border: 1px solid #CCCCCC;
 }
