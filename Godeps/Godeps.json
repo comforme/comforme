@@ -1,5 +1,10 @@
 {
 	"ImportPath": "github.com/comforme/comforme",
 	"GoVersion": "go1.4",
-	"Deps": []
+	"Deps": [
+		{
+			"ImportPath": "github.com/go-zoo/bone",
+			"Rev": "3de5763aca113fb933391ff6e3dd26c922f62b69"
+		}
+	]
 }
