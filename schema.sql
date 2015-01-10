@@ -11,7 +11,7 @@ CREATE TABLE pages (
    id               SERIAL                   PRIMARY KEY,
    title            TEXT           NOT NULL,
    slug             TEXT           NOT NULL,
-   category         INT            NOT NULL  REFERENCES categorys(id),
+   category         INT            NOT NULL  REFERENCES categories(id),
    description      TEXT           NOT NULL,
    user_id          INT            NOT NULL  REFERENCES users(id),
    location         POINT          NOT NULL,
@@ -39,4 +39,10 @@ CREATE TABLE communities (
 CREATE TABLE community_memberships (
    user_id          INT                      PRIMARY KEY REFERENCES users(id),
    community_id     INT                      PRIMARY KEY REFERENCES communities(id),
+);
+
+CREATE TABLE sessions (
+   id               TEXT                     PRIMARY KEY,
+   userid           INT            NOT NULL  REFERENCES users(id),
+   create_date      TIMESTAMP      NOT NULL  DEFAULT now()
 );
