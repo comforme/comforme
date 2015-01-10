@@ -1,1 +1,5 @@
-package "github.com/comforme/comforme/register"
+package register
+
+import (
+	"github.com/comforme/comforme/databaseActions"
+)

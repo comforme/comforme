@@ -1,1 +1,1 @@
-package "github.com/comforme/comforme/login"
+package login
