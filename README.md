@@ -1,2 +1,2 @@
-# comme
-Comme to everyone's community
+# comfor.me
+Everyone's personal community
