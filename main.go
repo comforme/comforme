@@ -9,16 +9,24 @@ import (
 	"github.com/go-zoo/bone"
 	
 	"github.com/comforme/comforme/login"
+	"github.com/comforme/comforme/profile"
 )
 
 func main() {
 	log.Println("Starting server on port " + os.Getenv("PORT") + "...")
 	mux := bone.New()
-	
+
 	mux.Handle(
 		"/login",
 		http.HandlerFunc(
 			login.LoginHandler,
+		),
+	)
+
+	mux.Handle(
+		"/profile",
+		http.HandlerFunc(
+			profile.ProfileHandler,
 		),
 	)
 
