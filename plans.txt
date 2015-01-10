@@ -12,6 +12,49 @@ basic site
 		post information
 		register
 		search information
+	webpages
+		create page
+			buttons
+				[main, create page, settings, logout]
+			fields
+				[title]
+				[description]
+		entry
+			toggle
+				[Login]
+					fields
+						[email, password]
+				[Register]
+					part 1
+						fields
+							[username, email, password]
+					part 2
+						[Identify your Communities]
+							[search field]
+							[top results for search query]
+		main
+			buttons
+				[main, create page, settings, logout]
+			[search pages]
+			search results *sorted by number of responses for current search query, blank query is valid
+				[result]...
+					title
+					truncated description
+		settings
+			buttons
+				[main, create page, settings, logout]
+			[change communities] *based on part 2 of registration
+		view page
+			buttons
+				[main, create page, settings, logout]
+			title
+			description
+			contributions *sorted by number of communities in common with contributor
+				[contribution]...
+					username
+					text
+			contribute
+				[text field]
 future site
 	types
 		combined
