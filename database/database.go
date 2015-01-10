@@ -90,7 +90,6 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 	}
 
 	// Check if username is already in use
-	var numRows int
 	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE username = $1", username).Scan(&numRows)
 	if err != nil {
 		return
