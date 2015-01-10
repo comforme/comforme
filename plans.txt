@@ -1,0 +1,13 @@
+basic site
+	information
+		sort
+			by the communities of the current user
+		types
+			ex: articles, businesses, events, organizations, websites
+
+	users
+		identify communities
+		post information
+		register
+		search information
+future site
