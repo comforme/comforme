@@ -49,3 +49,12 @@ CREATE TABLE sessions (
    userid           INT            NOT NULL  REFERENCES users(id),
    create_date      TIMESTAMP      NOT NULL  DEFAULT now()
 );
+
+INSERT INTO public.communities (id, name) VALUES (1, 'Lazy');
+INSERT INTO public.communities (id, name) VALUES (2, 'Baboon');
+INSERT INTO public.communities (id, name) VALUES (4, 'OCD');
+INSERT INTO public.communities (id, name) VALUES (5, 'Stoner');
+INSERT INTO public.communities (id, name) VALUES (6, 'Trans');
+INSERT INTO public.communities (id, name) VALUES (7, 'BBW');
+INSERT INTO public.communities (id, name) VALUES (8, 'Single');
+INSERT INTO public.communities (id, name) VALUES (9, 'Chia Pet Enthusiast');
