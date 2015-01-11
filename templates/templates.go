@@ -65,3 +65,52 @@ const SearchBar = `
 		</div>
 	</div>
 `
+
+const CommunitySearch =`
+    {{template "searchBar" . }}
+    <form action="USER-ADD-COMMUNITIES-FORM-ACTION-REPLACE-ME" method="post">
+        <div class="row">
+            <div class="large-6 medium-6 small-12 columns left">
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+            </div>
+            <div class="large-6 medium-6 small-12 columns left">
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+            </div>
+        </div>
+        <button type="submit">Add</button>
+    </form>
+`
