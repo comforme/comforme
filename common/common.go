@@ -112,6 +112,5 @@ func ValidEmail(email string) bool {
 }
 
 func SetSessionCookie(req *http.Request, sessionid string) {
-	cookie := &http.Cookie{Name: "sessionid", Value: sessionid, MaxAge: 3600}
-	req.AddCookie(cookie)
+	http.SetCookie(req, &http.Cookie{Name: "sessionid", Value: sessionid, Expires: time.Now().AddDate(10, 0, 0)})
 }
