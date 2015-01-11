@@ -10,6 +10,7 @@ const SiteLayout = `<!DOCTYPE html>
 	<meta charset="utf-8" />
 	<title>ComFor.Me - {{.pageTitle}}</title>
     <link rel="stylesheet" href="http://spyrosoft.bitbucket.org/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" />
 	<script scr="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/login.js"></script>
 </head>
 <body>
@@ -21,14 +22,23 @@ const SiteLayout = `<!DOCTYPE html>
 			</li>
 		</ul>
 		<section class="top-bar-section">
-			<ul class="left">
-				<li>
-					<a href="/">Main Page</a>
-				</li>
-					
-			</ul>
 
+			<ul class="right">
+				<li>
+					<a href="/"><i class="fi-home"></i></a>
+				</li>
+				<li>
+					<a href="/"><i class="fi-page-add"></i></a>
+				</li>
+				<li>
+					<a href="/"><i class="fi-widget"></i></a>
+				</li>
+				<li>
+					<a href="/"><i class="fi-power"></i></a>
+				</li>
+			</ul>
 		</section>
+
 	</nav>
     {{ template "content" .}}
 	<script>$(document).foundation();</script>
