@@ -23,6 +23,7 @@ func SearchHandler(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" {
 		// TODO uncomment when put to use
 		data["query"] = req.PostFormValue("page-search")
+		data["pageTitle"] = req.PostFormValue("page-search")
 	}
 
 	// TODO: Add template and compile it.

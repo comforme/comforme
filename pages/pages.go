@@ -36,7 +36,7 @@ const pagesTemplateText = `
 <div class="content" id="add-page-form">
 	<form method="POST" action="/">
 		<div>
-			<input type="text" name="title" placeholder="page title"">
+			<input type="text" name="title" placeholder="page title">
 		</div>
 		<div>
 			<input type="text" name="description" placeholder="description">
