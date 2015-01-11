@@ -19,6 +19,10 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.Re
 				return
 			} else {
 				log.Println("Error checking email:", err)
+				
+				// Delete bad cookie
+				cookie.MaxAge = -1
+				http.SetCookie(res, cookie)
 			}
 		} else {
 			log.Println("Error reading cookie:", err)
