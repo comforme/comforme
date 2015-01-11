@@ -127,3 +127,11 @@ func Register(username, email string) (sessionid string, err error) {
 
 	return Login(email, password)
 }
+
+func ListCommunities(sessionid string) (communities []common.Community, err error) {
+	communities, err = db.ListCommunities(sessionid)
+	if err != nil {
+		err = DatabaseError
+	}
+	return
+}
