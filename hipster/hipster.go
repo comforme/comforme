@@ -31,7 +31,7 @@ const hipsterTemplateText = `
 	<div class="content">
 		<div class="row">
 			<div class="column">
-				<h1><a href="/hipster/lorem-hipsum">Lorem Hipsum</a></h1>
+				<h1><a href="/page/hipster/lorem-hipsum">Lorem Hipsum</a></h1>
 				<p>
 					Odd Future Bushwick irony, Neutra artisan chambray forage Banksy skateboard Schlitz			hoodie cold-pressed sustainable brunch. Freegan Etsy mixtape, selvage small batch pop-up					 distillery VHS. IPhone flexitarian tousled, letterpress Pitchfork readymade cornhole. Shabby chic	irony skateboard, swag lumbersexual DIY Portland ethical Williamsburg forage farm-to-table				 meditation. Intelligentsia quinoa Odd Future semiotics hella Wes Anderson fap, typewriter Austin	 cliche meh lomo tattooed. Trust fund yr cronut, fap mumblecore viral Blue Bottle readymade.				Sriracha street art Thundercats, PBR deep v trust fund fashion axe.
 				</p>
