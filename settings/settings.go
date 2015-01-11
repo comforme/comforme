@@ -87,20 +87,20 @@ const settingsTemplateText = `
 						<div class="row">
 							<div class="large-4 columns left">
 								<label>
-									<input type="password" name="oldPassword">
 									Old password (Initial password sent via email)
+									<input type="password" name="oldPassword">
 								</label>
 							</div>
 							<div class="large-4 columns left">
 								<label>
-									<input type="password" name="newPassword">
 									New password
+									<input type="password" name="newPassword">
 								</label>
 							</div>
 							<div class="large-4 columns left">
 								<label>
-									<input type="password" name="newPasswordAgain">
 									New password (again)
+									<input type="password" name="newPasswordAgain">
 								</label>
 							</div>
 						</div>
