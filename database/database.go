@@ -155,6 +155,14 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 	return
 }
 
+func (db DB) PasswordChangeRequired(sessionid string) (isRequired bool, err error) {
+	err = db.conn.QueryRow(
+		"SELECT reset_required FROM sessions, users WHERE sessions.id = $1 AND sessions.userid = users.id",
+		sessionid,
+	).Scan(&isRequired)
+	return
+}
+
 func (db DB) ResetPassword(email string) (password string, err error) {
 	password = common.GenPassword()
 	hashed, err := hashPassword(password)
@@ -227,4 +235,50 @@ func checkSingleRow(result sql.Result) error {
 	}
 
 	return nil
+}
+
+func (db DB) ListCommunities(sessionid string) (communities []common.Community, err error) {
+	rows, err := db.conn.Query(`
+			SELECT
+				communities.id,
+				communities.name,
+				community_memberships.user_id IS NOT NULL AS isMember
+			FROM
+				communities
+			LEFT JOIN
+				community_memberships
+					ON
+						community_memberships.community_id = communities.id
+			WHERE
+				community_memberships.user_id = sessions.userid AND
+				sessions.id = $1
+		`,
+		sessionid,
+	)
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	communities = []common.Community{}
+	for rows.Next() {
+		row := common.Community{}
+		if err := rows.Scan(
+			&row.Id,
+			&row.Name,
+			&row.IsMember,
+		); err != nil {
+			log.Println("Unknown iteration error:", err)
+			return nil, err
+		}
+		communities = append(communities, row)
+	}
+
+	if err = rows.Err(); err != nil {
+		return
+	}
+
+	// Success
+	return
 }

@@ -34,7 +34,7 @@ func SearchHandler(res http.ResponseWriter, req *http.Request) {
 const searchTemplateText = `
     <div class="content">
         <div class="row">
-            <div class="column">
+            <div class="columns">
                 <h1>Search</h1>
                 {{template "searchBar" .}}
                 {{if .query}}
@@ -44,13 +44,13 @@ const searchTemplateText = `
         </div>
         <div class="row">
             <div class="columns">
-                <h2>Lorem Hipsum</h2>
+                <h2><a href="/PERMALINK-REPLACE-ME">Lorem Hipsum</a></h2>
                 <div>
                     <p>Odd Future Bushwick irony, Neutra artisan chambray forage Banksy skateboard Schlitz hoodie cold-pressed sustainable brunch. Freegan Etsy mixtape, selvage small batch pop-up distillery VHS. IPhone flexitarian tousled, letterpress Pitchfork readymade cornhole. Shabby chic irony skateboard, swag lumbersexual DIY Portland ethical Williamsburg forage farm-to-table meditation. Intelligentsia quinoa Odd Future semiotics hella Wes Anderson fap, typewriter Austin cliche meh lomo tattooed. Trust fund yr cronut, fap mumblecore viral Blue Bottle readymade. Sriracha street art Thundercats, PBR deep v trust fund fashion axe... <a href="">Continue Reading</a></p>
                 </div>
             </div>
             <div class="columns">
-                <h2>So Obscure, You Probably Haven't Heard of It</h2>
+                <h2><a href="/PERMALINK-REPLOCE-ME">So Obscure, You Probably Haven't Heard of It</a></h2>
                 <div>
                     <p>Photo booth Portland hoodie, retro sartorial ugh Thundercats tofu selfies Williamsburg meditation PBR pour-over bespoke. Meh heirloom kogi, trust fund pug messenger bag migas. Bicycle rights four dollar toast kale chips biodiesel. Chia umami Helvetica Brooklyn. Wolf iPhone Helvetica keffiyeh, hoodie keytar pop-up normcore Neutra mlkshk. Pour-over messenger bag Thundercats, swag mumblecore plaid 90's sustainable wolf mixtape hashtag. Pork belly fap occupy, Wes Anderson polaroid migas keffiyeh mustache single-origin coffee Intelligentsia actually meggings Thundercats pug... <a href="">Continue Reading</a></p>
                 </div>

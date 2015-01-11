@@ -9,6 +9,13 @@ communities categorized by aforementioned keywords. Comfor.me makes it easier
 for an individual to find communities and services which accept them for who
 they are.
 
+##Technologies Used:
+* The Go programming Language
+* PostGreSQL
+* Vagrant automated development environment
+* HTML/CSS
+* Heroku cloud application platform
+* VirtualBox
 
 ## Instructions for setting up development server
 ### Deploying to Heroku

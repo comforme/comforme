@@ -49,24 +49,29 @@ const NavBar = `
 `
 
 const SearchBar = `
-	<div class="row">
-		<div class="column">
-			<form method="post" action="/search">
-				<div class="row collapse">
-					<div class="small-10 columns">
-						<input type="text" placeholder="Page Search" name="page-search" id="page-search-textbox">
-					</div>
-				<div class="small-2 columns">
-					<button type="submit" class="button postfix">Search</button>
-				</div>
-				</div>
-			</form>
+	<form method="post" action="/search">
+		<div class="row collapse">
+			<div class="small-10 columns">
+				<input type="text" placeholder="Page Search" name="page-search" id="page-search-textbox">
+			</div>
+			<div class="small-2 columns">
+				<button type="submit" class="button postfix">Search</button>
+			</div>
 		</div>
-	</div>
+	</form>
 `
 
 const CommunitySearch = `
-    {{template "searchBar" . }}
+    <form action="COMMUNITIES-SEARCH-FORM-ACTION-REPLACE-ME" method="post">
+        <div class="row collapse">
+            <div class="small-10 columns">
+                <input type="text" placeholder="Communities Search" name="communities-search" id="communities-search-textbox">
+            </div>
+            <div class="small-2 columns">
+                <button type="submit" class="button postfix">Search</button>
+            </div>
+        </div>
+    </form>
     <form action="USER-ADD-COMMUNITIES-FORM-ACTION-REPLACE-ME" method="post">
         <div class="row">
             <div class="large-6 medium-6 small-12 columns left">

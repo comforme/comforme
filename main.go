@@ -42,6 +42,13 @@ func main() {
 			requireLogin.RequireLogin(pages.PagesHandler),
 		),
 	)
+	
+	mux.Handle(
+		"/hipster/lorem-hipsum",
+		http.HandlerFunc(
+			requireLogin.RequireLogin(pages.HipsterHandler),
+		),
+	)
 
 	mux.Handle(
 		"/search",

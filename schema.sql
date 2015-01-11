@@ -25,6 +25,7 @@ CREATE TABLE pages (
    address          TEXT           NOT NULL,
    date_created     TIMESTAMP      NOT NULL  DEFAULT now()
 );
+CREATE INDEX pages_title_tsvector_idx ON pages (to_tsvector('english', title));
 
 CREATE TABLE posts (
    id               SERIAL                   PRIMARY KEY,
@@ -57,4 +58,14 @@ INSERT INTO public.communities (id, name) VALUES (5, 'Stoner');
 INSERT INTO public.communities (id, name) VALUES (6, 'Trans');
 INSERT INTO public.communities (id, name) VALUES (7, 'BBW');
 INSERT INTO public.communities (id, name) VALUES (8, 'Single');
-INSERT INTO public.communities (id, name) VALUES (9, 'Chia Pet Enthusiast');
+INSERT INTO public.communities (id, name) VALUES (10, 'Boring');
+INSERT INTO public.communities (id, name) VALUES (11, 'Business Owner');
+INSERT INTO public.communities (id, name) VALUES (12, 'Michelle Obama');
+INSERT INTO public.communities (id, name) VALUES (13, 'Genderqueer');
+INSERT INTO public.communities (id, name) VALUES (14, 'Heterosexual');
+
+INSERT INTO public.categories (id, name) VALUES (1, 'Medical');
+INSERT INTO public.categories (id, name) VALUES (2, 'Food');
+INSERT INTO public.categories (id, name) VALUES (3, 'Entertainment');
+INSERT INTO public.categories (id, name) VALUES (4, 'Travel Services');
+INSERT INTO public.categories (id, name) VALUES (5, 'Home/Garden Renovation');

@@ -23,6 +23,13 @@ const (
 	fromName                = "ComFor.Me"
 )
 
+// Database row types
+type Community struct {
+	Id int
+	Name string
+	IsMember bool
+}
+
 // Errors
 var EmailFailed = errors.New("Sending email failed.")
 
@@ -119,4 +126,8 @@ func ValidEmail(email string) bool {
 
 func SetSessionCookie(res http.ResponseWriter, sessionid string) {
 	http.SetCookie(res, &http.Cookie{Name: "sessionid", Value: sessionid, Expires: time.Now().AddDate(10, 0, 0)})
+}
+
+func Logout(res http.ResponseWriter, req *http.Request) {
+	http.Redirect(res, req, "/logout", http.StatusFound)
 }

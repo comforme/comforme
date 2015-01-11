@@ -87,8 +87,12 @@ func Logout(sessionid string) error {
 	return db.Logout(sessionid)
 }
 
-func GetEmail(sessionid string) (email string, err error) {
+func GetEmail(sessionid string) (string, error) {
 	return db.GetEmail(sessionid)
+}
+
+func PasswordChangeRequired(sessionid string) (bool, error) {
+	return db.PasswordChangeRequired(sessionid)
 }
 
 func Login(email string, password string) (sessionid string, err error) {
@@ -131,4 +135,12 @@ func Register(username, email string) (sessionid string, err error) {
 	}
 
 	return Login(email, password)
+}
+
+func ListCommunities(sessionid string) (communities []common.Community, err error) {
+	communities, err = db.ListCommunities(sessionid)
+	if err != nil {
+		err = DatabaseError
+	}
+	return
 }

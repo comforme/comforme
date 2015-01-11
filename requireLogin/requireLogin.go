@@ -6,6 +6,7 @@ import (
 
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/login"
+	"github.com/comforme/comforme/settings"
 )
 
 const DebugMode = false
@@ -22,8 +23,18 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.Re
 			email, err := databaseActions.GetEmail(cookie.Value)
 			if err == nil {
 				log.Printf("User with email %s logged in.", email)
-				handler(res, req)
-				return
+				isRequired, err := databaseActions.PasswordChangeRequired(cookie.Value)
+				if err == nil {
+					if isRequired {
+						settings.SettingsHandler(res, req)
+						return
+					} else {
+						handler(res, req)
+						return
+					}
+				} else {
+					log.Println("Error checking if password reset is required:", err)
+				}
 			} else {
 				log.Println("Error checking email:", err)
 

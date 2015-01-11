@@ -44,11 +44,29 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 					}
 				} else {
 					log.Println("Failed to retrieve sessionid:", err)
-					data["errorMsg"] = "Failed to update password"
+					common.Logout(res, req)
 				}
 			} else {
 				data["errorMsg"] = "Passwords do not match"
 			}
+		}
+	}
+	
+	if data["errorMsg"] == nil {
+		cookie, err := req.Cookie("sessionid")
+		if err != nil {
+			log.Println("Error reading cookie:", err)
+			common.Logout(res, req)
+		}
+		
+		isRequired, err := databaseActions.PasswordChangeRequired(cookie.Value)
+		if err != nil {
+			log.Println("Error checking if password reset is required:", err)
+			common.Logout(res, req)
+		}
+		
+		if isRequired {
+			data["errorMsg"] = "Password change required."
 		}
 	}
 
@@ -69,20 +87,20 @@ const settingsTemplateText = `
 						<div class="row">
 							<div class="large-4 columns left">
 								<label>
-									<input type="password" name="oldPassword">
 									Old password (Initial password sent via email)
+									<input type="password" name="oldPassword">
 								</label>
 							</div>
 							<div class="large-4 columns left">
 								<label>
-									<input type="password" name="newPassword">
 									New password
+									<input type="password" name="newPassword">
 								</label>
 							</div>
 							<div class="large-4 columns left">
 								<label>
-									<input type="password" name="newPasswordAgain">
 									New password (again)
+									<input type="password" name="newPasswordAgain">
 								</label>
 							</div>
 						</div>
