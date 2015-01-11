@@ -60,7 +60,7 @@ func main() {
 	mux.Handle(
 		"/logout",
 		http.HandlerFunc(
-			logout.LogoutHander,
+			logout.LogoutHandler,
 		),
 	)
 

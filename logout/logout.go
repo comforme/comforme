@@ -19,4 +19,7 @@ func LogoutHandler(res http.ResponseWriter, req *http.Request) {
 	} else {
 		log.Println("Unable to logout, no cookie set:", err)
 	}
+
+	// Redirect to home page
+	http.Redirect(res, req, "/", http.StatusFound)
 }
