@@ -2,10 +2,11 @@ package settings
 
 import (
 	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/comforme/comforme/common"
-	// "github.com/comforme/comforme/databaseActions"
+	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
 )
 
@@ -26,14 +27,31 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	data["formAction"] = req.URL.Path
 
 	if req.Method == "POST" {
-		// TODO uncomment when put to use
 		//username := req.PostFormValue("username")
-		//password := req.PostFormValue("password")
-		//newPassword := req.PostFormValue("newPassword")
-		//newPasswordConfirmation := req.PostFormValue("newPasswordConfirmation")
+		oldPassword := req.PostFormValue("oldPassword")
+		newPassword := req.PostFormValue("newPassword")
+		newPasswordAgain := req.PostFormValue("newPasswordAgain")
+		if len(oldPassword) != 0 && len(newPassword) != 0 {
+			if newPassword == newPasswordAgain {
+				cookie, err := req.Cookie("sessionid")
+				if err == nil {
+					sessionId := cookie.Value
+					err := databaseActions.ChangePassword(sessionId, oldPassword, newPassword)
+					if err == nil {
+						data["successMsg"] = "Password changed."
+					} else {
+						data["errorMsg"] = "Failed to validate password."
+					}
+				} else {
+					log.Println("Failed to retrieve sessionid:", err)
+					data["errorMsg"] = "Failed to update password"
+				}
+			} else {
+				data["errorMsg"] = "Passwords do not match"
+			}
+		}
 	}
 
-	// TODO: Add template and compile it.
 	common.ExecTemplate(settingsTemplate, res, data)
 }
 
@@ -43,6 +61,8 @@ const settingsTemplateText = `
 		<div class="row">
 			<div class="columns communities-settings">
 				<h1><i class="fi-widget"></i> Settings</h1>
+                {{if .successMsg}}<div class="alert-box success">{{.successMsg}}</div>{{end}}
+                {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
 				<form action="{{.formAction}}" method="post">
 					<section>
 						<h2>Password Change</h2>
