@@ -35,6 +35,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	sessionid := cookie.Value
 	
 	communities, err := databaseActions.ListCommunities(sessionid)
+	log.Printf("communities: %+v\n", communities)
 	data["communitiesCol1"] = communities[0:len(communities) / 4 + len(communities) % 4]
 	data["communitiesCol2"] = communities[len(communities) / 4:len(communities) / 2]
 	data["communitiesCol3"] = communities[len(communities) / 2:len(communities) / 4 * 3]
