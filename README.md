@@ -1,6 +1,11 @@
 # comfor.me
 Everyone's personal community
 
+#What is it?
+Comfor.me is a community-rated social network. Users can find 
+accepting communities and services based on a wide array of keywords.
+
+
 ## Deploying to Heroku
 TODO
 
