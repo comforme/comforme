@@ -11,9 +11,9 @@ import(
 func RequireLogin(handler func (http.ResponseWriter, *http.Request)) (func (http.ResponseWriter, *http.Request)) {
 	return func (res http.ResponseWriter, req *http.Request) {
 		cookie, err := req.Cookie("sessionid")
-		if err != nil {
+		if err == nil {
 			email, err := databaseActions.GetEmail(cookie.Value)
-			if err != nil {
+			if err == nil {
 				log.Printf("User with email %s logged in.", email)
 				handler(res, req)
 				return
