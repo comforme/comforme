@@ -51,7 +51,7 @@ const NavBar = `
 const SearchBar = `
 	<div class="row">
 		<div class="column">
-			<form method="post" action="/">
+			<form method="post" action="/search">
 				<div class="row collapse">
 					<div class="small-10 columns">
 						<input type="text" placeholder="Page Search" name="page-search" id="page-search-textbox">
@@ -66,7 +66,7 @@ const SearchBar = `
 	</div>
 `
 
-const CommunitySearch =`
+const CommunitySearch = `
     {{template "searchBar" . }}
     <form action="USER-ADD-COMMUNITIES-FORM-ACTION-REPLACE-ME" method="post">
         <div class="row">

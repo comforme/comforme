@@ -1,6 +1,6 @@
 package static
 
-import(
+import (
 	"fmt"
 	"net/http"
 )
