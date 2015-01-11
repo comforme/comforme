@@ -8,11 +8,12 @@ Comfor.me (Community for Me) is a social network / service listing based on comm
 When you first visit comfor.me you are invited to create an account, followed by identifying some of the communities you identify with. Once you've joined, you can search and post pages on any topic you can imagine. Each page describes something, whether it be a business, local event, online article, piece of artwork, or anything else. Page descriptions are followed by individual contributions from other users, such as reviews for businesses, comments on articles, or any type of additional info they have that creates rich feedback from diverse communities of users like you. Whenever you have something you'd like to share, you can create your own contribution to a page or make a new page for anything you'd like to get thoughts on from other users.
 
 ###What Makes the Experience Better?
-####Seamless Registration: Enter your email and pick your username, done! You can immediately discover your communities since email verification is automatically handled the next time you sign in.
-
-####Modern, Responsive Site Design: With a website that offers a smooth, clean interface that gives you what you want with no unnecessary frills, and servers written in an optimized language that react quickly and make sure load times are a thing of the past. Comfor.me provides a great user experience for any community member.
-
-####Freedom: Other social networks makes you use your real name, lock you into only one kind of content, limit finding communities you identify with, or do any number of other things to ensure you're easy to predict and generate as much advertising revenue as possible. Comfor.me does none of these things, instead we help you express your freedom to create and be a part of anything you want to, we build the tools for you to find people like you, then we step back when you step forward and become part of our community.
+####Seamless Registration
+Enter your email and pick your username, done! You can immediately discover your communities since email verification is automatically handled the next time you sign in.
+####Modern, Responsive Site Design
+With a website that offers a smooth, clean interface that gives you what you want with no unnecessary frills, and servers written in an optimized language that react quickly and make sure load times are a thing of the past. Comfor.me provides a great user experience for any community member.
+####Freedom
+Other social networks makes you use your real name, lock you into only one kind of content, limit finding communities you identify with, or do any number of other things to ensure you're easy to predict and generate as much advertising revenue as possible. Comfor.me does none of these things, instead we help you express your freedom to create and be a part of anything you want to, we build the tools for you to find people like you, then we step back when you step forward and become part of our community.
 
 ## Instructions for setting up development server
 ### Deploying to Heroku
