@@ -2,8 +2,10 @@
 Everyone's personal community
 
 #What is it?
-Comfor.me is a community-rated social network. Users can find 
-accepting communities and services based on a wide array of keywords.
+Comfor.me (Community for Me) is a community-rated and identity-oriented 
+social network/service listing. Users can find accepting communities and
+services based on a wide array of keywords. Users can also start their own
+communities categorized by aforementioned keywords.
 
 
 ## Instructions for setting up development server
