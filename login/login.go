@@ -1,11 +1,10 @@
 package login
 
 import (
-	"html/template"
-	"net/http"
-	"log"
 	"fmt"
 	"html/template"
+	"log"
+	"net/http"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/database"
@@ -22,20 +21,20 @@ func init() {
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	var data map[string]interface{}
 	var err error
-		
+
 	if req.Method == "POST" {
 		email := req.PostFormValue("email")
 		username := req.PostFormValue("username")
 		password := req.PostFormValue("password")
 		isSignup := req.PostFormValue("sign-up") == "true"
 		isLogin := req.PostFormValue("log-in") == "true"
-		
+
 		data["username"] = username
 		data["email"] = email
 		data["pageTitle"] = "login"
-		
+
 		var sessionid string
-		
+
 		if isSignup {
 			sessionid, err = databaseActions.Register(username, email)
 			if err == databaseActions.UsernameTooShort {
@@ -55,7 +54,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				data["formError"] = "Unknown signup error. Check error log."
 			}
 		}
-		
+
 		if err == nil {
 			common.SetSessionCookie(req, sessionid)
 			fmt.Fprintln(res, "Success!")
