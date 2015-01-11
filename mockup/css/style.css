@@ -27,3 +27,13 @@
 .tabs-content, .tabs-content form {
 	margin: 0;
 }
+
+
+/* ---------- Communities Settings ---------- */
+.communities-settings section {
+	margin-bottom: 1rem;
+}
+
+.communities-settings section form {
+	margin-bottom: 0;
+}
