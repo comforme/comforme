@@ -15,6 +15,7 @@ func init() {
 	template.Must(homeTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(homeTemplate.New("searchBar").Parse(templates.SearchBar))
 	template.Must(homeTemplate.New("content").Parse(homeTemplateText))
+	template.Must(homeTemplate.New("summary").Parse(summTemplateText))
 }
 
 func HomeHandler(res http.ResponseWriter, req *http.Request) {
@@ -26,23 +27,18 @@ func HomeHandler(res http.ResponseWriter, req *http.Request) {
 const homeTemplateText = `
 <div class="content">
     {{template "searchBar" .}}
-
+    {{template "summary"   .}}
 </div>`
 
-const homeOptTemplateText = `<div class="content">
+
+const summTemplateText = `
+<div class="content">
 	<div class="row">
-		<div class="column">
-			<h1>Search for Communities</h1>
-			<form method="post" action="/">
-				<div class="row collapse">
-					<div class="small-10 columns">
-						<input type="text" placeholder="enter community name" name="page-search" id="page-search-textbox">
-					</div>
-				<div class="small-2 columns">
-					<button type="submit" class="button postfix">Search</button>
-				</div>
-				</div>
-			</form>
-		</div>
+		<div class="large-centered columns">
+                	<h2>What is Comfor.me?</h2>
+                	<div>
+                    	<p>Comfor.me (Community for Me) is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. Comfor.me makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
+                	</div>
+            	</div>
 	</div>
 </div>`
