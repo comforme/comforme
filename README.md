@@ -10,9 +10,9 @@ for an individual to find communities and services which accept them for who
 they are.
 
 #Technologies Used:
--The Go programming Language
--PostGreSQL
--Vagrant
+*The Go programming Language
+*PostGreSQL
+*Vagrant
 
 ## Instructions for setting up development server
 ### Deploying to Heroku
