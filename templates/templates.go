@@ -25,7 +25,9 @@ const SiteLayout = `<!DOCTYPE html>
 				<li>
 					<a href="/">Main Page</a>
 				</li>
+					
 			</ul>
+
 		</section>
 	</nav>
     {{ template "content" .}}
@@ -33,3 +35,24 @@ const SiteLayout = `<!DOCTYPE html>
 </body>
 </html>
 `
+
+const NavBar =
+`<section class="top-bar-section">
+	<ul class="right">
+		<li>
+			<a href="/"><i class="fi-home"></i></a>
+		</li>
+		<li>
+			<a href="/"><i class="fi-page-add"></i></a>
+		</li>
+		<li>
+			<a href="/"><i class="fi-widget"></i></a>
+		</li>
+		<li>
+			<a href="/"><i class="fi-power"></i></a>
+		</li>
+	</ul>
+</section>
+`
+
+
