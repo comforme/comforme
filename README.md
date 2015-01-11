@@ -6,6 +6,7 @@ Comfor.me is a community-rated social network. Users can find
 accepting communities and services based on a wide array of keywords.
 
 
+## Instructions for setting up development server
 ## Deploying to Heroku
 TODO
 
