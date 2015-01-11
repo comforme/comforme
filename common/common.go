@@ -1,16 +1,16 @@
 package common
 
 import (
-	"math/rand"
-	"time"
+	"errors"
 	"fmt"
-	"log"
-	"net/http"
 	"html/template"
+	"log"
+	"math/rand"
+	"net/http"
 	"os"
 	"regexp"
-	"errors"
-	
+	"time"
+
 	"github.com/keighl/mandrill"
 )
 
@@ -18,8 +18,8 @@ const (
 	alphaNumeric            = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	sessionIdLength         = 25
 	generatedPasswordLength = 15
-	fromEmail = "donotreply@comfor.me"
-	fromName  = "ComFor.Me"
+	fromEmail               = "donotreply@comfor.me"
+	fromName                = "ComFor.Me"
 )
 
 // Errors
@@ -114,6 +114,6 @@ func ValidEmail(email string) bool {
 func SetSessionCookie(req *http.Request, sessionid string) {
 	expire := time.Now().AddDate(0, 3, 0)
 	rawcookie := fmt.Sprintf("sessionid=%s", sessionid)
-    cookie := http.Cookie{"sessionid", sessionid, "/", "www.comfor.me", expire, expire.Format(time.UnixDate), 86400, true, true, rawcookie, []string{rawcookie}}
-    req.AddCookie(&cookie)
+	cookie := http.Cookie{"sessionid", sessionid, "/", "www.comfor.me", expire, expire.Format(time.UnixDate), 86400, true, true, rawcookie, []string{rawcookie}}
+	req.AddCookie(&cookie)
 }
