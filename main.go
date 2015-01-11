@@ -49,7 +49,7 @@ func main() {
 	)
 
 	mux.Handle(
-		"/style.css",
+		"/style\\.css",
 		http.HandlerFunc(
 			static.Style,
 		),
