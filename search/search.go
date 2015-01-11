@@ -1,8 +1,8 @@
 package search
 
 import (
+	"html/template"
 	"net/http"
-    "html/template"
 
 	"github.com/comforme/comforme/common"
 	// "github.com/comforme/comforme/databaseActions"
@@ -12,7 +12,7 @@ import (
 var searchTemplate *template.Template
 
 func init() {
-    searchTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	searchTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(searchTemplate.New("content").Parse(searchTemplateText))
 }
 

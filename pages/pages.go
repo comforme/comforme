@@ -1,8 +1,8 @@
 package pages
 
 import (
+	"html/template"
 	"net/http"
-    "html/template"
 
 	"github.com/comforme/comforme/common"
 	// "github.com/comforme/comforme/databaseActions"
@@ -12,10 +12,9 @@ import (
 var pagesTemplate *template.Template
 
 func init() {
-    pagesTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	pagesTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(pagesTemplate.New("content").Parse(pagesTemplateText))
 }
-
 
 func PagesHandler(res http.ResponseWriter, req *http.Request) {
 	var data map[string]interface{}

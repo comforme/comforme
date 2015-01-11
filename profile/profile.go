@@ -1,8 +1,8 @@
 package profile
 
 import (
+	"html/template"
 	"net/http"
-    "html/template"
 
 	"github.com/comforme/comforme/common"
 	// "github.com/comforme/comforme/databaseActions"
@@ -12,7 +12,7 @@ import (
 var profileTemplate *template.Template
 
 func init() {
-    profileTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	profileTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(profileTemplate.New("content").Parse(profileTemplateText))
 }
 

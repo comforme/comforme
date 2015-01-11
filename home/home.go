@@ -1,9 +1,9 @@
 package home
 
 import (
-	"net/http"
-    "html/template"
 	"github.com/comforme/comforme/common"
+	"html/template"
+	"net/http"
 	// "github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
 )
@@ -11,7 +11,7 @@ import (
 var homeTemplate *template.Template
 
 func init() {
-    homeTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	homeTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(homeTemplate.New("content").Parse(homeTemplateText))
 }
 
