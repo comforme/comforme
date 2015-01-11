@@ -51,7 +51,6 @@ const NavBar = `
 const SearchBar = `
 	<div class="row">
 		<div class="column">
-			<h1>Search</h1>
 			<form method="post" action="/">
 				<div class="row collapse">
 					<div class="small-10 columns">

@@ -31,4 +31,8 @@ func ProfileHandler(res http.ResponseWriter, req *http.Request) {
 	common.ExecTemplate(profileTemplate, res, data)
 }
 
-const profileTemplateText = `<p>Profile Page</p>`
+const profileTemplateText = `
+<div class="content">
+    <p>Profile Page</p>
+</div>
+`
