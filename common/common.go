@@ -29,6 +29,15 @@ type Community struct {
 	IsMember bool
 }
 
+type Page struct {
+	Id int
+	Title string
+	Slug string
+	Category string
+	Description string
+	DateCreated time.Time
+}
+
 // Errors
 var EmailFailed = errors.New("Sending email failed.")
 

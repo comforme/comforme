@@ -230,7 +230,7 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 						community_memberships.community_id = communities.id
 			WHERE
 				community_memberships.user_id = sessions.userid AND
-				sessions.id = $1
+				sessions.id = $1;
 		`,
 		sessionid,
 	)
@@ -261,3 +261,53 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 	// Success
 	return
 }
+
+func (db DB) SearchPages(query string) (pages []common.Page, err error) {
+	rows, err := db.conn.Query(`
+		SELECT
+			id,
+			title,
+			slug,
+			categories.name,
+			description,
+			date_created
+		FROM
+			pages,
+			categories
+		WHERE
+			categories.id = pages.category AND
+			to_tsvector('english', title) @@ to_tsquery($4) -- Full text search
+		ORDER BY date_created DESC
+		`,
+		query,
+	)
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	pages = []common.Page{}
+	for rows.Next() {
+		var row common.Page
+		if err := rows.Scan(
+			&row.Id,
+			&row.Title,
+			&row.Slug,
+			&row.Category,
+			&row.Description,
+			&row.DateCreated,
+		); err != nil {
+			log.Fatal(err)
+		}
+		pages = append(pages, row)
+	}
+
+	if err = rows.Err(); err != nil {
+		return
+	}
+
+	// Success
+	return
+}
+
