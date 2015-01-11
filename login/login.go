@@ -2,8 +2,12 @@ package login
 
 import (
 	"net/http"
+	"log"
+	"fmt"
+	"html/template"
 
 	"github.com/comforme/comforme/common"
+	"github.com/comforme/comforme/database"
 	"github.com/comforme/comforme/databaseActions"
 )
 
@@ -16,20 +20,49 @@ func init() {
 
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	var data map[string]interface{}
+	var err error
+		
 	if req.Method == "POST" {
 		email := req.PostFormValue("email")
 		username := req.PostFormValue("username")
 		password := req.PostFormValue("password")
-		sessionid, err := databaseActions.Login(email, password)
-		if err != nil {
-
-		} else {
+		isSignup := req.PostFormValue("sign-up") == "true"
+		isLogin := req.PostFormValue("log-in") == "true"
+		
+		data["username"] = username
+		data["email"] = email
+		data["pageTitle"] = "login"
+		
+		var sessionid string
+		
+		if isSignup {
+			sessionid, err = databaseActions.Register(username, email)
+			if err == databaseActions.UsernameTooShort {
+				data["registerUsernameError"] = err.Error()
+			} else if err == databaseActions.InvalidEmail {
+				data["registerEmailError"] = err.Error()
+			} else if err != nil {
+				log.Println("Unknown signup error:", err)
+				data["formError"] = "Unknown signup error. Check error log."
+			}
+		} else if isLogin {
+			sessionid, err = databaseActions.Login(email, password)
+			if err == database.InvalidUsernameOrPassword {
+				data["loginUsernameError"] = err.Error()
+			} else if err != nil {
+				log.Println("Unknown signup error:", err)
+				data["formError"] = "Unknown signup error. Check error log."
+			}
+		}
+		
+		if err == nil {
 			common.SetSessionCookie(req, sessionid)
+			fmt.Fprintln(res, "Success!")
+			return
 		}
 	}
 
-	// TODO: Add template and compile it.
-	common.ExecTemplate(nil, res, data)
+	common.ExecTemplate(loginTemplate, res, data)
 }
 
 const loginTemplateText = `<!DOCTYPE html>
@@ -84,7 +117,7 @@ const loginTemplateText = `<!DOCTYPE html>
 									<small class="error">{{.registerEmailError}}</small>{{end}}
 								</div>
 								<div>
-									<button type="submit" class="button">Submit</button>
+									<button type="submit" class="button" name="sign-up" value="true">Submit</button>
 								</div>
 							</form>
 						</div>
@@ -98,7 +131,7 @@ const loginTemplateText = `<!DOCTYPE html>
 									<input type="password" name="password" placeholder="Password">
 								</div>
 								<div>
-									<button type="submit" class="button">Submit</button>
+									<button type="submit" class="button" name="log-in" value="true">
 								</div>
 							</form>
 						</div>
