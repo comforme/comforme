@@ -19,7 +19,7 @@ func init() {
 }
 
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
-	var data map[string]interface{}
+	data := map[string]interface{}{}
 	var err error
 	
 	//data["formAction"] = req.URL.Path
