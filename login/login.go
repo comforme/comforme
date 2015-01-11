@@ -21,6 +21,8 @@ func init() {
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	var data map[string]interface{}
 	var err error
+	
+	data["formAction"] = req.URL.Path
 
 	if req.Method == "POST" {
 		email := req.PostFormValue("email")
@@ -107,7 +109,7 @@ const loginTemplateText = `<!DOCTYPE html>
 					</dl>
 					<div class="tabs-content">
 						<div class="content active" id="sign-up-form">
-							<form method="post" action=".">
+							<form method="post" action="{{.formAction}}">
 								<div>
 									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
 									<small class="error">{{.registerUsernameError}}</small>{{end}}
@@ -122,7 +124,7 @@ const loginTemplateText = `<!DOCTYPE html>
 							</form>
 						</div>
 						<div class="content" id="log-in-form">
-							<form method="post" action=".">
+							<form method="post" action="{{.formAction}}">
 								<div>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginEmailError}}
 									<small class="error">{{.loginEmailError}}</small>{{end}}
