@@ -1,5 +1,10 @@
 package static
 
+import(
+	"fmt"
+	"net/http"
+)
+
 func Style(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
 
