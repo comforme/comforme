@@ -57,7 +57,7 @@ const SearchBar = `
 						<input type="text" placeholder="Page Search" name="page-search" id="page-search-textbox">
 					</div>
 				<div class="small-2 columns">
-					<button type="submit" class="button postfix">Submit</button>
+					<button type="submit" class="button postfix">Search</button>
 				</div>
 				</div>
 			</form>
