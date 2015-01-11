@@ -37,6 +37,7 @@ sudo apt-get install -y postgresql
 sudo -u postgres psql -c "CREATE DATABASE ${DB_NAME};"
 sudo -u postgres psql -d $DB_NAME < /vagrant/schema.sql
 sudo -u postgres psql -d $DB_NAME -c "CREATE USER ${USERNAME}"
+sudo -u postgres psql -d $DB_NAME -c "GRANT USAGE, SELECT ON SEQUENCE users_id_seq to ${USERNAME};"
 for table in $TABLES; do
     sudo -u postgres psql -d $DB_NAME -c "GRANT ALL PRIVILEGES ON TABLE ${table} TO ${USERNAME};"
 done

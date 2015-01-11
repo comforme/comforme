@@ -8,8 +8,15 @@ import (
 	"github.com/comforme/comforme/login"
 )
 
+const DebugMode = false
+
 func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
+        if DebugMode {
+		    log.Printf("Entering debug mode...")
+			handler(res, req)
+            return
+        }
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			email, err := databaseActions.GetEmail(cookie.Value)
