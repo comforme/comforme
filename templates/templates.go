@@ -30,21 +30,21 @@ const NavBar = `
 			</li>
 		</ul>
 		<section class="top-bar-section">
-    	<ul class="right">
-    		<li>
-    			<a href="/"><i class="fi-home"></i></a>
-    		</li>
-    		<li>
-    			<a href="/"><i class="fi-page-add"></i></a>
-    		</li>
-    		<li>
-    			<a href="/"><i class="fi-widget"></i></a>
-    		</li>
-    		<li>
-    			<a href="/"><i class="fi-power"></i></a>
-    		</li>
-    	</ul>
-    </section>
+			<ul class="right">
+				<li>
+					<a href="/"><i class="fi-home"></i></a>
+				</li>
+				<li>
+					<a href="/"><i class="fi-page-add"></i></a>
+				</li>
+				<li>
+					<a href="/"><i class="fi-widget"></i></a>
+				</li>
+				<li>
+					<a href="/"><i class="fi-power"></i></a>
+				</li>
+			</ul>
+		</section>
 	</nav>
 `
 
