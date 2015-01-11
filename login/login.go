@@ -72,8 +72,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 
 const loginTemplateText = `
     <div class="content sign-up-and-log-in">
+		<h1 class="text-center">Welcome to Community for Me!<h1>
 		<div class="row">
-			<div style="text-align:center"><h1>Welcome to Community for Me!<h1></div>
 			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
 			<div class="large-4 medium-6 small-10 columns">{{if .formError}}
 				<div class="alert-box alert">
@@ -117,14 +117,15 @@ const loginTemplateText = `
 						</div>
 					</div>
 				</section>
-				<div class="large-12 columns">
-                			<h2>What is Comfor.me?</h2>
-                			<div>
-                    			<p>Comfor.me (Community for Me) is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. Comfor.me makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
-                			</div>
-            			</div>
 			</div>
 			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
+			<div class="large-12 columns">
+				<h2>What is Comfor.me?</h2>
+					<div>
+						<p>Comfor.me (Community for Me) is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. Comfor.me makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 `

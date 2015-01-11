@@ -25,5 +25,6 @@ func HomeHandler(res http.ResponseWriter, req *http.Request) {
 
 const homeTemplateText = `
 <div class="content">
+    <h1>Search</h1>
     {{template "searchBar" .}}
 </div>`
