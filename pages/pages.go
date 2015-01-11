@@ -42,7 +42,7 @@ const pagesTemplateText = `
 				<input type="text" name="title" placeholder="page title" align="center">
 			</div>
 			<div>
-				<input type="text" name="description" placeholder="description">
+				<textarea name="description" placeholder="description"></textarea>
 			</div>
 			<div>
 				<input type="text" name="address/location" placeholder="address">
