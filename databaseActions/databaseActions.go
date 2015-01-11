@@ -78,8 +78,12 @@ func Logout(sessionid string) error {
 	return db.Logout(sessionid)
 }
 
-func GetEmail(sessionid string) (email string, err error) {
+func GetEmail(sessionid string) (string, error) {
 	return db.GetEmail(sessionid)
+}
+
+func PasswordChangeRequired(sessionid string) (bool, error) {
+	return db.PasswordChangeRequired(sessionid)
 }
 
 func Login(email string, password string) (sessionid string, err error) {
