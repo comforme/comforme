@@ -9,20 +9,21 @@ import (
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/database"
 	"github.com/comforme/comforme/databaseActions"
+	"github.com/comforme/comforme/templates"
 )
 
 var loginTemplate *template.Template
 
 func init() {
-	loginTemplate = template.Must(template.New("loginPage").Parse(loginTemplateText))
-	//loginTemplate.New("pageHeader").Parse(headerTemplateHtml)
+	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(loginTemplate.New("content").Parse(loginTemplateText))
 }
 
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 	var err error
 	
-	//data["formAction"] = req.URL.Path
+	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "login"
 
 	if req.Method == "POST" {
@@ -68,35 +69,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	common.ExecTemplate(loginTemplate, res, data)
 }
 
-const loginTemplateText = `<!DOCTYPE html>
-<html>
-<head>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/css/normalize.min.css" rel="stylesheet" type="text/css" />
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/css/foundation.min.css" rel="stylesheet" type="text/css" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/vendor/jquery.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/foundation.min.js"></script>
-	<meta charset="utf-8" />
-	<title>ComFor.Me - {{.pageTitle}}</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/css/style.css" />
-	<script scr="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/login.js"></script>
-</head>
-<body>
-	<nav class="top-bar" data-topbar>
-		<ul class="title-area">
-			<li class="name"></li>
-			<li class="toggle-topbar menu-icon">
-				<a href="#">Menu <span class="icon-menu"></span></a>
-			</li>
-		</ul>
-		<section class="top-bar-section">
-			<ul class="left">
-				<li>
-					<a href="/">Main Page</a>
-				</li>
-			</ul>
-		</section>
-	</nav>
-	<div class="content">
+const loginTemplateText = `
+    <div class="content">
 		<div class="row">
 			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
 			<div class="large-4 medium-6 small-10 columns">{{if .formError}}
@@ -145,7 +119,4 @@ const loginTemplateText = `<!DOCTYPE html>
 			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
 		</div>
 	</div>
-	<script>$(document).foundation();</script>
-</body>
-</html>
 `
