@@ -25,7 +25,6 @@ const SiteLayout = `<!DOCTYPE html>
 				<li>
 					<a href="/">Main Page</a>
 				</li>
-					
 			</ul>
 
 		</section>
