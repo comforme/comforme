@@ -31,7 +31,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		oldPassword := req.PostFormValue("oldPassword")
 		newPassword := req.PostFormValue("newPassword")
 		newPasswordAgain := req.PostFormValue("newPasswordAgain")
-		if len(oldPassword) != 0 && len(newPassword) != 0 {
+		if len(oldPassword) != 0 || len(newPassword) != 0 {
 			if newPassword == newPasswordAgain {
 				cookie, err := req.Cookie("sessionid")
 				if err == nil {
