@@ -12,5 +12,5 @@ func HomeHandler(res http.ResponseWriter, req *http.Request) {
 
 	// TODO: Add template and compile it.
 	tmpl, _ := template.New("test").ParseFiles("/templates/templates.go")
-	common.ExecTemplate(tmpl, res, nil)
+	common.ExecTemplate(tmpl, res, data)
 }
