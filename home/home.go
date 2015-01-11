@@ -30,5 +30,9 @@ const homeTemplateText = `
 			<h1>Search</h1>
 		</div>
 	</div>
-	{{template "searchBar" .}}
+	<div class="row">
+		<div class="columns">
+			{{template "searchBar" .}}
+		</div>
+	</div>
 </div>`
