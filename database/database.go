@@ -79,6 +79,27 @@ func (db DB) NewSession(userid int) (sessionid string, err error) {
 	return
 }
 
+func (db DB) NewPage(sessionId string, title string, description string, address string, category int) (err error) {
+	// Insert new page
+	slug := common.GenSlug(title)
+	userId, err := db.GetSessionUserID(sessionId)
+	log.Println("userid=", userId)
+
+	_, err = db.conn.Exec(
+		"INSERT INTO pages (title, description, address, category, slug, user_id, location) VALUES ($1, $2, $3, $4, $5, $6, '(0, 0)')",
+		title,
+		description,
+		address,
+		category,
+		slug,
+		userId,
+	)
+	if err != nil {
+		log.Println("Failed to insert page: ", err)
+	}
+	return
+}
+
 func (db DB) RegisterUser(username, email string) (password string, err error) {
 	// Check if email is already in use
 	var numRows int
