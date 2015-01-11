@@ -48,6 +48,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				data["formError"] = "Unknown signup error. Check error log."
 			}
 		} else if isLogin {
+			data["loginSelected"] = "true"
 			sessionid, err = databaseActions.Login(email, password)
 			if err == database.InvalidUsernameOrPassword {
 				data["loginError"] = err.Error()
@@ -108,7 +109,7 @@ const loginTemplateText = `<!DOCTYPE html>
 						<dd><a href="#log-in-form">Log In</a></dd>
 					</dl>
 					<div class="tabs-content">
-						<div class="content active" id="sign-up-form">
+						<div class="content{{if not .loginSelected}} active{{end}}" id="sign-up-form">
 							<form method="post" action="{{.formAction}}">
 								<div>
 									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
@@ -123,7 +124,7 @@ const loginTemplateText = `<!DOCTYPE html>
 								</div>
 							</form>
 						</div>
-						<div class="content" id="log-in-form">
+						<div class="content{{if .loginSelected}} active{{end}}" id="log-in-form">
 							<form method="post" action="{{.formAction}}">
 								<div>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginError}}
