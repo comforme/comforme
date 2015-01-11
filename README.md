@@ -7,10 +7,10 @@ accepting communities and services based on a wide array of keywords.
 
 
 ## Instructions for setting up development server
-## Deploying to Heroku
+### Deploying to Heroku
 TODO
 
-## Using Vagrant for Development
+### Using Vagrant for Development
 * First install VirtualBox and Vagrant
 * Vagrant will be able to create a virtual machine hosting the
   comfor.me application locally. The application is installed
