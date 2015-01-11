@@ -77,7 +77,7 @@ const loginTemplateText = `<!DOCTYPE html>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/foundation.min.js"></script>
 	<meta charset="utf-8" />
 	<title>ComFor.Me - {{.pageTitle}}</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/css/style.css" />
+	<link rel="stylesheet" href="https://bitbucket.org/spyrosoft/comforme-static/raw/dcb7eb2245eeb0875ea7358f0fe4d97bcd6b1361/css/style.css" />
 	<script scr="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/login.js"></script>
 </head>
 <body>
