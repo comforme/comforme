@@ -28,5 +28,8 @@ for repo in lib/pq go-zoo/bone keighl/mandrill comforme/comforme; do
     go get github.com/$repo
 done
 
+# Install PostgreSQL
+sudo apt-get install -y postgresql
+
 PORT=8080 nohup ~/go/bin/comforme &
 
