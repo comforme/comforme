@@ -51,6 +51,28 @@ const settingsTemplateText = `
 				<h1><i class="fi-widget"></i> Settings</h1>
 				<form action="{{.formAction}}" method="post">
 					<section>
+						<div class="row">
+							<div class="large-4 columns left">
+								<label>
+									<input type="password" name="oldPassword">
+									Old password (Initial password sent via email)
+								</label>
+							</div>
+							<div class="large-4 columns left">
+								<label>
+									<input type="password" name="newPassword">
+									New password
+								</label>
+							</div>
+							<div class="large-4 columns left">
+								<label>
+									<input type="password" name="newPasswordAgain">
+									New password (again)
+								</label>
+							</div>
+						</div>
+					</section>
+					<section>
 						<h2>Your Communities</h2>
 						<div class="row">
 							<div class="large-3 medium-6 small-12 columns left">
