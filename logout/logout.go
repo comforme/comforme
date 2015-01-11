@@ -15,7 +15,10 @@ func LogoutHandler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println("Logout session error:", err)
 		}
+		
+		// Delete cookie
 		cookie.MaxAge = -1
+		SetCookie(res, cookie)
 	} else {
 		log.Println("Unable to logout, no cookie set:", err)
 	}
