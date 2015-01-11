@@ -96,7 +96,7 @@ const loginTemplateText = `
 									<small class="error">{{.registerEmailError}}</small>{{end}}
 								</div>
 								<div>
-									<button type="submit" class="button" name="sign-up" value="true">Submit</button>
+									<button type="submit" class="button" name="sign-up" value="true">Sign Up</button>
 								</div>
 							</form>
 						</div>
@@ -111,7 +111,7 @@ const loginTemplateText = `
 									<small class="error">{{.loginError}}</small>{{end}}
 								</div>
 								<div>
-									<button type="submit" class="button" name="log-in" value="true">Submit</button>
+									<button type="submit" class="button" name="log-in" value="true">Log In</button>
 								</div>
 							</form>
 						</div>
