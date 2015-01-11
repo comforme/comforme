@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/comforme/comforme/common"
-	// "github.com/comforme/comforme/databaseActions"
+	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
 )
 
@@ -20,14 +20,17 @@ func init() {
 func PagesHandler(res http.ResponseWriter, req *http.Request) {
 	var data map[string]interface{}
 	if req.Method == "POST" {
-		// TODO uncomment when put to use
-		//title := req.PostFormValue("title")
-		//description := req.PostFormValue("description")
-		//address := req.PostFormValue("address")
-		//categories := req.PostFormValue("categories")
+		cookie, err := req.Cookie("sessionid")
+		sessionId := cookie.Value
+		if err == nil {
+			title := req.PostFormValue("title")
+			description := req.PostFormValue("description")
+			address := req.PostFormValue("address")
+			categories := req.PostFormValue("categories")
+			databaseActions.CreatePage(sessionId, title, description, address, int(categories[0]))
+		}
 	}
 
-	// TODO: Add template and compile it.
 	common.ExecTemplate(pagesTemplate, res, data)
 }
 
@@ -35,7 +38,7 @@ const pagesTemplateText = `
 <div class="row">
 	<div class="large-centered medium-centered large-8 medium-8 columns">
 	<div class="content" id="add-page-form">
-		<form method="POST" action="/" align="center">
+		<form method="POST" action="/pages" align="center">
             <fieldset>
             <legend>Create a New Page</legend>
 			<div>

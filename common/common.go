@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/keighl/mandrill"
@@ -47,6 +48,11 @@ func NewSessionID() string {
 
 func GenPassword() string {
 	return RandSeq(generatedPasswordLength)
+}
+
+func GenSlug(seed string) string {
+	slug := strings.ToLower(seed)
+	return slug
 }
 
 func ExecTemplate(tmpl *template.Template, w http.ResponseWriter, pc map[string]interface{}) {
