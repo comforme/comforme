@@ -65,5 +65,3 @@ const SearchBar = `
 		</div>
 	</div>
 `
-
-

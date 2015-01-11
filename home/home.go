@@ -27,5 +27,3 @@ const homeTemplateText = `
 <div class="content">
     {{template "searchBar" .}}
 </div>`
-
-

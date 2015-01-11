@@ -23,7 +23,7 @@ func init() {
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 	var err error
-	
+
 	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "login"
 
@@ -61,7 +61,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		if err == nil {
-			common.SetSessionCookie(req, sessionid)
+			common.SetSessionCookie(res, sessionid)
 			fmt.Fprintln(res, "Success!")
 			return
 		}
