@@ -1,14 +1,18 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/go-zoo/bone"
 
+	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/login"
+	"github.com/comforme/comforme/pages"
+	"github.com/comforme/comforme/profile"
+	"github.com/comforme/comforme/search"
 )
 
 func main() {
@@ -23,11 +27,30 @@ func main() {
 	)
 
 	mux.Handle(
+		"/profile",
+		http.HandlerFunc(
+			profile.ProfileHandler,
+		),
+	)
+
+	mux.Handle(
+		"/pages",
+		http.HandlerFunc(
+			pages.PagesHandler,
+		),
+	)
+
+	mux.Handle(
+		"/search",
+		http.HandlerFunc(
+			search.SearchHandler,
+		),
+	)
+
+	mux.Handle(
 		"/",
 		http.HandlerFunc(
-			func(w http.ResponseWriter, r *http.Request) {
-				fmt.Fprintln(w, "It works!")
-			},
+			home.HomeHandler,
 		),
 	)
 

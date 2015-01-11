@@ -11,25 +11,13 @@
 	<script scr="js/login.js"></script>
 </head>
 <body>
-	<nav class="top-bar" data-topbar>
-		<ul class="title-area">
-			<li class="name"></li>
-			<li class="toggle-topbar menu-icon">
-				<a href="#">Menu <span class="icon-menu"></span></a>
-			</li>
-		</ul>
-		<section class="top-bar-section">
-			<ul class="left">
-				<li>
-					<a href="/">Main Page</a>
-				</li>
-			</ul>
-		</section>
-	</nav>
-	<div class="content">
+	<div class="content sign-up-and-log-in">
 		<div class="row">
 			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
 			<div class="large-4 medium-6 small-10 columns">
+				<div class="alert-box alert">
+					WHAT YOU DID? YOU DID IT WRONG! DO IT AGAIN.
+				</div>
 				<section class="login-tabs">
 					<dl class="tabs" data-tab>
 						<dd class="active"><a href="#sign-up-form">Sign Up</a></dd>
@@ -38,11 +26,13 @@
 					<div class="tabs-content">
 						<div class="content active" id="sign-up-form">
 							<form method="post" action="/">
-								<div>
-									<input type="text" name="username" placeholder="User Name">
+								<div class="error">
+									<input type="text" name="username" placeholder="User Name" value="SAMPLE VALUE - REPLACE ME">
+									<small class="error">LOOK WHAT YOU DID!</small>
 								</div>
-								<div>
-									<input type="email" name="email" placeholder="Email">
+								<div class="error">
+									<input type="email" name="email" placeholder="Email" value="SAMPLE VALUE - REPLACE ME">
+									<small class="error">NOT A REAL EMAIL, MORON!</small>
 								</div>
 								<div>
 									<button type="submit" class="button">Submit</button>

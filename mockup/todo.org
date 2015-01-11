@@ -11,3 +11,6 @@
    - Meta data such as how many comments on the page
 ** TODO Sign Up/Log In
    Add error messages and styling for invalid email
+
+* General
+** TODO Create color scheme
