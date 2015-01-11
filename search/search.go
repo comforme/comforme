@@ -34,7 +34,7 @@ func SearchHandler(res http.ResponseWriter, req *http.Request) {
 const searchTemplateText = `
     <div class="content">
         <div class="row">
-            <div class="column">
+            <div class="columns">
                 <h1>Search</h1>
                 {{template "searchBar" .}}
                 {{if .query}}
