@@ -9,6 +9,11 @@ import (
 
 var loginTemplate *template.Template
 
+func init() {
+	loginTemplate = template.Must(template.New("loginPage").Parse(loginTemplateText))
+	//loginTemplate.New("pageHeader").Parse(headerTemplateHtml)
+}
+
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	var data map[string]interface{}
 	if req.Method == "POST" {
@@ -35,7 +40,7 @@ const loginTemplateText = `<!DOCTYPE html>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/foundation.min.js"></script>
 	<meta charset="utf-8" />
-	<title>ComFor.Me</title>
+	<title>ComFor.Me - {{.pageTitle}}</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/css/style.css" />
 	<script scr="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/login.js"></script>
 </head>
@@ -58,7 +63,10 @@ const loginTemplateText = `<!DOCTYPE html>
 	<div class="content">
 		<div class="row">
 			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
-			<div class="large-4 medium-6 small-10 columns">
+			<div class="large-4 medium-6 small-10 columns">{{if .formError}}
+				<div class="alert-box alert">
+					{{.formError}}
+				</div>{{end}}
 				<section class="login-tabs">
 					<dl class="tabs" data-tab>
 						<dd class="active"><a href="#sign-up-form">Sign Up</a></dd>
@@ -68,10 +76,12 @@ const loginTemplateText = `<!DOCTYPE html>
 						<div class="content active" id="sign-up-form">
 							<form method="post" action="/">
 								<div>
-									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}{{if .registerUsernameError}} class="error"{{end}}>
+									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
+									<small class="error">{{.registerUsernameError}}</small>{{end}}
 								</div>
 								<div>
-									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}{{if .registerEmailError}} class="error"{{end}}>
+									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .registerEmailError}}
+									<small class="error">{{.registerEmailError}}</small>{{end}}
 								</div>
 								<div>
 									<button type="submit" class="button">Submit</button>
@@ -81,7 +91,8 @@ const loginTemplateText = `<!DOCTYPE html>
 						<div class="content" id="log-in-form">
 							<form method="post" action="/">
 								<div>
-									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}{{if .loginEmailError}} class="error"{{end}}>
+									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginEmailError}}
+									<small class="error">{{.loginEmailError}}</small>{{end}}
 								</div>
 								<div>
 									<input type="password" name="password" placeholder="Password">
