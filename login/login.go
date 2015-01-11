@@ -61,7 +61,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 
 		if err == nil {
 			common.SetSessionCookie(res, sessionid)
-			
+
 			// Redirect to home page
 			http.Redirect(res, req, "/", http.StatusFound)
 		}

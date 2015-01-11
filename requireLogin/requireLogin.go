@@ -12,11 +12,11 @@ const DebugMode = false
 
 func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
-        if DebugMode {
-		    log.Printf("Entering debug mode...")
+		if DebugMode {
+			log.Printf("Entering debug mode...")
 			handler(res, req)
-            return
-        }
+			return
+		}
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			email, err := databaseActions.GetEmail(cookie.Value)
@@ -26,7 +26,7 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.Re
 				return
 			} else {
 				log.Println("Error checking email:", err)
-				
+
 				// Delete bad cookie
 				cookie.MaxAge = -1
 				http.SetCookie(res, cookie)
