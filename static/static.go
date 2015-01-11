@@ -6,7 +6,7 @@ import (
 )
 
 func Style(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "text/html; charset=utf-8")
+	res.Header().Set("Content-Type", "text/css; charset=utf-8")
 
 	fmt.Fprintln(res, `/* ---------- Sign Up/Log In ---------- */
 

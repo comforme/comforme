@@ -10,8 +10,10 @@ import (
 
 	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/login"
+	"github.com/comforme/comforme/logout"
 	"github.com/comforme/comforme/pages"
 	"github.com/comforme/comforme/profile"
+	"github.com/comforme/comforme/requireLogin"
 	"github.com/comforme/comforme/search"
 	"github.com/comforme/comforme/static"
 )
@@ -30,35 +32,42 @@ func main() {
 	mux.Handle(
 		"/profile",
 		http.HandlerFunc(
-			profile.ProfileHandler,
+			requireLogin.RequireLogin(profile.ProfileHandler),
 		),
 	)
 
 	mux.Handle(
 		"/pages",
 		http.HandlerFunc(
-			pages.PagesHandler,
+			requireLogin.RequireLogin(pages.PagesHandler),
 		),
 	)
 
 	mux.Handle(
 		"/search",
 		http.HandlerFunc(
-			search.SearchHandler,
+			requireLogin.RequireLogin(search.SearchHandler),
 		),
 	)
 
 	mux.Handle(
-		"/style.css",
+		"/style_css",
 		http.HandlerFunc(
 			static.Style,
 		),
 	)
 
 	mux.Handle(
+		"/logout",
+		http.HandlerFunc(
+			logout.LogoutHandler,
+		),
+	)
+
+	mux.Handle(
 		"/",
 		http.HandlerFunc(
-			home.HomeHandler,
+			requireLogin.RequireLogin(home.HomeHandler),
 		),
 	)
 

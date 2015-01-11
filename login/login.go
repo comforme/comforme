@@ -1,7 +1,6 @@
 package login
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -62,8 +61,9 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 
 		if err == nil {
 			common.SetSessionCookie(res, sessionid)
-			fmt.Fprintln(res, "Success!")
-			return
+			
+			// Redirect to home page
+			http.Redirect(res, req, "/", http.StatusFound)
 		}
 	}
 
@@ -78,7 +78,7 @@ const loginTemplateText = `
 				<div class="alert-box alert">
 					{{.formError}}
 				</div>{{end}}
-				<section class="login-tabs">
+				<section class="login-tabs sign-up-and-log-in">
 					<dl class="tabs" data-tab>
 						<dd{{if not .loginSelected}} class="active"{{end}}><a href="#sign-up-form">Sign Up</a></dd>
 						<dd{{if .loginSelected}} class="active"{{end}}><a href="#log-in-form">Log In</a></dd>
