@@ -6,6 +6,7 @@ PKG_URL="https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.g
 INSTALL_DIR="/usr/local"
 DB_NAME="comforme"
 TABLES="users categories pages posts communities community_memberships sessions"
+MANDRILL_APIKEY="$1"
 
 # Install Go
 cd /tmp && wget $PKG_URL && sudo tar -C $INSTALL_DIR -zxf go1.4.linux-amd64.tar.gz
@@ -18,6 +19,9 @@ export PATH=\$PATH:\$GOROOT/bin
 export PORT=8080
 export DATABASE_URL="host=/run/postgresql user=${USERNAME} dbname=comforme sslmode=disable"
 HERE
+if [ ! -z "$MANDRILL_APIKEY" ]; then
+echo "export MANDRILL_APIKEY=${MANDRILL_APIKEY}" >> ~/.bashrc
+fi
 source ~/.bashrc
 
 # Install Heroku Toolkit
