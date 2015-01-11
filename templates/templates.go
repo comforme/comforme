@@ -30,6 +30,11 @@ const NavBar = `
 			</li>
 		</ul>
 		<section class="top-bar-section">
+			<ul class="title-area">
+				<li class="name">
+					<h1><a href="/">ComFor.Me</a></h1>
+				</li>
+			</ul>
 			<ul class="right">
 				<li>
 				<a href="/" title="Main Page"><i class="fi-home"><span class="show-for-small-only"> Main Page</span></i></a>
