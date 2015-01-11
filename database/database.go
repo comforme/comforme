@@ -134,6 +134,14 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 	return
 }
 
+func (db DB) PasswordChangeRequired(sessionid string) (isRequired bool, err error) {
+	err = db.conn.QueryRow(
+		"SELECT reset_required FROM sessions, users WHERE sessions.id = $1 AND sessions.userid = users.id",
+		sessionid,
+	).Scan(&isRequired)
+	return
+}
+
 func (db DB) ResetPassword(email string) (password string, err error) {
 	password = common.GenPassword()
 	hashed, err := hashPassword(password)
