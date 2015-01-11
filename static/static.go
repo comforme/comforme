@@ -14,6 +14,10 @@ func Style(res http.ResponseWriter, req *http.Request) {
 	margin-top: 4rem;
 }
 
+.sign-up-and-log-in {
+	margin-bottom: 4rem;
+}
+
 .login-tabs {
 	border: 1px solid #CCCCCC;
 }
