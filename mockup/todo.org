@@ -1,15 +1,18 @@
 * Pages
-** TODO Global Navigation
+** TODO Search Results Page
+   - Title and truncated page content
+   - Meta data such as how many comments on the page
+** DONE Main Page
+   CLOSED: [2015-01-10 Sat 17:00]
+   Search textbox and button
+** DONE Global Navigation
+   CLOSED: [2015-01-10 Sat 17:00]
    - Main Page (home) link
    - Create Page icon
    - Settings icon
    - Log Out icon
-** TODO Main Page
-   Search textbox and button
-   Mockup search results
-   - Title and truncated page content
-   - Meta data such as how many comments on the page
-** TODO Sign Up/Log In
+** DONE Sign Up/Log In
+   CLOSED: [2015-01-10 Sat 17:00]
    Add error messages and styling for invalid email
 
 * General
