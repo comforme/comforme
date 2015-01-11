@@ -25,14 +25,14 @@ const homeTemplateText =
 `<div class="content">
 	<div class="row">
 		<div class="column">
-			<h1>Search</h1>
+			<h1>Search for Communities</h1>
 			<form method="post" action="/">
 				<div class="row collapse">
 					<div class="small-10 columns">
-						<input type="text" placeholder="Page Search" name="page-search" id="page-search-textbox">
+						<input type="text" placeholder="enter community name" name="page-search" id="page-search-textbox">
 					</div>
 				<div class="small-2 columns">
-					<button type="submit" class="button postfix">Submit</button>
+					<button type="submit" class="button postfix">Search</button>
 				</div>
 				</div>
 			</form>
