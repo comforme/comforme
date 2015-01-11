@@ -22,7 +22,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 	var err error
 	
-	//data["formAction"] = req.URL.Path
+	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "login"
 
 	if req.Method == "POST" {
