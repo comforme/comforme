@@ -12,7 +12,7 @@ they are.
 #Technologies Used:
 -The Go programming Language
 -PostGreSQL
--Vagr
+-Vagrant
 
 ## Instructions for setting up development server
 ### Deploying to Heroku
