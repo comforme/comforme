@@ -131,7 +131,7 @@ const loginTemplateText = `<!DOCTYPE html>
 									<input type="password" name="password" placeholder="Password">
 								</div>
 								<div>
-									<button type="submit" class="button" name="log-in" value="true">
+									<button type="submit" class="button" name="log-in" value="true">Submit</button>
 								</div>
 							</form>
 						</div>
