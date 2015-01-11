@@ -18,7 +18,8 @@ func init() {
 }
 
 func PagesHandler(res http.ResponseWriter, req *http.Request) {
-	var data map[string]interface{}
+	data := map[string]interface{}{}
+	data["formAction"] = req.URL.Path
 	if req.Method == "POST" {
 		cookie, err := req.Cookie("sessionid")
 		sessionId := cookie.Value
@@ -27,7 +28,12 @@ func PagesHandler(res http.ResponseWriter, req *http.Request) {
 			description := req.PostFormValue("description")
 			address := req.PostFormValue("address")
 			categories := req.PostFormValue("categories")
-			databaseActions.CreatePage(sessionId, title, description, address, int(categories[0]))
+			err := databaseActions.CreatePage(sessionId, title, description, address, int(categories[0]))
+			if err == nil {
+				data["successMsg"] = "Created " + title + "!"
+			} else {
+				data["errorMsg"] = "Failed to create page!"
+			}
 		}
 	}
 
@@ -38,7 +44,9 @@ const pagesTemplateText = `
 <div class="row">
 	<div class="large-centered medium-centered large-8 medium-8 columns">
 	<div class="content" id="add-page-form">
-		<form method="POST" action="/pages" align="center">
+        {{if .successMsg}}<div class="alert-box success">{{.successMsg}}</div>{{end}}
+        {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
+		<form method="POST" action="{{.formAction}}" align="center">
             <fieldset>
             <legend>Create a New Page</legend>
 			<div>
