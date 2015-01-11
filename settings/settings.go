@@ -44,7 +44,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 					}
 				} else {
 					log.Println("Failed to retrieve sessionid:", err)
-					data["errorMsg"] = "Failed to update password"
+					common.Logout(res, req)
 				}
 			} else {
 				data["errorMsg"] = "Passwords do not match"
