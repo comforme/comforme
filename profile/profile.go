@@ -14,6 +14,8 @@ var profileTemplate *template.Template
 func init() {
 	profileTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(profileTemplate.New("nav").Parse(templates.NavBar))
+	template.Must(profileTemplate.New("searchBar").Parse(templates.SearchBar))
+	template.Must(profileTemplate.New("communitySearch").Parse(templates.CommunitySearch))
 	//template.Must(profileTemplate.New("content").Parse(profileTemplateText))
 	template.Must(profileTemplate.New("content").Parse(settingsTemplateText))
 }
@@ -169,8 +171,12 @@ const settingsTemplateText = `
                     </form>
                 </section>
                 <section>
-                    <h2>Find Communities</h2>
-                    INCLUDE-COMMUNITIES-SEARCH-AND-ADD-CONTENT
+                    <div class="row">
+                        <div class="columns">
+                            <h2>Find Communities</h2>
+                            {{template "communitySearch" . }}
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>

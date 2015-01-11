@@ -35,10 +35,10 @@ const NavBar = `
 					<a href="/"><i class="fi-home"></i></a>
 				</li>
 				<li>
-					<a href="/"><i class="fi-page-add"></i></a>
+					<a href="/pages"><i class="fi-page-add"></i></a>
 				</li>
 				<li>
-					<a href="/"><i class="fi-widget"></i></a>
+					<a href="/profile"><i class="fi-widget"></i></a>
 				</li>
 				<li>
 					<a href="/"><i class="fi-power"></i></a>
@@ -64,4 +64,53 @@ const SearchBar = `
             <script>document.getElementById('page-search-textbox').select();</script>
 		</div>
 	</div>
+`
+
+const CommunitySearch =`
+    {{template "searchBar" . }}
+    <form action="USER-ADD-COMMUNITIES-FORM-ACTION-REPLACE-ME" method="post">
+        <div class="row">
+            <div class="large-6 medium-6 small-12 columns left">
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+            </div>
+            <div class="large-6 medium-6 small-12 columns left">
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+                <label>
+                    <input type="checkbox" name="add-community-checkbox" value="NAME-OR-ID-OF-COMMUNITY">
+                        NAME OF COMMUNITY
+                </label>
+            </div>
+        </div>
+        <button type="submit">Add</button>
+    </form>
 `
