@@ -25,6 +25,7 @@ CREATE TABLE pages (
    address          TEXT           NOT NULL,
    date_created     TIMESTAMP      NOT NULL  DEFAULT now()
 );
+CREATE INDEX pages_title_tsvector_idx ON pages (to_tsvector('english', title));
 
 CREATE TABLE posts (
    id               SERIAL                   PRIMARY KEY,
