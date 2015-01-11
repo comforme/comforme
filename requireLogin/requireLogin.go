@@ -1,15 +1,15 @@
 package requireLogin
 
-import(
-	"net/http"
+import (
 	"log"
-	
+	"net/http"
+
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/login"
 )
 
-func RequireLogin(handler func (http.ResponseWriter, *http.Request)) (func (http.ResponseWriter, *http.Request)) {
-	return func (res http.ResponseWriter, req *http.Request) {
+func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(res http.ResponseWriter, req *http.Request) {
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			email, err := databaseActions.GetEmail(cookie.Value)

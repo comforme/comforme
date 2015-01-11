@@ -41,7 +41,7 @@ const NavBar = `
 					<a href="/profile"><i class="fi-widget"></i></a>
 				</li>
 				<li>
-					<a href="/"><i class="fi-power"></i></a>
+					<a href="/logout"><i class="fi-power"></i></a>
 				</li>
 			</ul>
 		</section>
@@ -66,7 +66,7 @@ const SearchBar = `
 	</div>
 `
 
-const CommunitySearch =`
+const CommunitySearch = `
     {{template "searchBar" . }}
     <form action="USER-ADD-COMMUNITIES-FORM-ACTION-REPLACE-ME" method="post">
         <div class="row">

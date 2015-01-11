@@ -29,8 +29,7 @@ const homeTemplateText = `
 
 </div>`
 
-const homeOptTemplateText = 
-`<div class="content">
+const homeOptTemplateText = `<div class="content">
 	<div class="row">
 		<div class="column">
 			<h1>Search for Communities</h1>
@@ -47,4 +46,3 @@ const homeOptTemplateText =
 		</div>
 	</div>
 </div>`
-
