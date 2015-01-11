@@ -215,3 +215,49 @@ func checkSingleRow(result sql.Result) error {
 
 	return nil
 }
+
+func (db DB) ListCommunities(sessionid string) (communities []common.Community, err error) {
+	rows, err := db.conn.Query(`
+			SELECT
+				communities.id,
+				communities.name,
+				community_memberships.user_id IS NOT NULL AS isMember
+			FROM
+				communities
+			LEFT JOIN
+				community_memberships
+					ON
+						community_memberships.community_id = communities.id
+			WHERE
+				community_memberships.user_id = sessions.userid AND
+				sessions.id = $1
+		`,
+		sessionid,
+	)
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	communities = []common.Community{}
+	for rows.Next() {
+		row := common.Community{}
+		if err := rows.Scan(
+			&row.Id,
+			&row.Name,
+			&row.IsMember,
+		); err != nil {
+			log.Println("Unknown iteration error:", err)
+			return nil, err
+		}
+		communities = append(communities, row)
+	}
+
+	if err = rows.Err(); err != nil {
+		return
+	}
+
+	// Success
+	return
+}

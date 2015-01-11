@@ -22,6 +22,13 @@ const (
 	fromName                = "ComFor.Me"
 )
 
+// Database row types
+type Community struct {
+	Id int
+	Name string
+	IsMember bool
+}
+
 // Errors
 var EmailFailed = errors.New("Sending email failed.")
 
