@@ -31,4 +31,31 @@ func PagesHandler(res http.ResponseWriter, req *http.Request) {
 	common.ExecTemplate(pagesTemplate, res, data)
 }
 
-const pagesTemplateText = `<p>Pages!</p>`
+const pagesTemplateText = `
+<div class="row">
+	<div class="large-centered small-6 columns">
+	<div class="content" id="add-page-form">
+		<form method="POST" action="/" align="center">
+            <fieldset>
+            <legend>Create a New Page</legend>
+			<div>
+				<input type="text" name="title" placeholder="page title" align="center">
+			</div>
+			<div>
+				<input type="text" name="description" placeholder="description">
+			</div>
+			<div>
+				<input type="text" name="address/location" placeholder="address">
+			</div>
+			<div>
+				<input type="text" name="categories" placeholder="categories">
+			</div>
+			<div>
+				<button type="submit" class="button" name="sign-up" value="true">Submit</button>
+			</div>
+            </fieldset>
+		</form>
+	</div>
+	</div>
+</div>		
+`

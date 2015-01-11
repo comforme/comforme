@@ -19,22 +19,27 @@ func init() {
 }
 
 func SearchHandler(res http.ResponseWriter, req *http.Request) {
-	var data map[string]interface{}
+	data := map[string]interface{}{}
 	if req.Method == "POST" {
 		// TODO uncomment when put to use
-		//query := req.PostFormValue("query")
+		data["query"] = req.PostFormValue("page-search")
+		data["pageTitle"] = req.PostFormValue("page-search")
 	}
 
 	// TODO: Add template and compile it.
 	common.ExecTemplate(searchTemplate, res, data)
 }
 
+// TODO add db retrieved search results below
 const searchTemplateText = `
     <div class="content">
         <div class="row">
             <div class="column">
                 <h1>Search</h1>
                 {{template "searchBar" .}}
+                {{if .query}}
+                    <div class="alert-box secondary">Results for <span style="color:red">{{.query}}</span></div>
+                {{end}}
             </div>
         </div>
         <div class="row">
