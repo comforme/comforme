@@ -46,8 +46,7 @@ const SiteLayout = `<!DOCTYPE html>
 </html>
 `
 
-const NavBar =
-`<section class="top-bar-section">
+const NavBar = `<section class="top-bar-section">
 	<ul class="right">
 		<li>
 			<a href="/"><i class="fi-home"></i></a>
@@ -64,5 +63,3 @@ const NavBar =
 	</ul>
 </section>
 `
-
-

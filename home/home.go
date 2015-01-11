@@ -21,8 +21,7 @@ func HomeHandler(res http.ResponseWriter, req *http.Request) {
 	common.ExecTemplate(homeTemplate, res, data)
 }
 
-const homeTemplateText = 
-`<div class="content">
+const homeTemplateText = `<div class="content">
 	<div class="row">
 		<div class="column">
 			<h1>Search</h1>
@@ -39,5 +38,3 @@ const homeTemplateText =
 		</div>
 	</div>
 </div>`
-
-
