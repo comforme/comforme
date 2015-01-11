@@ -80,8 +80,8 @@ const loginTemplateText = `
 				</div>{{end}}
 				<section class="login-tabs">
 					<dl class="tabs" data-tab>
-						<dd class="active"><a href="#sign-up-form">Sign Up</a></dd>
-						<dd><a href="#log-in-form">Log In</a></dd>
+						<dd{{if not .loginSelected}} class="active"{{end}}><a href="#sign-up-form">Sign Up</a></dd>
+						<dd{{if .loginSelected}} class="active"{{end}}><a href="#log-in-form">Log In</a></dd>
 					</dl>
 					<div class="tabs-content">
 						<div class="content{{if not .loginSelected}} active{{end}}" id="sign-up-form">
