@@ -57,7 +57,10 @@ INSERT INTO public.communities (id, name) VALUES (5, 'Stoner');
 INSERT INTO public.communities (id, name) VALUES (6, 'Trans');
 INSERT INTO public.communities (id, name) VALUES (7, 'BBW');
 INSERT INTO public.communities (id, name) VALUES (8, 'Single');
-INSERT INTO public.communities (id, name) VALUES (9, 'Chia Pet Enthusiast');
+INSERT INTO public.communities (id, name) VALUES (10, 'Boring');
+INSERT INTO public.communities (id, name) VALUES (11, 'Business Owner');
+INSERT INTO public.communities (id, name) VALUES (12, 'Michelle Obama');
+INSERT INTO public.communities (id, name) VALUES (13, 'Genderqueer');
 
 INSERT INTO public.categories (id, name) VALUES (1, 'Medical');
 INSERT INTO public.categories (id, name) VALUES (2, 'Food');
