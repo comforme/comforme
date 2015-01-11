@@ -1,6 +1,10 @@
 # comfor.me
 Everyone's personal community
 
+"All young people, regardless of sexual orientation or identity, deserve
+a safe and supportive environment in which to achieve their full potential"
+-Harvey Milk
+
 #What is it?
 Comfor.me (Community for Me) is a community-rated and identity-oriented 
 social network/service listing. Users can find accepting communities and
