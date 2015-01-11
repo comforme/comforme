@@ -13,6 +13,8 @@ var searchTemplate *template.Template
 
 func init() {
 	searchTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(searchTemplate.New("nav").Parse(templates.NavBar))
+	template.Must(searchTemplate.New("searchBar").Parse(templates.SearchBar))
 	template.Must(searchTemplate.New("content").Parse(searchTemplateText))
 }
 
@@ -27,4 +29,7 @@ func SearchHandler(res http.ResponseWriter, req *http.Request) {
 	common.ExecTemplate(searchTemplate, res, data)
 }
 
-const searchTemplateText = `<p>Search page</p>`
+const searchTemplateText = `
+<div class="content">
+    {{template "searchBar" .}}
+</div>`

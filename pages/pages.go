@@ -13,6 +13,7 @@ var pagesTemplate *template.Template
 
 func init() {
 	pagesTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(pagesTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(pagesTemplate.New("content").Parse(pagesTemplateText))
 }
 

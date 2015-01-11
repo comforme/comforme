@@ -14,7 +14,15 @@ const SiteLayout = `<!DOCTYPE html>
 	<script scr="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/login.js"></script>
 </head>
 <body>
-	<nav class="top-bar" data-topbar>
+    {{ template "nav" .}}
+    {{ template "content" .}}
+	<script>$(document).foundation();</script>
+</body>
+</html>
+`
+
+const NavBar = `
+    <nav class="top-bar" data-topbar>
 		<ul class="title-area">
 			<li class="name"></li>
 			<li class="toggle-topbar menu-icon">
@@ -22,7 +30,6 @@ const SiteLayout = `<!DOCTYPE html>
 			</li>
 		</ul>
 		<section class="top-bar-section">
-
 			<ul class="right">
 				<li>
 					<a href="/"><i class="fi-home"></i></a>
@@ -38,28 +45,23 @@ const SiteLayout = `<!DOCTYPE html>
 				</li>
 			</ul>
 		</section>
-
 	</nav>
-    {{ template "content" .}}
-	<script>$(document).foundation();</script>
-</body>
-</html>
 `
 
-const NavBar = `<section class="top-bar-section">
-	<ul class="right">
-		<li>
-			<a href="/"><i class="fi-home"></i></a>
-		</li>
-		<li>
-			<a href="/"><i class="fi-page-add"></i></a>
-		</li>
-		<li>
-			<a href="/"><i class="fi-widget"></i></a>
-		</li>
-		<li>
-			<a href="/"><i class="fi-power"></i></a>
-		</li>
-	</ul>
-</section>
+const SearchBar = `
+	<div class="row">
+		<div class="column">
+			<h1>Search</h1>
+			<form method="post" action="/">
+				<div class="row collapse">
+					<div class="small-10 columns">
+						<input type="text" placeholder="Page Search" name="page-search" id="page-search-textbox">
+					</div>
+				<div class="small-2 columns">
+					<button type="submit" class="button postfix">Submit</button>
+				</div>
+				</div>
+			</form>
+		</div>
+	</div>
 `
