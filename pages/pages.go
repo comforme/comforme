@@ -50,7 +50,7 @@ const pagesTemplateText = `
 			<div>
 				<input type="text" name="categories" placeholder="categories">
 			</div>
-			<div>
+			<div style="text-align:center">
 				<button type="submit" class="button" name="sign-up" value="true">Submit</button>
 			</div>
             </fieldset>
