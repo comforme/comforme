@@ -63,7 +63,7 @@ func SendRegEmail(email, password string) error {
 Your temporary password is: %s
 
 Please change your password after logging in.
-`, email, password)
+`, password)
 	return sendEmail(email, "Welcome to ComFor.Me!", "", emailText)
 }
 
@@ -75,7 +75,7 @@ Your new temporary password is: %s
 Please change your password after logging in.
 
 If you did not request this password reset please contact support.
-`, email, password)
+`, password)
 	return sendEmail(email, "ComFor.Me Password Reset", "", emailText)
 }
 
