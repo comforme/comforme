@@ -111,6 +111,6 @@ func ValidEmail(email string) bool {
 	return emailRegex.Match([]byte(email))
 }
 
-func SetSessionCookie(req *http.Request, sessionid string) {
-	http.SetCookie(req, &http.Cookie{Name: "sessionid", Value: sessionid, Expires: time.Now().AddDate(10, 0, 0)})
+func SetSessionCookie(res http.ResponseWriter, sessionid string) {
+	http.SetCookie(res, &http.Cookie{Name: "sessionid", Value: sessionid, Expires: time.Now().AddDate(10, 0, 0)})
 }
