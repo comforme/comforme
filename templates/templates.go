@@ -48,4 +48,22 @@ const NavBar = `
 	</nav>
 `
 
+const SearchBar = `
+	<div class="row">
+		<div class="column">
+			<h1>Search</h1>
+			<form method="post" action="/">
+				<div class="row collapse">
+					<div class="small-10 columns">
+						<input type="text" placeholder="Page Search" name="page-search" id="page-search-textbox">
+					</div>
+				<div class="small-2 columns">
+					<button type="submit" class="button postfix">Submit</button>
+				</div>
+				</div>
+			</form>
+		</div>
+	</div>
+`
+
 
