@@ -2,7 +2,7 @@ package hipster
 
 import (
 	"html/template"
-	"log"
+	//"log"
 	"net/http"
 
 	"github.com/comforme/comforme/common"
@@ -19,7 +19,7 @@ func init() {
 	template.Must(hipsterTemplate.New("content").Parse(hipsterTemplateText))
 }
 
-func SettingsHandler(res http.ResponseWriter, req *http.Request) {
+func HipsterHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path

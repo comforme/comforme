@@ -25,8 +25,8 @@ const (
 
 // Database row types
 type Community struct {
-	Id int
-	Name string
+	Id       int
+	Name     string
 	IsMember bool
 }
 
