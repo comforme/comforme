@@ -12,7 +12,8 @@ they are.
 #Technologies Used:
 * The Go programming Language
 * PostGreSQL
-* Vagrant
+* Vagrant automated development environment
+* HTML/CSS
 
 ## Instructions for setting up development server
 ### Deploying to Heroku
