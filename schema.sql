@@ -62,6 +62,7 @@ INSERT INTO public.communities (id, name) VALUES (10, 'Boring');
 INSERT INTO public.communities (id, name) VALUES (11, 'Business Owner');
 INSERT INTO public.communities (id, name) VALUES (12, 'Michelle Obama');
 INSERT INTO public.communities (id, name) VALUES (13, 'Genderqueer');
+INSERT INTO public.communities (id, name) VALUES (14, 'Heterosexual');
 
 INSERT INTO public.categories (id, name) VALUES (1, 'Medical');
 INSERT INTO public.categories (id, name) VALUES (2, 'Food');
