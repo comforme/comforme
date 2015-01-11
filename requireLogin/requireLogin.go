@@ -27,6 +27,7 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.Re
 				if err == nil {
 					if isRequired {
 						settings.SettingsHandler(res, req)
+						return
 					} else {
 						handler(res, req)
 						return
