@@ -35,10 +35,10 @@ const NavBar = `
 					<a href="/"><i class="fi-home"></i></a>
 				</li>
 				<li>
-					<a href="/"><i class="fi-page-add"></i></a>
+					<a href="/pages"><i class="fi-page-add"></i></a>
 				</li>
 				<li>
-					<a href="/"><i class="fi-widget"></i></a>
+					<a href="/profile"><i class="fi-widget"></i></a>
 				</li>
 				<li>
 					<a href="/"><i class="fi-power"></i></a>
