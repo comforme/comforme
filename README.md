@@ -14,7 +14,7 @@ they are.
 * PostGreSQL
 * Vagrant automated development environment
 * HTML/CSS
-
+* Heroku cloud application platform
 ## Instructions for setting up development server
 ### Deploying to Heroku
 TODO
