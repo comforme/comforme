@@ -33,9 +33,11 @@ func PagesHandler(res http.ResponseWriter, req *http.Request) {
 
 const pagesTemplateText = `
 <div class="row">
-	<div class="large-11 columns">
+	<div class="large-centered small-6 columns">
 	<div class="content" id="add-page-form">
 		<form method="POST" action="/" align="center">
+            <fieldset>
+            <legend>Create a New Page</legend>
 			<div>
 				<input type="text" name="title" placeholder="page title" align="center">
 			</div>
@@ -51,6 +53,7 @@ const pagesTemplateText = `
 			<div>
 				<button type="submit" class="button" name="sign-up" value="true">Submit</button>
 			</div>
+            </fieldset>
 		</form>
 	</div>
 	</div>
