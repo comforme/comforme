@@ -21,7 +21,10 @@ func init() {
 }
 
 func ProfileHandler(res http.ResponseWriter, req *http.Request) {
-	var data map[string]interface{}
+	data := map[string]interface{}{}
+	
+	data["formAction"] = req.URL.Path
+	
 	if req.Method == "POST" {
 		// TODO uncomment when put to use
 		//username := req.PostFormValue("username")
@@ -48,7 +51,7 @@ const settingsTemplateText = `
                 <h1><i class="fi-widget"></i> Settings</h1>
                 <section>
                     <h2>Your Communities</h2>
-                    <form action="FORM-ACTION-REPLACE-ME" method="post">
+                    <form action="{{.formAction}}" method="post">
                         <div class="row">
                             <div class="large-3 medium-6 small-12 columns left">
                                 <div>
