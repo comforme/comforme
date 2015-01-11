@@ -61,6 +61,7 @@ const SearchBar = `
 				</div>
 				</div>
 			</form>
+            <script>document.getElementById('page-search-textbox').select();</script>
 		</div>
 	</div>
 `
