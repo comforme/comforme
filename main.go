@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-zoo/bone"
 
+	"github.com/comforme/comforme/hipster"
 	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/login"
 	"github.com/comforme/comforme/logout"
@@ -40,6 +41,13 @@ func main() {
 		"/pages",
 		http.HandlerFunc(
 			requireLogin.RequireLogin(pages.PagesHandler),
+		),
+	)
+
+	mux.Handle(
+		"/hipster/lorem-hipsum",
+		http.HandlerFunc(
+			requireLogin.RequireLogin(hipster.HipsterHandler),
 		),
 	)
 

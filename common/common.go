@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/keighl/mandrill"
@@ -24,8 +25,8 @@ const (
 
 // Database row types
 type Community struct {
-	Id int
-	Name string
+	Id       int
+	Name     string
 	IsMember bool
 }
 
@@ -63,6 +64,11 @@ func NewSessionID() string {
 
 func GenPassword() string {
 	return RandSeq(generatedPasswordLength)
+}
+
+func GenSlug(seed string) string {
+	slug := strings.ToLower(seed)
+	return slug
 }
 
 func ExecTemplate(tmpl *template.Template, w http.ResponseWriter, pc map[string]interface{}) {

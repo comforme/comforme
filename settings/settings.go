@@ -51,20 +51,20 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 	}
-	
+
 	if data["errorMsg"] == nil {
 		cookie, err := req.Cookie("sessionid")
 		if err != nil {
 			log.Println("Error reading cookie:", err)
 			common.Logout(res, req)
 		}
-		
+
 		isRequired, err := databaseActions.PasswordChangeRequired(cookie.Value)
 		if err != nil {
 			log.Println("Error checking if password reset is required:", err)
 			common.Logout(res, req)
 		}
-		
+
 		if isRequired {
 			data["errorMsg"] = "Password change required."
 		}
