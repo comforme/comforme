@@ -35,7 +35,7 @@ const NavBar = `
 				<a href="/" title="Main Page"><i class="fi-home"><span class="show-for-small-only"> Main Page</span></i></a>
 			</li>
 			<li>
-				<a href="/pages" title="Add Page"><i class="fi-page-add"><span class="show-for-small-only"> Add Page</span></i></a>
+				<a href="/newPage" title="Add Page"><i class="fi-page-add"><span class="show-for-small-only"> Add Page</span></i></a>
 			</li>
 			<li>
 				<a href="/settings" title="Settings"><i class="fi-widget"><span class="show-for-small-only"> Settings</span></i></a>

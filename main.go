@@ -38,7 +38,7 @@ func main() {
 	)
 
 	mux.Handle(
-		"/pages",
+		"/newPage",
 		http.HandlerFunc(
 			requireLogin.RequireLogin(pages.PagesHandler),
 		),
