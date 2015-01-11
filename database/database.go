@@ -83,7 +83,8 @@ func (db DB) NewPage(sessionId string, title string, description string, address
 	// Insert new page
 	slug := common.GenSlug(title)
 	userId, err := db.GetSessionUserID(sessionId)
-	log.Println("userid=", userId)
+	category -= 48
+	log.Println("category=", category)
 
 	_, err = db.conn.Exec(
 		"INSERT INTO pages (title, description, address, category, slug, user_id, location) VALUES ($1, $2, $3, $4, $5, $6, '(0, 0)')",
@@ -331,4 +332,3 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 	// Success
 	return
 }
-

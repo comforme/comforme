@@ -50,5 +50,5 @@ for table in $TABLES; do
     sudo -u postgres psql -d $DB_NAME -c "GRANT ALL PRIVILEGES ON TABLE ${table} TO ${USERNAME};"
 done
 
-PORT=8080 nohup ~/go/bin/comforme &
+MANDRILL_APIKEY=$MANDRILL_APIKEY PORT=8080 nohup ~/go/bin/comforme &
 
