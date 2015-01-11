@@ -73,6 +73,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 const loginTemplateText = `
     <div class="content sign-up-and-log-in">
 		<div class="row">
+			<div style="text-align:center"><h1>Welcome to Community for Me!<h1></div>
 			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
 			<div class="large-4 medium-6 small-10 columns">{{if .formError}}
 				<div class="alert-box alert">
