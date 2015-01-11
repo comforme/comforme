@@ -1,7 +1,6 @@
 package login
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
