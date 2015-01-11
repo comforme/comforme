@@ -13,6 +13,7 @@ import (
 	"github.com/comforme/comforme/pages"
 	"github.com/comforme/comforme/profile"
 	"github.com/comforme/comforme/search"
+	"github.com/comforme/comforme/static"
 )
 
 func main() {
@@ -44,6 +45,13 @@ func main() {
 		"/search",
 		http.HandlerFunc(
 			search.SearchHandler,
+		),
+	)
+
+	mux.Handle(
+		"/style.css",
+		http.HandlerFunc(
+			static.Style,
 		),
 	)
 
