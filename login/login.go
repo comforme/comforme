@@ -50,7 +50,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 		} else if isLogin {
 			sessionid, err = databaseActions.Login(email, password)
 			if err == database.InvalidUsernameOrPassword {
-				data["loginUsernameError"] = err.Error()
+				data["loginError"] = err.Error()
 			} else if err != nil {
 				log.Println("Unknown signup error:", err)
 				data["formError"] = "Unknown signup error. Check error log."
@@ -126,12 +126,13 @@ const loginTemplateText = `<!DOCTYPE html>
 						<div class="content" id="log-in-form">
 							<form method="post" action="{{.formAction}}">
 								<div>
-									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginEmailError}}
-									<small class="error">{{.loginEmailError}}</small>{{end}}
+									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginError}}
+									<small class="error">{{.loginError}}</small>{{end}}
 								</div>
 								<div>
 									<input type="password" name="password" placeholder="Password">
-								</div>
+								</div>{{if .loginError}}
+									<small class="error">{{.loginError}}</small>{{end}}
 								<div>
 									<button type="submit" class="button" name="log-in" value="true">Submit</button>
 								</div>
