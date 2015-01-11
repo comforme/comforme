@@ -16,13 +16,14 @@ var loginTemplate *template.Template
 
 func init() {
 	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(loginTemplate.New("nav").Parse(""))
 	template.Must(loginTemplate.New("content").Parse(loginTemplateText))
 }
 
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 	var err error
-	
+
 	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "login"
 
@@ -60,7 +61,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		if err == nil {
-			common.SetSessionCookie(req, sessionid)
+			common.SetSessionCookie(res, sessionid)
 			fmt.Fprintln(res, "Success!")
 			return
 		}
@@ -85,11 +86,11 @@ const loginTemplateText = `
 					<div class="tabs-content">
 						<div class="content{{if not .loginSelected}} active{{end}}" id="sign-up-form">
 							<form method="post" action="{{.formAction}}">
-								<div>
+								<div{{if .registerUsernameError}} class="error"{{end}}>
 									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
 									<small class="error">{{.registerUsernameError}}</small>{{end}}
 								</div>
-								<div>
+								<div{{if .registerEmailError}} class="error"{{end}}>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .registerEmailError}}
 									<small class="error">{{.registerEmailError}}</small>{{end}}
 								</div>
@@ -100,14 +101,14 @@ const loginTemplateText = `
 						</div>
 						<div class="content{{if .loginSelected}} active{{end}}" id="log-in-form">
 							<form method="post" action="{{.formAction}}">
-								<div>
+								<div{{if .loginError}} class="error"{{end}}>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginError}}
 									<small class="error">{{.loginError}}</small>{{end}}
 								</div>
-								<div>
-									<input type="password" name="password" placeholder="Password">
-								</div>{{if .loginError}}
+								<div{{if .loginError}} class="error"{{end}}>
+									<input type="password" name="password" placeholder="Password">{{if .loginError}}
 									<small class="error">{{.loginError}}</small>{{end}}
+								</div>
 								<div>
 									<button type="submit" class="button" name="log-in" value="true">Submit</button>
 								</div>

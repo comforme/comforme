@@ -13,6 +13,7 @@ var profileTemplate *template.Template
 
 func init() {
 	profileTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(profileTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(profileTemplate.New("content").Parse(profileTemplateText))
 }
 

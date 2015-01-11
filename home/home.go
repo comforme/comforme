@@ -12,6 +12,8 @@ var homeTemplate *template.Template
 
 func init() {
 	homeTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(homeTemplate.New("nav").Parse(templates.NavBar))
+	template.Must(homeTemplate.New("searchBar").Parse(templates.SearchBar))
 	template.Must(homeTemplate.New("content").Parse(homeTemplateText))
 }
 
@@ -21,7 +23,13 @@ func HomeHandler(res http.ResponseWriter, req *http.Request) {
 	common.ExecTemplate(homeTemplate, res, data)
 }
 
-const homeTemplateText = 
+const homeTemplateText = `
+<div class="content">
+    {{template "searchBar" .}}
+
+</div>`
+
+const homeOptTemplateText = 
 `<div class="content">
 	<div class="row">
 		<div class="column">
@@ -39,5 +47,4 @@ const homeTemplateText =
 		</div>
 	</div>
 </div>`
-
 
