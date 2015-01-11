@@ -18,10 +18,8 @@ func init() {
 func HomeHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 
-	// TODO: Add template and compile it.
-	tmpl, _ := template.New("test").Parse(rootPageTemplateHtml)
-	common.ExecTemplate(tmpl, res, data)
+	//tmpl, _ := template.New("test").ParseFiles("/templates/templates.go")
+	common.ExecTemplate(homeTemplate, res, data)
 }
-
 
 const homeTemplateText = `<p>Home Page</p>`
