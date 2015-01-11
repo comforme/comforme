@@ -22,7 +22,7 @@ const SiteLayout = `<!DOCTYPE html>
 `
 
 const NavBar = `
-    <nav class="top-bar" data-topbar>
+		<nav class="top-bar" data-topbar>
 		<ul class="title-area">
 			<li class="name"></li>
 			<li class="toggle-topbar menu-icon">
@@ -32,17 +32,17 @@ const NavBar = `
 		<section class="top-bar-section">
 			<ul class="right">
 				<li>
-					<a href="/"><i class="fi-home"></i></a>
-				</li>
-				<li>
-					<a href="/pages"><i class="fi-page-add"></i></a>
-				</li>
-				<li>
-					<a href="/profile"><i class="fi-widget"></i></a>
-				</li>
-				<li>
-					<a href="/logout"><i class="fi-power"></i></a>
-				</li>
+				<a href="/"><i class="fi-home"><span class="show-for-small-only"> Main Page</span></i></a>
+			</li>
+			<li>
+				<a href="/"><i class="fi-page-add"><span class="show-for-small-only"> Add Page</span></i></a>
+			</li>
+			<li>
+				<a href="/"><i class="fi-widget"><span class="show-for-small-only"> Settings</span></i></a>
+			</li>
+			<li>
+				<a href="/"><i class="fi-power"><span class="show-for-small-only"> Logout</span></i></a>
+			</li>
 			</ul>
 		</section>
 	</nav>
