@@ -20,8 +20,11 @@ func init() {
 }
 
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
-	var data map[string]interface{}
+	data := map[string]interface{}{}
 	var err error
+	
+	data["formAction"] = req.URL.Path
+	data["pageTitle"] = "login"
 
 	if req.Method == "POST" {
 		email := req.PostFormValue("email")
@@ -32,7 +35,6 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 
 		data["username"] = username
 		data["email"] = email
-		data["pageTitle"] = "login"
 
 		var sessionid string
 
@@ -47,9 +49,10 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				data["formError"] = "Unknown signup error. Check error log."
 			}
 		} else if isLogin {
+			data["loginSelected"] = "true"
 			sessionid, err = databaseActions.Login(email, password)
 			if err == database.InvalidUsernameOrPassword {
-				data["loginUsernameError"] = err.Error()
+				data["loginError"] = err.Error()
 			} else if err != nil {
 				log.Println("Unknown signup error:", err)
 				data["formError"] = "Unknown signup error. Check error log."
@@ -80,8 +83,8 @@ const loginTemplateText = `
 						<dd><a href="#log-in-form">Log In</a></dd>
 					</dl>
 					<div class="tabs-content">
-						<div class="content active" id="sign-up-form">
-							<form method="post" action="/">
+						<div class="content{{if not .loginSelected}} active{{end}}" id="sign-up-form">
+							<form method="post" action="{{.formAction}}">
 								<div>
 									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
 									<small class="error">{{.registerUsernameError}}</small>{{end}}
@@ -95,17 +98,18 @@ const loginTemplateText = `
 								</div>
 							</form>
 						</div>
-						<div class="content" id="log-in-form">
-							<form method="post" action="/">
+						<div class="content{{if .loginSelected}} active{{end}}" id="log-in-form">
+							<form method="post" action="{{.formAction}}">
 								<div>
-									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginEmailError}}
-									<small class="error">{{.loginEmailError}}</small>{{end}}
+									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginError}}
+									<small class="error">{{.loginError}}</small>{{end}}
 								</div>
 								<div>
 									<input type="password" name="password" placeholder="Password">
-								</div>
+								</div>{{if .loginError}}
+									<small class="error">{{.loginError}}</small>{{end}}
 								<div>
-									<button type="submit" class="button" name="log-in" value="true">
+									<button type="submit" class="button" name="log-in" value="true">Submit</button>
 								</div>
 							</form>
 						</div>

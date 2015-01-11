@@ -16,7 +16,7 @@ func init() {
 }
 
 func HomeHandler(res http.ResponseWriter, req *http.Request) {
-	var data map[string]interface{}
+	data := map[string]interface{}{}
 
 	// TODO: Add template and compile it.
 	//tmpl, _ := template.New("test").ParseFiles("/templates/templates.go")

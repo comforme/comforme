@@ -113,8 +113,9 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 		hashed,
 	)
 	_, err = db.conn.Exec(
-		"INSERT INTO users (email, password) VALUES ($1, $2)",
+		"INSERT INTO users (email, username, password) VALUES ($1, $2, $3)",
 		email,
+		username,
 		hashed,
 	)
 	return

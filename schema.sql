@@ -4,8 +4,13 @@ CREATE TABLE users (
    email            TEXT           NOT NULL  UNIQUE,
    password         TEXT           NOT NULL,
    join_date        TIMESTAMP      NOT NULL  DEFAULT now(),
-   default_location POINT          NOT NULL,
+   default_location POINT,
    reset_required   BOOLEAN        NOT NULL  DEFAULT true
+);
+
+CREATE TABLE categories (
+   id               SERIAL                   PRIMARY KEY,
+   name             TEXT           NOT NULL
 );
 
 CREATE TABLE pages (
@@ -13,16 +18,12 @@ CREATE TABLE pages (
    title            TEXT           NOT NULL,
    slug             TEXT           NOT NULL,
    category         INT            NOT NULL  REFERENCES categories(id),
+   UNIQUE (slug, category),
    description      TEXT           NOT NULL,
    user_id          INT            NOT NULL  REFERENCES users(id),
    location         POINT          NOT NULL,
    address          TEXT           NOT NULL,
    date_created     TIMESTAMP      NOT NULL  DEFAULT now()
-);
-
-CREATE TABLE categories (
-   id               SERIAL                   PRIMARY KEY,
-   name             TEXT           NOT NULL
 );
 
 CREATE TABLE posts (
@@ -38,8 +39,9 @@ CREATE TABLE communities (
 );
 
 CREATE TABLE community_memberships (
-   user_id          INT                      PRIMARY KEY REFERENCES users(id),
-   community_id     INT                      PRIMARY KEY REFERENCES communities(id),
+   user_id          INT                      REFERENCES users(id),
+   community_id     INT                      REFERENCES communities(id),
+   PRIMARY KEY (user_id, community_id)
 );
 
 CREATE TABLE sessions (
