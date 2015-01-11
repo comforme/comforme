@@ -33,7 +33,7 @@ func PagesHandler(res http.ResponseWriter, req *http.Request) {
 
 const pagesTemplateText = `
 <div class="row">
-	<div class="large-centered small-6 columns">
+	<div class="large-centered medium-centered large-8 medium-8 columns">
 	<div class="content" id="add-page-form">
 		<form method="POST" action="/" align="center">
             <fieldset>
