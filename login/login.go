@@ -25,7 +25,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 		
 	if req.Method == "POST" {
 		email := req.PostFormValue("email")
-		//username := req.PostFormValue("username")
+		username := req.PostFormValue("username")
 		password := req.PostFormValue("password")
 		isSignup := req.PostFormValue("sign-up") == "true"
 		isLogin := req.PostFormValue("log-in") == "true"
