@@ -13,6 +13,7 @@ var searchTemplate *template.Template
 
 func init() {
 	searchTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(searchTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(searchTemplate.New("content").Parse(searchTemplateText))
 }
 

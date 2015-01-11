@@ -16,6 +16,7 @@ var loginTemplate *template.Template
 
 func init() {
 	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(loginTemplate.New("nav").Parse(""))
 	template.Must(loginTemplate.New("content").Parse(loginTemplateText))
 }
 

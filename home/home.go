@@ -12,6 +12,7 @@ var homeTemplate *template.Template
 
 func init() {
 	homeTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(homeTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(homeTemplate.New("content").Parse(homeTemplateText))
 }
 
