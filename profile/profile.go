@@ -51,6 +51,7 @@ const settingsTemplateText = `
 				<h1><i class="fi-widget"></i> Settings</h1>
 				<form action="{{.formAction}}" method="post">
 					<section>
+						<h2>Password Change</h2>
 						<div class="row">
 							<div class="large-4 columns left">
 								<label>
