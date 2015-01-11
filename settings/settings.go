@@ -1,4 +1,4 @@
-package profile
+package settings
 
 import (
 	"html/template"
@@ -9,18 +9,18 @@ import (
 	"github.com/comforme/comforme/templates"
 )
 
-var profileTemplate *template.Template
+var settingsTemplate *template.Template
 
 func init() {
-	profileTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
-	template.Must(profileTemplate.New("nav").Parse(templates.NavBar))
-	template.Must(profileTemplate.New("searchBar").Parse(templates.SearchBar))
-	template.Must(profileTemplate.New("communitySearch").Parse(templates.CommunitySearch))
-	//template.Must(profileTemplate.New("content").Parse(profileTemplateText))
-	template.Must(profileTemplate.New("content").Parse(settingsTemplateText))
+	settingsTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(settingsTemplate.New("nav").Parse(templates.NavBar))
+	template.Must(settingsTemplate.New("searchBar").Parse(templates.SearchBar))
+	template.Must(settingsTemplate.New("communitySearch").Parse(templates.CommunitySearch))
+	//template.Must(settingsTemplate.New("content").Parse(settingsTemplateText))
+	template.Must(settingsTemplate.New("content").Parse(settingsTemplateText))
 }
 
-func ProfileHandler(res http.ResponseWriter, req *http.Request) {
+func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path
@@ -34,14 +34,8 @@ func ProfileHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// TODO: Add template and compile it.
-	common.ExecTemplate(profileTemplate, res, data)
+	common.ExecTemplate(settingsTemplate, res, data)
 }
-
-const profileTemplateText = `
-<div class="content">
-	<p>Profile Page</p>
-</div>
-`
 
 // TODO replace uppercase placeholders below
 const settingsTemplateText = `
