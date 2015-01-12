@@ -50,7 +50,7 @@ const searchTemplateText = `
                 </div>
             </div>
             <div class="columns">
-                <h2><a href="/PERMALINK-REPLOCE-ME">So Obscure, You Probably Haven't Heard of It</a></h2>
+                <h2><a href="/page/CATEGORY/SLUG">So Obscure, You Probably Haven't Heard of It</a></h2>
                 <div>
                     <p>Photo booth Portland hoodie, retro sartorial ugh Thundercats tofu selfies Williamsburg meditation PBR pour-over bespoke. Meh heirloom kogi, trust fund pug messenger bag migas. Bicycle rights four dollar toast kale chips biodiesel. Chia umami Helvetica Brooklyn. Wolf iPhone Helvetica keffiyeh, hoodie keytar pop-up normcore Neutra mlkshk. Pour-over messenger bag Thundercats, swag mumblecore plaid 90's sustainable wolf mixtape hashtag. Pork belly fap occupy, Wes Anderson polaroid migas keffiyeh mustache single-origin coffee Intelligentsia actually meggings Thundercats pug... <a href="">Continue Reading</a></p>
                 </div>

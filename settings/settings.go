@@ -36,10 +36,30 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 
 	communities, err := databaseActions.ListCommunities(sessionid)
 	log.Printf("communities: %+v\n", communities)
-	data["communitiesCol1"] = communities[0 : len(communities)/4+len(communities)%4]
-	data["communitiesCol2"] = communities[len(communities)/4 : len(communities)/2]
-	data["communitiesCol3"] = communities[len(communities)/2 : len(communities)/4*3]
-	data["communitiesCol4"] = communities[len(communities)/4*3 : len(communities)-len(communities)%4]
+	numCom := len(communities)
+	data["communitiesCol1"] = communities[0 : numCom/4+numCom%4]
+	data["communitiesCol2"] = communities[numCom/4 : numCom/2]
+	data["communitiesCol3"] = communities[numCom/2 : numCom/4*3]
+	data["communitiesCol4"] = communities[numCom/4*3 : numCom-numCom%4]
+	if numCom%4 >= 1 {
+		data["communitiesCol1"] = append(
+			data["communitiesCol1"].([]common.Community),
+			communities[numCom-numCom%4+1],
+		)
+	}
+	if numCom%4 >= 2 {
+		data["communitiesCol2"] = append(
+			data["communitiesCol2"].([]common.Community),
+			communities[numCom-numCom%4+2],
+		)
+	}
+	if numCom%4 >= 3 {
+		data["communitiesCol3"] = append(
+			data["communitiesCol3"].([]common.Community),
+			communities[numCom-numCom%4+3],
+		)
+	}
+	
 	log.Printf("communitiesCol1: %+v\n", data["communitiesCol1"])
 	log.Printf("communitiesCol2: %+v\n", data["communitiesCol2"])
 	log.Printf("communitiesCol3: %+v\n", data["communitiesCol3"])
