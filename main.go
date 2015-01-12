@@ -17,6 +17,7 @@ import (
 	"github.com/comforme/comforme/search"
 	"github.com/comforme/comforme/settings"
 	"github.com/comforme/comforme/static"
+	"github.com/comforme/comforme/ajax"
 )
 
 func main() {
@@ -69,6 +70,13 @@ func main() {
 		"/js/settings_js",
 		http.HandlerFunc(
 			static.SettingsJS,
+		),
+	)
+	
+	mux.Handle(
+		"/ajax/:action",
+		http.HandlerFunc(
+			requireLogin.AjaxRequireLogin(ajax.HandleAction),
 		),
 	)
 

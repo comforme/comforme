@@ -55,10 +55,10 @@ func Style(res http.ResponseWriter, req *http.Request) {
 }
 
 func SettingsJS(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "script/javascript; charset=utf-8")
+	res.Header().Set("Content-Type", "application/javascript; charset=utf-8")
 
 	fmt.Fprintln(res, `/* ---------- Communities Settings ---------- */
-function registerCommunityCheckboxes()
+function registerCommunityCheckboxes() 
 {
 	$(".communityCheckbox").on
 	(

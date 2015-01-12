@@ -144,3 +144,27 @@ func ListCommunities(sessionid string) (communities []common.Community, err erro
 	}
 	return
 }
+
+func SetCommunityMembership(sessionid string, community_id int, value bool) (err error) {
+	user_id, err := db.GetSessionUserID(sessionid)
+	if err != nil {
+		log.Printf("Error getting userid from sessionid %s community: %s\n", sessionid, err.Error())
+		return InvalidSessionID
+	}
+		
+	if value {
+		err = db.AddCommunityMembership(user_id, community_id)
+		if err != nil {
+			log.Println("Error adding community:", err)
+			return DatabaseError
+		}
+	} else {
+		err = db.DeleteCommunityMembership(user_id, community_id)
+		if err != nil {
+			log.Println("Error deleting community:", err)
+			return DatabaseError
+		}
+	}
+	
+	return
+}

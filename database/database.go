@@ -341,3 +341,21 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 	// Success
 	return
 }
+
+func (db DB) AddCommunityMembership(user_id, community_id int) (err error) {
+	_, err = db.conn.Exec(
+		"INSERT INTO community_membership (user_id, community_id) VALUES ($1, $2)",
+		user_id,
+		community_id,
+	)
+	return
+}
+
+func (db DB) DeleteCommunityMembership(user_id, community_id int) (err error) {
+	_, err = db.conn.Exec(
+		"DELETE FROM community_memberships WHERE user_id = $1 AND community_id = $2;",
+		user_id,
+		community_id,
+	)
+	return
+}
