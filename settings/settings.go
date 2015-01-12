@@ -25,6 +25,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path
+	data["pageTitle"] = "Settings"
 
 	cookie, err := req.Cookie("sessionid")
 	if err != nil {
