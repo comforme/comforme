@@ -151,7 +151,7 @@ func SetCommunityMembership(sessionid string, community_id int, value bool) (err
 		log.Printf("Error getting userid from sessionid %s community: %s\n", sessionid, err.Error())
 		return InvalidSessionID
 	}
-		
+
 	if value {
 		err = db.AddCommunityMembership(user_id, community_id)
 		if err != nil {
@@ -165,6 +165,6 @@ func SetCommunityMembership(sessionid string, community_id int, value bool) (err
 			return DatabaseError
 		}
 	}
-	
+
 	return
 }

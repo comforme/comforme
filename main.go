@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-zoo/bone"
 
+	"github.com/comforme/comforme/ajax"
 	"github.com/comforme/comforme/hipster"
 	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/login"
@@ -17,7 +18,6 @@ import (
 	"github.com/comforme/comforme/search"
 	"github.com/comforme/comforme/settings"
 	"github.com/comforme/comforme/static"
-	"github.com/comforme/comforme/ajax"
 )
 
 func main() {
@@ -65,14 +65,14 @@ func main() {
 			static.Style,
 		),
 	)
-	
+
 	mux.Handle(
 		"/js/settings_js",
 		http.HandlerFunc(
 			static.SettingsJS,
 		),
 	)
-	
+
 	mux.Handle(
 		"/ajax/:action",
 		http.HandlerFunc(

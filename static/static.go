@@ -60,12 +60,14 @@ func SettingsJS(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintln(res, `/* ---------- Communities Settings ---------- */
 function registerCommunityCheckboxes() 
 {
+	var $this = $(this);
+	
 	$(".communityCheckbox").on
 	(
 		"click",
 		function()
 		{
-			alert( "clicked" );
+			alert( "Name: " + $this.name + "Value: " + this.value + "Checked: " + $this.checked );
 		}
 	)
 }

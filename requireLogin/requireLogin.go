@@ -1,14 +1,14 @@
 package requireLogin
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-	"fmt"
 
+	"github.com/comforme/comforme/ajax"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/login"
 	"github.com/comforme/comforme/settings"
-	"github.com/comforme/comforme/ajax"
 )
 
 const DebugMode = false
@@ -20,7 +20,7 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.Re
 			handler(res, req)
 			return
 		}
-		
+
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			email, err := databaseActions.GetEmail(cookie.Value)
@@ -59,7 +59,7 @@ func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request)) func(htt
 			handler(res, req)
 			return
 		}
-		
+
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			email, err := databaseActions.GetEmail(cookie.Value)
@@ -68,7 +68,7 @@ func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request)) func(htt
 				handler(res, req)
 				return
 			}
-			
+
 			log.Println("Error checking email:", err)
 
 			// Delete bad cookie
@@ -77,7 +77,7 @@ func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request)) func(htt
 		} else {
 			log.Println("Error reading cookie:", err)
 		}
-		
+
 		// Return JSON Error
 		res.Header().Set("Content-Type", "application/json; charset=utf-8")
 		fmt.Fprintln(res, ajax.JSONLoginError)
