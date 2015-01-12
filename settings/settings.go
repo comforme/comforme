@@ -37,8 +37,9 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	communities, err := databaseActions.ListCommunities(sessionid)
 	if err != nil {
 		log.Println("Error listing communities:", err)
+		common.Logout(res, req)
+		return
 	} else {
-		log.Printf("communities: %+v\n", communities)
 		perCol := len(communities) / 4
 		extra := len(communities) % 4
 		cut1 := perCol
@@ -57,11 +58,6 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		data["communitiesCol2"] = communities[cut1:cut2]
 		data["communitiesCol3"] = communities[cut2:cut3]
 		data["communitiesCol4"] = communities[cut3:]
-		
-		log.Printf("communitiesCol1: %+v\n", data["communitiesCol1"])
-		log.Printf("communitiesCol2: %+v\n", data["communitiesCol2"])
-		log.Printf("communitiesCol3: %+v\n", data["communitiesCol3"])
-		log.Printf("communitiesCol4: %+v\n", data["communitiesCol4"])
 	}
 
 	if req.Method == "POST" {
