@@ -164,4 +164,5 @@ const settingsTemplateText = `
 			</div>
 		</div>
 	</div>
+	<script src="/js/settings_js"></script>
 `

@@ -50,5 +50,26 @@ func Style(res http.ResponseWriter, req *http.Request) {
 
 .communities-settings section form {
 	margin-bottom: 0;
-}`)
+}
+`)
+}
+
+func SettingsJS(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-Type", "script/javascript; charset=utf-8")
+
+	fmt.Fprintln(res, `/* ---------- Communities Settings ---------- */
+function registerCommunityCheckboxes()
+{
+	$(".communityCheckbox").on
+	(
+		"click",
+		function()
+		{
+			alert( "clicked" );
+		}
+	)
+}
+
+$(document).ready(registerCommunityCheckboxes);
+`)
 }

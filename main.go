@@ -64,6 +64,13 @@ func main() {
 			static.Style,
 		),
 	)
+	
+	mux.Handle(
+		"/js/settings_js",
+		http.HandlerFunc(
+			static.SettingsJS,
+		),
+	)
 
 	mux.Handle(
 		"/logout",
