@@ -141,7 +141,7 @@ const settingsTemplateText = `
 				<section>
 					<h2>Your Communities</h2>
 					<div class="row">
-						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol}}
+						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol1}}
 							<div>
 								<label>
 									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
