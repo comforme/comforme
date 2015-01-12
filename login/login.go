@@ -24,7 +24,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	var err error
 
 	data["formAction"] = req.URL.Path
-	data["pageTitle"] = "login"
+	data["pageTitle"] = "Login"
 
 	if req.Method == "POST" {
 		email := req.PostFormValue("email")
