@@ -68,21 +68,21 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		oldPassword := req.PostFormValue("oldPassword")
 		newPassword := req.PostFormValue("newPassword")
 		newPasswordAgain := req.PostFormValue("newPasswordAgain")
-		if len(oldPassword) != 0 || len(newPassword) != 0 {
-			if newPassword == newPasswordAgain {
-				err := databaseActions.ChangePassword(sessionid, oldPassword, newPassword)
-				if err == nil {
-					data["successMsg"] = "Password changed."
-					if req.URL.Path != "/settings" {
-						http.Redirect(res, req, req.URL.Path, http.StatusFound)
-						return
-					}
-				} else {
-					data["errorMsg"] = "Failed to validate password."
+		if len(oldPassword) == 0 || len(newPassword) == 0 {
+			data["errorMsg"] = "Both old and new password required to change password"
+		} else if newPassword == newPasswordAgain {
+			err := databaseActions.ChangePassword(sessionid, oldPassword, newPassword)
+			if err == nil {
+				data["successMsg"] = "Password changed."
+				if req.URL.Path != "/settings" {
+					http.Redirect(res, req, req.URL.Path, http.StatusFound)
+					return
 				}
 			} else {
-				data["errorMsg"] = "Passwords do not match"
+				data["errorMsg"] = "Failed to validate password."
 			}
+		} else {
+			data["errorMsg"] = "Passwords do not match"
 		}
 	}
 
