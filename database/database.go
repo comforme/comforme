@@ -240,19 +240,23 @@ func checkSingleRow(result sql.Result) error {
 
 func (db DB) ListCommunities(sessionid string) (communities []common.Community, err error) {
 	rows, err := db.conn.Query(`
-			SELECT
-				communities.id,
-				communities.name,
-				community_memberships.user_id IS NOT NULL AS isMember
-			FROM
-				communities
-			LEFT JOIN
-				community_memberships
-					ON
-						community_memberships.community_id = communities.id
-			WHERE
-				community_memberships.user_id = sessions.userid AND
-				sessions.id = $1;
+		SELECT
+			communities.id,
+			communities.name,
+			my_memberships.user_id IS NOT NULL AS is_member
+		FROM
+			communities
+		LEFT JOIN
+			(
+				SELECT
+					*
+				FROM
+					community_memberships
+				WHERE
+					community_memberships.user_id = 1
+			) as my_memberships
+				ON
+					my_memberships.community_id = communities.id;
 		`,
 		sessionid,
 	)
