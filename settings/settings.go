@@ -143,7 +143,7 @@ const settingsTemplateText = `
 								<div>
 									<label>
 										<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-										NAME-OF-CATEGORY
+										{{$community.Name}}
 									</label>
 								</div>{{end}}
 							</div>
