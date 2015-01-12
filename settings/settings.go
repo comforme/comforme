@@ -44,19 +44,19 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	if numCom%4 >= 1 {
 		data["communitiesCol1"] = append(
 			data["communitiesCol1"].([]common.Community),
-			communities[numCom-numCom%4+1],
+			communities[numCom-numCom%4],
 		)
 	}
 	if numCom%4 >= 2 {
 		data["communitiesCol2"] = append(
 			data["communitiesCol2"].([]common.Community),
-			communities[numCom-numCom%4+2],
+			communities[numCom-numCom%4+1],
 		)
 	}
 	if numCom%4 >= 3 {
 		data["communitiesCol3"] = append(
 			data["communitiesCol3"].([]common.Community),
-			communities[numCom-numCom%4+3],
+			communities[numCom-numCom%4+2],
 		)
 	}
 	
