@@ -38,30 +38,30 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Println("Error listing communities:", err)
 	} else {
-	
-	log.Printf("communities: %+v\n", communities)
-	numCom := len(communities)
-	data["communitiesCol1"] = communities[0 : numCom/4]
-	data["communitiesCol2"] = communities[numCom/4 : numCom/2]
-	data["communitiesCol3"] = communities[numCom/2 : numCom/4*3]
-	data["communitiesCol4"] = communities[numCom/4*3 : numCom-numCom%4]
-	if numCom%4 >= 1 {
-		data["communitiesCol1"] = append(
-			data["communitiesCol1"].([]common.Community),
-			communities[numCom-numCom%4+0],
-		)
-	}
-	if numCom%4 >= 2 {
-		data["communitiesCol2"] = append(
-			data["communitiesCol2"].([]common.Community),
-			communities[numCom-numCom%4+1],
-		)
-	}
-	if numCom%4 >= 3 {
-		data["communitiesCol3"] = append(
-			data["communitiesCol3"].([]common.Community),
-			communities[numCom-numCom%4+2],
-		)
+		log.Printf("communities: %+v\n", communities)
+		numCom := len(communities)
+		data["communitiesCol1"] = communities[0 : numCom/4]
+		data["communitiesCol2"] = communities[numCom/4 : numCom/2]
+		data["communitiesCol3"] = communities[numCom/2 : numCom/4*3]
+		data["communitiesCol4"] = communities[numCom/4*3 : numCom-numCom%4]
+		if numCom%4 >= 1 {
+			data["communitiesCol1"] = append(
+				data["communitiesCol1"].([]common.Community),
+				communities[numCom-numCom%4+0],
+			)
+		}
+		if numCom%4 >= 2 {
+			data["communitiesCol2"] = append(
+				data["communitiesCol2"].([]common.Community),
+				communities[numCom-numCom%4+1],
+			)
+		}
+		if numCom%4 >= 3 {
+			data["communitiesCol3"] = append(
+				data["communitiesCol3"].([]common.Community),
+				communities[numCom-numCom%4+2],
+			)
+		}
 	}
 	
 	log.Printf("communitiesCol1: %+v\n", data["communitiesCol1"])
