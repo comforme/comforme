@@ -37,7 +37,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	communities, err := databaseActions.ListCommunities(sessionid)
 	log.Printf("communities: %+v\n", communities)
 	numCom := len(communities)
-	data["communitiesCol1"] = communities[0 : numCom/4+numCom%4]
+	data["communitiesCol1"] = communities[0 : numCom/4]
 	data["communitiesCol2"] = communities[numCom/4 : numCom/2]
 	data["communitiesCol3"] = communities[numCom/2 : numCom/4*3]
 	data["communitiesCol4"] = communities[numCom/4*3 : numCom-numCom%4]
