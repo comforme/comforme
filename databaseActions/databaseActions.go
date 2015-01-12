@@ -134,7 +134,15 @@ func Register(username, email string) (sessionid string, err error) {
 		return
 	}
 
-	return Login(email, password)
+	sessionid, err = Login(email, password)
+	if err != nil {
+		return
+	}
+	
+	// Make new users lazy :)
+	err = SetCommunityMembership(sessionid, 1, true)
+	
+	return
 }
 
 func ListCommunities(sessionid string) (communities []common.Community, err error) {
