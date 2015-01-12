@@ -47,9 +47,9 @@ func HandleAction(res http.ResponseWriter, req *http.Request) {
 			err = databaseActions.SetCommunityMembership(cookie.Value, int(community_id), action == "addCommunity")
 			if err != nil {
 				result = AxaxError{err.Error()}
+			} else {
+				result = AxaxResult{fmt.Sprintf("Successfully set membership in community %d to %t.", community_id, action == "addCommunity")}
 			}
-
-			result = AxaxResult{fmt.Sprintf("Successfully set membership in community %d to %t.", community_id, action == "addCommunity")}
 		}
 	} else {
 		fmt.Fprintln(res, JSONActionError)

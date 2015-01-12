@@ -344,7 +344,7 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 
 func (db DB) AddCommunityMembership(user_id, community_id int) (err error) {
 	_, err = db.conn.Exec(
-		"INSERT INTO community_membership (user_id, community_id) VALUES ($1, $2)",
+		"INSERT INTO community_memberships (user_id, community_id) VALUES ($1, $2)",
 		user_id,
 		community_id,
 	)
