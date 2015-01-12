@@ -138,10 +138,10 @@ func Register(username, email string) (sessionid string, err error) {
 	if err != nil {
 		return
 	}
-	
+
 	// Make new users lazy :)
 	err = SetCommunityMembership(sessionid, 1, true)
-	
+
 	return
 }
 
