@@ -22,7 +22,7 @@ const SiteLayout = `<!DOCTYPE html>
 `
 
 const NavBar = `
-		<nav class="top-bar" data-topbar>
+	<nav class="top-bar" data-topbar>
 		<ul class="title-area">
 			<li class="name"></li>
 			<li class="toggle-topbar menu-icon">
