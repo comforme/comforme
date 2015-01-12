@@ -147,89 +147,29 @@ const settingsTemplateText = `
 									</label>
 								</div>{{end}}
 							</div>
-							<div class="large-3 medium-6 small-12 columns left">
+							<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol2}}
 								<div>
 									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
+										<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
+										{{$community.Name}}
 									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
+								</div>{{end}}
 							</div>
-							<div class="large-3 medium-6 small-12 columns left">
+							<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol3}}
 								<div>
 									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
+										<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
+										{{$community.Name}}
 									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
+								</div>{{end}}
 							</div>
-							<div class="large-3 medium-6 small-12 columns left">
+							<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol4}}
 								<div>
 									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
+										<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
+										{{$community.Name}}
 									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
+								</div>{{end}}
 							</div>
 						</div>
 						<button type="submit" name="user-communites-update" value="true">Update</button>
