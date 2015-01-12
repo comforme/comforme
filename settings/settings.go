@@ -112,9 +112,9 @@ const settingsTemplateText = `
 				<h1><i class="fi-widget"></i> Settings</h1>
                 {{if .successMsg}}<div class="alert-box success">{{.successMsg}}</div>{{end}}
                 {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
-				<form action="{{.formAction}}" method="post">
-					<section>
-						<h2>Password Change</h2>
+				<section>
+					<h2>Password Change</h2>
+					<form action="{{.formAction}}" method="post">
 						<div class="row">
 							<div class="large-4 columns left">
 								<label>
@@ -135,54 +135,54 @@ const settingsTemplateText = `
 								</label>
 							</div>
 						</div>
-					</section>
-					<section>
-						<h2>Your Communities</h2>
-						<div class="row">
-							<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol1}}
-								<div>
-									<label>
-										<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-										{{$community.Name}}
-									</label>
-								</div>{{end}}
-							</div>
-							<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol2}}
-								<div>
-									<label>
-										<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-										{{$community.Name}}
-									</label>
-								</div>{{end}}
-							</div>
-							<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol3}}
-								<div>
-									<label>
-										<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-										{{$community.Name}}
-									</label>
-								</div>{{end}}
-							</div>
-							<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol4}}
-								<div>
-									<label>
-										<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-										{{$community.Name}}
-									</label>
-								</div>{{end}}
-							</div>
-						</div>
 						<button type="submit" name="user-communites-update" value="true">Update</button>
-					</section>
-					<section>
-						<div class="row">
-							<div class="columns">
-								<h2>Find Communities</h2>
-								{{template "communitySearch" . }}
-							</div>
+					</form>
+				</section>
+				<section>
+					<h2>Your Communities</h2>
+					<div class="row">
+						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol}}
+							<div>
+								<label>
+									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
+									{{$community.Name}}
+								</label>
+							</div>{{end}}
 						</div>
-					</section>
-				</form>
+						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol2}}
+							<div>
+								<label>
+									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
+									{{$community.Name}}
+								</label>
+							</div>{{end}}
+						</div>
+						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol3}}
+							<div>
+								<label>
+									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
+									{{$community.Name}}
+								</label>
+							</div>{{end}}
+						</div>
+						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol4}}
+							<div>
+								<label>
+									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
+									{{$community.Name}}
+								</label>
+							</div>{{end}}
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="row">
+						<div class="columns">
+							<h2>Find Communities</h2>
+							{{template "communitySearch" . }}
+						</div>
+					</div>
+				</section>
 			</div>
 		</div>
 	</div>
