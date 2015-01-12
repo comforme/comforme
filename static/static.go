@@ -67,9 +67,9 @@ function registerCommunityCheckboxes()
 		{
 			alert( "Name: " + this.name + ", Value: " + this.value + ", Checked: " + this.checked );
 			if(this.checked) {
-				action = addCommunity;
+				action = "addCommunity";
 			} else {
-				action = removeCommunity;
+				action = "removeCommunity";
 			}
 			
 			$.post(
