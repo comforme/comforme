@@ -74,7 +74,7 @@ function registerCommunityCheckboxes()
 			
 			$.post(
 				"/ajax/" + action,
-				{ "communityid": name }
+				{ "communityid": this.name }
 			).done
 			(
 				function( data )
