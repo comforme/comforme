@@ -152,7 +152,7 @@ const settingsTemplateText = `
 							</div>{{end}}
 						</div>{{end}}
 					</div>
-				</section>
+				</section>{{/*
 				<section>
 					<div class="row">
 						<div class="columns">
@@ -160,7 +160,7 @@ const settingsTemplateText = `
 							{{template "communitySearch" . }}
 						</div>
 					</div>
-				</section>
+				</section>*/}}
 			</div>
 		</div>
 	</div>
