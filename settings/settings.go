@@ -139,37 +139,13 @@ const settingsTemplateText = `
 					<section>
 						<h2>Your Communities</h2>
 						<div class="row">
-							<div class="large-3 medium-6 small-12 columns left">
+							<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol1}}
 								<div>
 									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
+										<input type="checkbox" name="comm{{$community.Id}}"{{if $community.IsMember eq true }} checked="checked"{{end}} value="{{$community.Name}}">
 										NAME-OF-CATEGORY
 									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
-								<div>
-									<label>
-										<input type="checkbox" name="WHAT-TO-NAME-THIS" checked="checked" value="NAME-OR-ID-OF-CATEGORY-REPLACE-ME">
-										NAME-OF-CATEGORY
-									</label>
-								</div>
+								</div>{{end}}
 							</div>
 							<div class="large-3 medium-6 small-12 columns left">
 								<div>
