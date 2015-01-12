@@ -47,7 +47,7 @@ CREATE TABLE community_memberships (
 
 CREATE TABLE sessions (
    id               TEXT                     PRIMARY KEY,
-   userid           INT            NOT NULL  REFERENCES users(id),
+   user_id           INT            NOT NULL  REFERENCES users(id),
    create_date      TIMESTAMP      NOT NULL  DEFAULT now()
 );
 

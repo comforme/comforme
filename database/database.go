@@ -52,7 +52,7 @@ func (db DB) GetUserID(email string, password string) (userid int, err error) {
 func (db DB) GetSessionUserID(sessionid string) (userid int, err error) {
 	log.Printf("Looking up userid for sessionid: %s\n", sessionid)
 
-	err = db.conn.QueryRow("SELECT userid FROM sessions WHERE sessions.id = $1", sessionid).Scan(&userid)
+	err = db.conn.QueryRow("SELECT user_id FROM sessions WHERE sessions.id = $1", sessionid).Scan(&userid)
 	return
 }
 
@@ -71,7 +71,7 @@ func (db DB) NewSession(userid int) (sessionid string, err error) {
 
 	// Insert new sessionid
 	_, err = db.conn.Exec(
-		"INSERT INTO sessions (userid, id) VALUES ($1, $2)",
+		"INSERT INTO sessions (user_id, id) VALUES ($1, $2)",
 		userid,
 		sessionid,
 	)
@@ -150,7 +150,7 @@ func hashPassword(password string) (string, error) {
 
 func (db DB) GetEmail(sessionid string) (email string, err error) {
 	err = db.conn.QueryRow(
-		"SELECT email FROM sessions, users WHERE sessions.id = $1 AND sessions.userid = users.id",
+		"SELECT email FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
 		sessionid,
 	).Scan(&email)
 	return
@@ -158,7 +158,7 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 
 func (db DB) PasswordChangeRequired(sessionid string) (isRequired bool, err error) {
 	err = db.conn.QueryRow(
-		"SELECT reset_required FROM sessions, users WHERE sessions.id = $1 AND sessions.userid = users.id",
+		"SELECT reset_required FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
 		sessionid,
 	).Scan(&isRequired)
 	return
