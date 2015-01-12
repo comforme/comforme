@@ -25,7 +25,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path
-	
+
 	cookie, err := req.Cookie("sessionid")
 	if err != nil {
 		log.Println("Failed to retrieve sessionid:", err)
@@ -33,18 +33,17 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	sessionid := cookie.Value
-	
+
 	communities, err := databaseActions.ListCommunities(sessionid)
 	log.Printf("communities: %+v\n", communities)
-	data["communitiesCol1"] = communities[0:len(communities) / 4 + len(communities) % 4]
-	data["communitiesCol2"] = communities[len(communities) / 4:len(communities) / 2]
-	data["communitiesCol3"] = communities[len(communities) / 2:len(communities) / 4 * 3]
-	data["communitiesCol4"] = communities[len(communities) / 4 * 3:len(communities) - len(communities) % 4]
+	data["communitiesCol1"] = communities[0 : len(communities)/4+len(communities)%4]
+	data["communitiesCol2"] = communities[len(communities)/4 : len(communities)/2]
+	data["communitiesCol3"] = communities[len(communities)/2 : len(communities)/4*3]
+	data["communitiesCol4"] = communities[len(communities)/4*3 : len(communities)-len(communities)%4]
 	log.Printf("communitiesCol1: %+v\n", data["communitiesCol1"])
 	log.Printf("communitiesCol2: %+v\n", data["communitiesCol2"])
 	log.Printf("communitiesCol3: %+v\n", data["communitiesCol3"])
 	log.Printf("communitiesCol4: %+v\n", data["communitiesCol4"])
-	
 
 	if req.Method == "POST" {
 		//username := req.PostFormValue("username")
@@ -56,6 +55,10 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 				err := databaseActions.ChangePassword(sessionid, oldPassword, newPassword)
 				if err == nil {
 					data["successMsg"] = "Password changed."
+					if(req.URL.Path != "/settings") {
+						http.Redirect(res, req, req.URL.Path, http.StatusFound)
+						return
+					}
 				} else {
 					data["errorMsg"] = "Failed to validate password."
 				}
