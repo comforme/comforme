@@ -60,14 +60,14 @@ func main() {
 	)
 
 	mux.Handle(
-		"/style_css",
+		"/static/style_css",
 		http.HandlerFunc(
 			static.Style,
 		),
 	)
 
 	mux.Handle(
-		"/js/settings_js",
+		"/static/js/settings_js",
 		http.HandlerFunc(
 			static.SettingsJS,
 		),
