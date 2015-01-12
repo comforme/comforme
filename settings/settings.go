@@ -54,10 +54,12 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		if extra >= 3 {
 			cut3++
 		}
-		data["communitiesCol1"] = communities[0:cut1]
-		data["communitiesCol2"] = communities[cut1:cut2]
-		data["communitiesCol3"] = communities[cut2:cut3]
-		data["communitiesCol4"] = communities[cut3:]
+		data["communitiesCols"] = [][]common.Community{
+			communities[0:cut1],
+			communities[cut1:cut2],
+			communities[cut2:cut3],
+			communities[cut3:],
+		}
 	}
 
 	if req.Method == "POST" {
@@ -140,39 +142,15 @@ const settingsTemplateText = `
 				</section>
 				<section>
 					<h2>Your Communities</h2>
-					<div class="row">
-						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol1}}
+					<div class="row">{{range $col_number, $communitiesCol := $.communitiesCols}}
+						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol}}
 							<div>
 								<label>
-									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
+									<input class="communityCheckbox" type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
 									{{$community.Name}}
 								</label>
 							</div>{{end}}
-						</div>
-						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol2}}
-							<div>
-								<label>
-									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-									{{$community.Name}}
-								</label>
-							</div>{{end}}
-						</div>
-						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol3}}
-							<div>
-								<label>
-									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-									{{$community.Name}}
-								</label>
-							</div>{{end}}
-						</div>
-						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $.communitiesCol4}}
-							<div>
-								<label>
-									<input type="checkbox" name="comm{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-									{{$community.Name}}
-								</label>
-							</div>{{end}}
-						</div>
+						</div>{{end}}
 					</div>
 				</section>
 				<section>
