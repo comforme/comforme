@@ -35,6 +35,10 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	sessionid := cookie.Value
 
 	communities, err := databaseActions.ListCommunities(sessionid)
+	if err != nil {
+		log.Println("Error listing communities:", err)
+	} else {
+	
 	log.Printf("communities: %+v\n", communities)
 	numCom := len(communities)
 	data["communitiesCol1"] = communities[0 : numCom/4]
@@ -44,7 +48,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	if numCom%4 >= 1 {
 		data["communitiesCol1"] = append(
 			data["communitiesCol1"].([]common.Community),
-			communities[numCom-numCom%4],
+			communities[numCom-numCom%4+0],
 		)
 	}
 	if numCom%4 >= 2 {

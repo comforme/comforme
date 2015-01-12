@@ -260,7 +260,8 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 					sessions.id = $1
 			) as my_memberships
 				ON
-					my_memberships.community_id = communities.id;
+					my_memberships.community_id = communities.id
+		ORDER BY communities.id ASC;
 		`,
 		sessionid,
 	)
