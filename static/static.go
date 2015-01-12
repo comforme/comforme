@@ -79,7 +79,7 @@ function registerCommunityCheckboxes()
 			(
 				function( data )
 				{
-					alert( data );
+					alert( JSON.stringify(data) );
 				}
 			);
 		}
