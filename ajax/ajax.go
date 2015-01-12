@@ -30,7 +30,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json; charset=utf-8")
 
 	cookie, err := req.Cookie("sessionid")
-	if err == nil {
+	if err != nil {
 		fmt.Fprintln(res, JSONLoginError)
 		return
 	}
