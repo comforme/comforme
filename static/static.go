@@ -65,7 +65,7 @@ function registerCommunityCheckboxes()
 		"click",
 		function()
 		{
-			alert( "Name: " + this.name + ", Value: " + this.value + ", Checked: " + this.checked );
+			console.log( "Sending AJAX Request: Name: " + this.name + ", Value: " + this.value + ", Checked: " + this.checked );
 			if(this.checked) {
 				action = "addCommunity";
 			} else {
@@ -79,7 +79,8 @@ function registerCommunityCheckboxes()
 			(
 				function( data )
 				{
-					alert( JSON.stringify(data) );
+					console.log(data);
+					// TODO: Notify user of result.
 				}
 			);
 		}
