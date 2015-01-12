@@ -243,17 +243,21 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 		SELECT
 			communities.id,
 			communities.name,
-			my_memberships.user_id IS NOT NULL AS is_member
+			my_memberships.is_member
 		FROM
 			communities
 		LEFT JOIN
 			(
 				SELECT
-					*
+					community_memberships.community_id,
+					true as is_member
 				FROM
-					community_memberships
+					community_memberships,
+					sessions
 				WHERE
-					community_memberships.user_id = 1
+					community_memberships.user_id = sessions.user_id
+					AND
+					sessions.id = $1
 			) as my_memberships
 				ON
 					my_memberships.community_id = communities.id;
