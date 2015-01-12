@@ -67,7 +67,7 @@ function registerCommunityCheckboxes()
 		"click",
 		function()
 		{
-			alert( "Name: " + this.name + "Value: " + this.value + "Checked: " + this.checked );
+			alert( "Name: " + this.name + ", Value: " + this.value + ", Checked: " + this.checked );
 		}
 	)
 }
