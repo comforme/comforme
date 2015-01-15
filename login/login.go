@@ -52,7 +52,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				
 				// Redirect to home page
 				http.Redirect(res, req, "/settings", http.StatusFound)
-				return
+				return // Not needed, may reduce load on server
 			}
 		} else if isLogin {
 			data["loginSelected"] = "true"
@@ -67,7 +67,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				
 				// Redirect to home page
 				http.Redirect(res, req, "/", http.StatusFound)
-				return
+				return // Not needed, may reduce load on server
 			}
 		}
 	}
