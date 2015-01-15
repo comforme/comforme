@@ -3,6 +3,10 @@
 	"GoVersion": "go1.4",
 	"Deps": [
 		{
+			"ImportPath": "github.com/dpapathanasiou/go-recaptcha",
+			"Rev": "4f720af1bc384c6c0a17d3e0413e95e53d4d8ef8"
+		},
+		{
 			"ImportPath": "github.com/go-zoo/bone",
 			"Rev": "3de5763aca113fb933391ff6e3dd26c922f62b69"
 		},

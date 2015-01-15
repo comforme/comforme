@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"runtime"
 	"strings"
 	"time"
-	"runtime"
 
 	"github.com/keighl/mandrill"
 )

@@ -101,7 +101,7 @@ func (db DB) NewPage(sessionId string, title string, description string, address
 		common.LogError(err)
 		return
 	}
-	
+
 	category -= 48
 	log.Println("category=", category)
 
@@ -169,7 +169,7 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 		err = common.DatabaseError
 		return
 	}
-	
+
 	return
 }
 
@@ -286,7 +286,7 @@ func checkSingleRow(result sql.Result, otherwise error) error {
 	if rows != 1 {
 		return checkSingleRow(result, otherwise)
 	}
-	
+
 	return nil
 }
 

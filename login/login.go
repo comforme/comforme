@@ -48,7 +48,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				data["formError"] = err.Error()
 			} else { // No error
 				common.SetSessionCookie(res, sessionid)
-				
+
 				// Redirect to home page
 				http.Redirect(res, req, "/settings", http.StatusFound)
 				return // Not needed, may reduce load on server
@@ -60,7 +60,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				data["formError"] = err.Error()
 			} else { // No error
 				common.SetSessionCookie(res, sessionid)
-				
+
 				// Redirect to home page
 				http.Redirect(res, req, "/", http.StatusFound)
 				return // Not needed, may reduce load on server
