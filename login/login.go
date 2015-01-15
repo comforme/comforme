@@ -3,18 +3,23 @@ package login
 import (
 	"html/template"
 	"net/http"
+	"os"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
+	"github.com/dpapathanasiou/go-recaptcha"
 )
 
 var loginTemplate *template.Template
+var recaptchaPublicKey string
 
 func init() {
 	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(loginTemplate.New("nav").Parse(""))
 	template.Must(loginTemplate.New("content").Parse(loginTemplateText))
+	recaptchaPublicKey = os.Getenv("")
+	recaptcha.Init(os.Getenv(""))
 }
 
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
@@ -23,6 +28,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 
 	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "Login"
+	data["recaptchaPublicKey"] = recaptchaPublicKey
 
 	if req.Method == "POST" {
 		email := req.PostFormValue("email")
@@ -89,6 +95,9 @@ const loginTemplateText = `
 								<div{{if .registerEmailError}} class="error"{{end}}>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .registerEmailError}}
 									<small class="error">{{.registerEmailError}}</small>{{end}}
+								</div>
+								<div>
+									<script src="https://www.google.com/recaptcha/api/challenge?k={{.recaptchaPublicKey}}" type="text/javascript"> </script>
 								</div>
 								<div>
 									<button type="submit" class="button" name="sign-up" value="true">Sign Up</button>
