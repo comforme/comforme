@@ -12,6 +12,7 @@ const SiteLayout = `<!DOCTYPE html>
     <link rel="stylesheet" href="/static/style_css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" />
 	<script scr="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/login.js"></script>
+	<script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
     {{ template "nav" .}}

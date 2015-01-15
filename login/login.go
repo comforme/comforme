@@ -97,7 +97,7 @@ const loginTemplateText = `
 									<small class="error">{{.registerEmailError}}</small>{{end}}
 								</div>
 								<div>
-									<script src="https://www.google.com/recaptcha/api/challenge?k={{.recaptchaPublicKey}}" type="text/javascript"> </script>
+									<div class="g-recaptcha" data-sitekey="{{.recaptchaPublicKey}}"></div>
 								</div>
 								<div>
 									<button type="submit" class="button" name="sign-up" value="true">Sign Up</button>
