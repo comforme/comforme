@@ -48,13 +48,16 @@ var InvalidUsernameOrPassword = errors.New("Invalid username or password.")
 var DatabaseError = errors.New("Unknown database error.")
 var InvalidSessionID = errors.New("Invalid sessionid.")
 var InvalidEmail = errors.New("The provided email address is not valid.")
+var InvalidIpAddress = errors.New("There is something wrong with your IP address.")
 
 var mandrillKey = os.Getenv("MANDRILL_APIKEY")
 var emailRegex *regexp.Regexp
+var ipAddressRegex *regexp.Regexp
 
 func init() {
 	rand.Seed(time.Now().Unix() ^ int64(time.Now().Nanosecond()))
 	emailRegex = regexp.MustCompile("^.+@.+\\..+$")
+	ipAddressRegex = regexp.MustCompile("(.+):\\d+$")
 }
 
 func RandSeq(n int) string {
@@ -166,4 +169,13 @@ func LogErrorSkipLevels(err error, levels int) {
 	} else {
 		log.Println("Error occurred when trying to lookup caller info for the function that generated the error:", err)
 	}
+}
+
+func GetIpAddress(req *http.Request) (string, error) {
+	addrParts := ipAddressRegex.FindSubmatch([]byte(req.RemoteAddr))
+	if len(addrParts) != 2 {
+		log.Println("The following remote address did not allow IP address extraction:", req.RemoteAddr)
+		return "", InvalidIpAddress
+	}
+	return string(addrParts[1]), nil
 }

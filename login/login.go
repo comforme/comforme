@@ -1,6 +1,7 @@
 package login
 
 import (
+	"errors"
 	"html/template"
 	"net/http"
 	"os"
@@ -13,6 +14,7 @@ import (
 
 var loginTemplate *template.Template
 var recaptchaPublicKey string
+var recaptchaError = errors.New("Invalid ReCaptcha")
 
 func init() {
 	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
@@ -24,38 +26,56 @@ func init() {
 
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
-	var err error
 
 	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "Login"
 	data["recaptchaPublicKey"] = recaptchaPublicKey
 
 	if req.Method == "POST" {
-		email := req.PostFormValue("email")
-		username := req.PostFormValue("username")
-		password := req.PostFormValue("password")
 		isSignup := req.PostFormValue("sign-up") == "true"
 		isLogin := req.PostFormValue("log-in") == "true"
 
+		username := req.PostFormValue("username")
 		data["username"] = username
+
+		email := req.PostFormValue("email")
 		data["email"] = email
 
-		var sessionid string
-
 		if isSignup {
-			sessionid, err = databaseActions.Register(username, email)
+			// Check ReCaptcha
+			ipAddress, err := common.GetIpAddress(req)
 			if err != nil {
 				data["formError"] = err.Error()
-			} else { // No error
-				common.SetSessionCookie(res, sessionid)
+			} else {
+				recaptchaChallengeField := req.PostFormValue("recaptcha_challenge_field")
+				recaptchaResponseField := req.PostFormValue("recaptcha_response_field")
+				result := recaptcha.Confirm(
+					ipAddress,
+					recaptchaChallengeField,
+					recaptchaResponseField,
+				)
+				if !result {
+					data["formError"] = recaptchaError.Error()
+				} else {
 
-				// Redirect to home page
-				http.Redirect(res, req, "/settings", http.StatusFound)
-				return // Not needed, may reduce load on server
+					sessionid, err := databaseActions.Register(username, email)
+					if err != nil {
+						data["formError"] = err.Error()
+					} else { // No error
+						common.SetSessionCookie(res, sessionid)
+
+						// Redirect to home page
+						http.Redirect(res, req, "/settings", http.StatusFound)
+						return // Not needed, may reduce load on server
+					}
+				}
 			}
 		} else if isLogin {
 			data["loginSelected"] = "true"
-			sessionid, err = databaseActions.Login(email, password)
+
+			password := req.PostFormValue("password")
+
+			sessionid, err := databaseActions.Login(email, password)
 			if err != nil {
 				data["formError"] = err.Error()
 			} else { // No error
