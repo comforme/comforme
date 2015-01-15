@@ -47,6 +47,10 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 			} else if err != nil {
 				log.Println("Unknown signup error:", err)
 				data["formError"] = "Unknown signup error. Check error log."
+			} else { // No error
+				
+				// Redirect to home page
+				http.Redirect(res, req, "/settings", http.StatusFound)
 			}
 		} else if isLogin {
 			data["loginSelected"] = "true"
@@ -56,14 +60,16 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 			} else if err != nil {
 				log.Println("Unknown signup error:", err)
 				data["formError"] = "Unknown signup error. Check error log."
+			} else { // No error
+				
+				// Redirect to home page
+				http.Redirect(res, req, "/", http.StatusFound)
 			}
 		}
-
-		if err == nil {
+		
+		if err == nil { // No error
 			common.SetSessionCookie(res, sessionid)
-
-			// Redirect to home page
-			http.Redirect(res, req, "/", http.StatusFound)
+			return
 		}
 	}
 
