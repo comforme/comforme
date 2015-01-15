@@ -18,8 +18,8 @@ func init() {
 	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(loginTemplate.New("nav").Parse(""))
 	template.Must(loginTemplate.New("content").Parse(loginTemplateText))
-	recaptchaPublicKey = os.Getenv("")
-	recaptcha.Init(os.Getenv(""))
+	recaptchaPublicKey = os.Getenv("RECAPTCHA_PUBLIC_KEY")
+	recaptcha.Init(os.Getenv("RECAPTCHA_PRIVATE_KEY"))
 }
 
 func LoginHandler(res http.ResponseWriter, req *http.Request) {
