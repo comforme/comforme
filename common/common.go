@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"runtime"
 
 	"github.com/keighl/mandrill"
 )
@@ -41,6 +42,12 @@ type Page struct {
 
 // Errors
 var EmailFailed = errors.New("Sending email failed.")
+var EmailInUse = errors.New("You have already registered with this email address.")
+var UsernameInUse = errors.New("This username is in use. Please select a different one.")
+var InvalidUsernameOrPassword = errors.New("Invalid username or password.")
+var DatabaseError = errors.New("Unknown database error.")
+var InvalidSessionID = errors.New("Invalid sessionid.")
+var InvalidEmail = errors.New("The provided email address is not valid.")
 
 var mandrillKey = os.Getenv("MANDRILL_APIKEY")
 var emailRegex *regexp.Regexp
@@ -139,4 +146,24 @@ func SetSessionCookie(res http.ResponseWriter, sessionid string) {
 
 func Logout(res http.ResponseWriter, req *http.Request) {
 	http.Redirect(res, req, "/logout", http.StatusFound)
+}
+
+func LogError(err error) {
+	pc, file, line, ok := runtime.Caller(1)
+	if ok {
+		function := runtime.FuncForPC(pc)
+		log.Printf("Error occurred in function (%s) at (%s:%d): %s\n", function.Name(), file, line, err.Error())
+	} else {
+		log.Println("Error occurred when trying to lookup caller info for the function that generated the error:", err)
+	}
+}
+
+func LogErrorSkipLevels(err error, levels int) {
+	pc, file, line, ok := runtime.Caller(levels + 1)
+	if ok {
+		function := runtime.FuncForPC(pc)
+		log.Printf("Error occurred in function (%s) at (%s:%d): %s\n", function.Name(), file, line, err.Error())
+	} else {
+		log.Println("Error occurred when trying to lookup caller info for the function that generated the error:", err)
+	}
 }

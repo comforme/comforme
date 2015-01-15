@@ -2,11 +2,9 @@ package login
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 
 	"github.com/comforme/comforme/common"
-	"github.com/comforme/comforme/database"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
 )
@@ -40,13 +38,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 
 		if isSignup {
 			sessionid, err = databaseActions.Register(username, email)
-			if err == databaseActions.UsernameTooShort {
-				data["registerUsernameError"] = err.Error()
-			} else if err == databaseActions.InvalidEmail {
-				data["registerEmailError"] = err.Error()
-			} else if err != nil {
-				log.Println("Unknown signup error:", err)
-				data["formError"] = "Unknown signup error. Check error log."
+			if err != nil {
+				data["formError"] = err.Error()
 			} else { // No error
 				common.SetSessionCookie(res, sessionid)
 				
@@ -57,11 +50,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 		} else if isLogin {
 			data["loginSelected"] = "true"
 			sessionid, err = databaseActions.Login(email, password)
-			if err == database.InvalidUsernameOrPassword {
-				data["loginError"] = err.Error()
-			} else if err != nil {
-				log.Println("Unknown signup error:", err)
-				data["formError"] = "Unknown signup error. Check error log."
+			if err != nil {
+				data["formError"] = err.Error()
 			} else { // No error
 				common.SetSessionCookie(res, sessionid)
 				

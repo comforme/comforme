@@ -11,13 +11,10 @@ import (
 )
 
 // Errors
-var InvalidEmail = errors.New("The provided email address is not valid.")
 var PasswordTooShort = errors.New(fmt.Sprintf("The supplied password is too short. Minimum password length is %d characters.", minPasswordLength))
 var UsernameTooShort = errors.New(fmt.Sprintf("The supplied username is too short. Minimum username length is %d characters.", minUsernameLength))
 var EmailFailed = errors.New("Sending email failed.")
-var InvalidSessionID = errors.New("Invalid sessionid.")
 var InvalidPassword = errors.New("Invalid password.")
-var DatabaseError = errors.New("Unknown database error.")
 
 const (
 	minPasswordLength = 6
@@ -51,14 +48,13 @@ func CreatePage(sessionId string, title string, description string, address stri
 	return
 }
 
-func ChangePassword(sessionid, oldPassword, newPassword string) error {
+func ChangePassword(sessionid, oldPassword, newPassword string) (err error) {
 	log.Printf("Looking up email with sessionid: %s\n", sessionid)
 
 	// Get email from session
 	email, err := db.GetEmail(sessionid)
 	if err != nil {
-		log.Printf("Error retrieving email from sessionid (%s): %s\n", sessionid, err.Error())
-		return InvalidSessionID
+		return
 	}
 	log.Printf("Sessionid: %s is associated with the email: %s\n", sessionid, email)
 
@@ -99,14 +95,11 @@ func Login(email string, password string) (sessionid string, err error) {
 	userid, err := db.GetUserID(email, password)
 	if err != nil {
 		log.Printf("Error while logging in user (%s): %s\n", email, err.Error())
-		err = database.InvalidUsernameOrPassword
 		return
 	}
 
 	sessionid, err = db.NewSession(userid)
 	if err != nil {
-		log.Printf("Error while creating session for user (%s): %s\n", email, err.Error())
-		err = database.InvalidUsernameOrPassword
 		return
 	}
 
@@ -115,7 +108,7 @@ func Login(email string, password string) (sessionid string, err error) {
 
 func Register(username, email string) (sessionid string, err error) {
 	if !common.ValidEmail(email) {
-		err = InvalidEmail
+		err = common.InvalidEmail
 		return
 	}
 
@@ -147,9 +140,6 @@ func Register(username, email string) (sessionid string, err error) {
 
 func ListCommunities(sessionid string) (communities []common.Community, err error) {
 	communities, err = db.ListCommunities(sessionid)
-	if err != nil {
-		err = DatabaseError
-	}
 	return
 }
 
@@ -157,20 +147,18 @@ func SetCommunityMembership(sessionid string, community_id int, value bool) (err
 	user_id, err := db.GetSessionUserID(sessionid)
 	if err != nil {
 		log.Printf("Error getting userid from sessionid %s community: %s\n", sessionid, err.Error())
-		return InvalidSessionID
+		return
 	}
 
 	if value {
 		err = db.AddCommunityMembership(user_id, community_id)
 		if err != nil {
-			log.Println("Error adding community:", err)
-			return DatabaseError
+			return
 		}
 	} else {
 		err = db.DeleteCommunityMembership(user_id, community_id)
 		if err != nil {
-			log.Println("Error deleting community:", err)
-			return DatabaseError
+			return
 		}
 	}
 

@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"errors"
 	"log"
 
 	_ "github.com/lib/pq"
@@ -10,11 +9,6 @@ import (
 
 	"github.com/comforme/comforme/common"
 )
-
-// Errors
-var EmailInUse = errors.New("You have already registered with this email address.")
-var UsernameInUse = errors.New("This username is in use. Please select a different one.")
-var InvalidUsernameOrPassword = errors.New("Invalid username or password.")
 
 type DB struct {
 	conn *sql.DB
@@ -41,11 +35,20 @@ func (db DB) GetUserID(email string, password string) (userid int, err error) {
 	var hashed string
 	err = db.conn.QueryRow("SELECT id, password FROM users WHERE email = $1", email).Scan(&userid, &hashed)
 	if err != nil {
+		common.LogError(err)
+		log.Printf("Error retrieving userid and hashed password for email (%s): %s\n", email, err.Error())
+		err = common.InvalidUsernameOrPassword
 		return
 	}
 
 	// Check hashed password
 	err = bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password))
+	if err != nil {
+		common.LogError(err)
+		log.Printf("Error checking password for user with email (%s): %s\n", email, err.Error())
+		err = common.InvalidUsernameOrPassword
+		return
+	}
 	return
 }
 
@@ -53,6 +56,10 @@ func (db DB) GetSessionUserID(sessionid string) (userid int, err error) {
 	log.Printf("Looking up userid for sessionid: %s\n", sessionid)
 
 	err = db.conn.QueryRow("SELECT user_id FROM sessions WHERE sessions.id = $1", sessionid).Scan(&userid)
+	if err != nil {
+		common.LogError(err)
+		err = common.InvalidSessionID
+	}
 	return
 }
 
@@ -62,6 +69,8 @@ func (db DB) NewSession(userid int) (sessionid string, err error) {
 		sessionid = common.NewSessionID()
 		err = db.conn.QueryRow("SELECT count(*) FROM sessions WHERE sessions.id = $1", sessionid).Scan(&numRows)
 		if err != nil {
+			log.Printf("Error while creating session for userid (%d): %s\n", userid, err.Error())
+			err = common.DatabaseError
 			return
 		}
 		if numRows == 0 {
@@ -75,6 +84,11 @@ func (db DB) NewSession(userid int) (sessionid string, err error) {
 		userid,
 		sessionid,
 	)
+	if err != nil {
+		log.Printf("Error while creating session for userid (%d): %s\n", userid, err.Error())
+		err = common.DatabaseError
+		return
+	}
 
 	return
 }
@@ -83,6 +97,11 @@ func (db DB) NewPage(sessionId string, title string, description string, address
 	// Insert new page
 	slug := common.GenSlug(title)
 	userId, err := db.GetSessionUserID(sessionId)
+	if err != nil {
+		common.LogError(err)
+		return
+	}
+	
 	category -= 48
 	log.Println("category=", category)
 
@@ -97,6 +116,7 @@ func (db DB) NewPage(sessionId string, title string, description string, address
 	)
 	if err != nil {
 		log.Println("Failed to insert page: ", err)
+		return common.DatabaseError
 	}
 	return
 }
@@ -106,20 +126,24 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 	var numRows int
 	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE email = $1", email).Scan(&numRows)
 	if err != nil {
+		log.Printf("Error checking if email (%s) already exists: %s\n", email, err.Error())
+		err = common.DatabaseError
 		return
 	}
 	if numRows != 0 {
-		err = EmailInUse
+		err = common.EmailInUse
 		return
 	}
 
 	// Check if username is already in use
 	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE username = $1", username).Scan(&numRows)
 	if err != nil {
+		log.Printf("Error checking if username (%s) already exists: %s\n", username, err.Error())
+		err = common.DatabaseError
 		return
 	}
 	if numRows != 0 {
-		err = UsernameInUse
+		err = common.UsernameInUse
 		return
 	}
 
@@ -140,12 +164,22 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 		username,
 		hashed,
 	)
+	if err != nil {
+		log.Println("Error adding user:", err)
+		err = common.DatabaseError
+		return
+	}
+	
 	return
 }
 
 func hashPassword(password string) (string, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	return string(hashed), err
+	if err != nil {
+		log.Println("Error hashing password:", err)
+		return "", common.DatabaseError
+	}
+	return string(hashed), nil
 }
 
 func (db DB) GetEmail(sessionid string) (email string, err error) {
@@ -153,6 +187,10 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 		"SELECT email FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
 		sessionid,
 	).Scan(&email)
+	if err != nil {
+		log.Printf("Error looking up username associated with sessionid  (%s): %s\n", sessionid, err.Error())
+		err = common.InvalidSessionID
+	}
 	return
 }
 
@@ -161,6 +199,10 @@ func (db DB) PasswordChangeRequired(sessionid string) (isRequired bool, err erro
 		"SELECT reset_required FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
 		sessionid,
 	).Scan(&isRequired)
+	if err != nil {
+		log.Printf("Error checking if user with sessionid  (%s) needs to change their password: %s\n", sessionid, err.Error())
+		err = common.InvalidSessionID
+	}
 	return
 }
 
@@ -177,6 +219,13 @@ func (db DB) ResetPassword(email string) (password string, err error) {
 		hashed,
 	)
 	err = db.changePassword(email, hashed)
+
+	if err != nil {
+		common.LogError(err)
+		err = common.InvalidEmail
+		return
+	}
+
 	return
 }
 
@@ -188,10 +237,11 @@ func (db DB) changePassword(email, hashed string) error {
 	)
 
 	if err != nil {
-		return err
+		common.LogError(err)
+		return common.DatabaseError
 	}
 
-	return checkSingleRow(result)
+	return checkSingleRow(result, common.InvalidEmail)
 }
 
 func (db DB) ChangePassword(email, newPassword string) error {
@@ -219,22 +269,24 @@ func (db DB) Logout(sessionid string) error {
 		sessionid,
 	)
 	if err != nil {
-		return err
+		common.LogError(err)
+		return common.DatabaseError
 	}
 
-	return checkSingleRow(result)
+	return checkSingleRow(result, common.InvalidSessionID)
 }
 
-func checkSingleRow(result sql.Result) error {
+func checkSingleRow(result sql.Result, otherwise error) error {
 	rows, err := result.RowsAffected()
 	if err != nil {
-		return err
+		common.LogErrorSkipLevels(err, 1)
+		return common.DatabaseError
 	}
 
 	if rows != 1 {
-		return sql.ErrNoRows
+		return checkSingleRow(result, otherwise)
 	}
-
+	
 	return nil
 }
 
@@ -266,6 +318,8 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 		sessionid,
 	)
 	if err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
 		return
 	}
 
@@ -286,6 +340,8 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 	}
 
 	if err = rows.Err(); err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
 		return
 	}
 
@@ -313,6 +369,8 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 		query,
 	)
 	if err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
 		return
 	}
 
@@ -335,6 +393,8 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 	}
 
 	if err = rows.Err(); err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
 		return
 	}
 
@@ -348,6 +408,11 @@ func (db DB) AddCommunityMembership(user_id, community_id int) (err error) {
 		user_id,
 		community_id,
 	)
+	if err != nil {
+		log.Println("Error adding community:", err)
+		err = common.DatabaseError
+		return
+	}
 	return
 }
 
@@ -357,5 +422,10 @@ func (db DB) DeleteCommunityMembership(user_id, community_id int) (err error) {
 		user_id,
 		community_id,
 	)
+	if err != nil {
+		log.Println("Error deleting community:", err)
+		err = common.DatabaseError
+		return
+	}
 	return
 }
