@@ -81,8 +81,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 			} else { // No error
 				common.SetSessionCookie(res, sessionid)
 
-				// Redirect to home page
-				http.Redirect(res, req, "/", http.StatusFound)
+				// Redirect to intended page
+				http.Redirect(res, req, req.URL.Path, http.StatusFound)
 				return // Not needed, may reduce load on server
 			}
 		}

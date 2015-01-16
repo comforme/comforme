@@ -11,7 +11,6 @@ import (
 	"github.com/comforme/comforme/ajax"
 	"github.com/comforme/comforme/hipster"
 	"github.com/comforme/comforme/home"
-	"github.com/comforme/comforme/login"
 	"github.com/comforme/comforme/logout"
 	"github.com/comforme/comforme/pages"
 	"github.com/comforme/comforme/requireLogin"
