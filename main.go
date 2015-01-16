@@ -25,13 +25,6 @@ func main() {
 	mux := bone.New()
 
 	mux.Handle(
-		"/login",
-		http.HandlerFunc(
-			login.LoginHandler,
-		),
-	)
-
-	mux.Handle(
 		"/settings",
 		http.HandlerFunc(
 			requireLogin.RequireLogin(settings.SettingsHandler),
