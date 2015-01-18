@@ -51,8 +51,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				log.Println("recaptchaResponse", recaptchaResponse)
 				log.Println("ipAddress", ipAddress)
 				err = recaptcha.Check(
-					ipAddress,
 					recaptchaResponse,
+					ipAddress,
 				)
 				if err != nil && !common.DebugMode {
 					log.Println("reCaptcha failed:", err)
