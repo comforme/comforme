@@ -119,6 +119,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 				data["errorMsg"] = err.Error()
 			} else {
 				data["successMsg"] = "Username changed."
+				data["username"] = newUsername
 			}
 		}
 	}
