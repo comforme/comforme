@@ -39,7 +39,6 @@ func Check(response, remoteip string) error {
 	parameters.Add("remoteip", remoteip)
 	Url.RawQuery = parameters.Encode()
 
-	log.Println("Making reCaptcha request:", Url.String())
 	resp, err := http.Get(Url.String())
 	defer resp.Body.Close()
 	if err == nil {
