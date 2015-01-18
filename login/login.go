@@ -108,6 +108,9 @@ const loginTemplateText = `
 					<div class="tabs-content">
 						<div class="content{{if not .loginSelected}} active{{end}}" id="sign-up-form">
 							<form method="post" action="{{.formAction}}">
+                                <noscript>
+                                    <span id="noscript">This site requires JavaScript to function!</span>
+                                </noscript>
 								<div{{if .registerUsernameError}} class="error"{{end}}>
 									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
 									<small class="error">{{.registerUsernameError}}</small>{{end}}
