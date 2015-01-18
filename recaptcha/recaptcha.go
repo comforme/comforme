@@ -13,6 +13,8 @@ import (
 
 var secret string
 
+var recaptchaError = errors.New("Invalid ReCaptcha")
+
 type recaptchaResult struct {
 	Success bool   `json:"success"`
 	Error   string `json:"error-codes"`
@@ -38,7 +40,11 @@ func Check(response, remoteip string) error {
 			if data.Success {
 				return nil
 			}
-			err := errors.New(data.Error)
+			if data.Error != "" {
+				err = errors.New(data.Error)
+			} else {
+				err = recaptchaError
+			}
 			return err
 		}
 		return err
