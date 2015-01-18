@@ -10,7 +10,7 @@ import (
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
-	"github.com/dpapathanasiou/go-recaptcha"
+	"github.com/comforme/comforme/recaptcha"
 )
 
 var loginTemplate *template.Template
@@ -48,18 +48,15 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 			if err != nil {
 				data["formError"] = err.Error()
 			} else {
-				recaptchaChallengeField := req.PostFormValue("recaptcha-token")
-				recaptchaResponseField := req.PostFormValue("g-recaptcha-response")
-				log.Println("recaptchaChallengeField", recaptchaChallengeField)
-				log.Println("recaptchaResponseField", recaptchaResponseField)
+				recaptchaResponse := req.PostFormValue("g-recaptcha-response")
+				log.Println("recaptchaResponse", recaptchaResponse)
 				log.Println("ipAddress", ipAddress)
-				result := recaptcha.Confirm(
+				err = recaptcha.Check(
 					ipAddress,
-					recaptchaChallengeField,
-					recaptchaResponseField,
+					recaptchaResponse,
 				)
-				if !result {
-					data["formError"] = recaptchaError.Error()
+				if err != nil {
+					data["formError"] = err.Error()
 				} else {
 
 					sessionid, err := databaseActions.Register(username, email)
