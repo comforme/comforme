@@ -114,11 +114,11 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 			newUsername := req.PostFormValue("newUsername")
 			
 			err := databaseActions.ChangeUsername(sessionid, newUsername, usernameChangePassword)
-			if err == nil {
-				data["successMsg"] = "Username changed."
-			} else {
+			if err != nil {
 				data["usernameChangePassword"] = usernameChangePassword
 				data["errorMsg"] = err.Error()
+			} else {
+				data["successMsg"] = "Username changed."
 			}
 		}
 	}
