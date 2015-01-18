@@ -34,6 +34,7 @@ func Check(response, remoteip string) error {
 	defer resp.Body.Close()
 	if err == nil {
 		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("reCaptcha result:", body)
 		if err == nil {
 			var data recaptchaResult
 			json.Unmarshal(body, &data)
