@@ -150,6 +150,17 @@ const loginTemplateText = `
 									<button type="submit" class="button" name="log-in" value="true">Log In</button>
 								</div>
 							</form>
+							<hr />
+							<form id="reset-password-form">
+								<div>
+									<label>
+										<input type="email" placeholder="Email">
+									</label>
+								</div>
+								<div>
+									<button type="submit" class="button" name="reset-password" value="true">Reset Password</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</section>
