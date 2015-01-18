@@ -197,7 +197,7 @@ func (db DB) ChangeUsername(user_id int, newUsername string) error {
 	}
 
 	result, err := db.conn.Exec(
-		"UPDATE users SET username = $2 WHERE user_id = $1;",
+		"UPDATE users SET username = $2 WHERE id = $1;",
 		user_id,
 		newUsername,
 	)
