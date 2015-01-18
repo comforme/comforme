@@ -57,6 +57,7 @@ var DatabaseError = errors.New("Unknown database error.")
 var InvalidSessionID = errors.New("Invalid sessionid.")
 var InvalidEmail = errors.New("The provided email address is not valid.")
 var InvalidIpAddress = errors.New("There is something wrong with your IP address.")
+var PageNotFound = errors.New("Page not found.")
 
 var mandrillKey = os.Getenv("MANDRILL_APIKEY")
 var emailRegex *regexp.Regexp
