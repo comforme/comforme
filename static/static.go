@@ -91,7 +91,7 @@ function registerCommunityCheckboxes()
 	);
 }
 
-function logoutOtherSessions(this)
+function logoutOtherSessions(clickedButton)
 {
 	alert("Logout other sessions button pressed.");
 }
