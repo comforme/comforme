@@ -98,8 +98,8 @@ const loginTemplateText = `
     <div class="content sign-up-and-log-in">
 		<h1 class="text-center">Welcome to Community for Me!</h1>
 		<div class="row">
-			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
-			<div class="large-4 medium-6 small-10 columns" style="min-width: 320px;">{{if .formError}}
+			<div class="large-4 medium-4 show-for-medium-up columns">&nbsp;</div>
+			<div class="large-4 medium-4 columns" style="min-width: 320px;">{{if .formError}}
 				<div class="alert-box alert">
 					{{.formError}}
 				</div>{{end}}
@@ -148,7 +148,7 @@ const loginTemplateText = `
 					</div>
 				</section>
 			</div>
-			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
+			<div class="large-3 medium-3 show-for-medium-up columns">&nbsp;</div>
 			<div class="large-12 columns">
 				<h2>What is Comfor.me?</h2>
 					<div>
