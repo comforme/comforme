@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"log"
+	"net/url"
 )
 
 var secret string
@@ -26,12 +27,19 @@ func Init(newSecret string) {
 }
 
 func Check(response, remoteip string) error {
-	apiEndpoint := "https://www.google.com/recaptcha/api/siteverify"
-	params := fmt.Sprintf("?secret=%s&response=%s&remoteip=%s",
-		secret,
-		response,
-		remoteip)
-	resp, err := http.Get(apiEndpoint + params)
+	var Url *url.URL
+    Url, err := url.Parse("https://www.google.com/recaptcha/api/siteverify")
+    if err != nil {
+		return err
+	}
+	
+	parameters := url.Values{}
+	parameters.Add("secret", secret)
+	parameters.Add("response", response)
+	parameters.Add("remoteip", remoteip)
+	Url.RawQuery = parameters.Encode()
+	
+	resp, err := http.Get(Url.String())
 	defer resp.Body.Close()
 	if err == nil {
 		body, err := ioutil.ReadAll(resp.Body)
