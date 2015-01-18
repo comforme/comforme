@@ -56,7 +56,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 					ipAddress,
 					recaptchaResponse,
 				)
-				if err != nil {
+				if err != nil && !common.DebugMode {
 					data["formError"] = err.Error()
 				} else {
 
