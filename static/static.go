@@ -98,7 +98,7 @@ function logoutOtherSessions(clickedButton)
 		function(data)
 		{
 			console.log(data);
-			if(data.number > 0)
+			if(typeof data.number != "undefined")
 			{
 				$("#numOpenSessions").html("0");
 			}

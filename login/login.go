@@ -35,6 +35,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" {
 		isSignup := req.PostFormValue("sign-up") == "true"
 		isLogin := req.PostFormValue("log-in") == "true"
+		isReset := req.PostFormValue("password-reset") == "true"
 
 		username := req.PostFormValue("username")
 		data["username"] = username
@@ -85,6 +86,13 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				// Redirect to intended page
 				http.Redirect(res, req, req.URL.Path, http.StatusFound)
 				return // Not needed, may reduce load on server
+			}
+		} else if isReset {
+			err := databaseActions.ResetPassword(email)
+			if err != nil {
+				data["formError"] = err.Error()
+			} else {
+				data["formError"] = "Password reset successful. Check email for new password."
 			}
 		}
 	}
