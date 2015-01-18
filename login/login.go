@@ -1,7 +1,6 @@
 package login
 
 import (
-	"errors"
 	"html/template"
 	"log"
 	"net/http"
@@ -15,7 +14,6 @@ import (
 
 var loginTemplate *template.Template
 var recaptchaPublicKey string
-var recaptchaError = errors.New("Invalid ReCaptcha")
 
 func init() {
 	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
