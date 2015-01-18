@@ -451,7 +451,7 @@ func (db DB) DeleteOtherSessions(user_id int, sessionid string) (loggedOut int, 
 		err = common.InvalidSessionID
 		return
 	}
-	
+
 	loggedOutNum, err := result.RowsAffected()
 	if err != nil {
 		log.Println("Error deleted sessions:", err)

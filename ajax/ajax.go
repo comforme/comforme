@@ -39,7 +39,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(res, JSONLoginError)
 		return
 	}
-	
+
 	sessionid := cookie.Value
 
 	action := bone.GetValue(req, "action")
@@ -58,7 +58,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request) {
 				result = AjaxResult{fmt.Sprintf("Successfully set membership in community %d to %t.", community_id, action == "addCommunity")}
 			}
 		}
-	} else if (action == "logoutOtherSessions") {
+	} else if action == "logoutOtherSessions" {
 		loggedOut, err := databaseActions.LogoutOtherSessions(sessionid)
 		if err != nil {
 			result = AjaxError{err.Error()}

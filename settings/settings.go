@@ -62,7 +62,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 			communities[cut3:],
 		}
 	}
-	
+
 	openSessions, err := databaseActions.OtherSessions(sessionid)
 	if err != nil {
 		log.Println("Error listing communities:", err)

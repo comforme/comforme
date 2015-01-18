@@ -3,14 +3,14 @@ package login
 import (
 	"errors"
 	"html/template"
+	"log"
 	"net/http"
 	"os"
-	"log"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
-	"github.com/comforme/comforme/templates"
 	"github.com/comforme/comforme/recaptcha"
+	"github.com/comforme/comforme/templates"
 )
 
 var loginTemplate *template.Template
