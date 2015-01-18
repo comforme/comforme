@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"log"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
