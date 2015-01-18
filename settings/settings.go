@@ -144,10 +144,10 @@ const settingsTemplateText = `
 					<h2>User Information</h2>
 					<div class="row">
 						<div class="large-4 columns left">
-							<h6>Email:</h6> {{.email}}
+							<h5>Email:</h5> {{.email}}
 						</div>
 						<div class="large-4 columns left">
-							<h6>Username:</h6> {{.username}}
+							<h5>Username:</h5> {{.username}}
 						</div>
 					</div>
 				</section>
