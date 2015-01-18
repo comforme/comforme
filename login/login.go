@@ -97,7 +97,7 @@ const loginTemplateText = `
 		<h1 class="text-center">Welcome to Community for Me!</h1>
 		<div class="row">
 			<div class="large-4 medium-3 small-1 columns">&nbsp;</div>
-			<div class="large-4 medium-6 small-10 columns">{{if .formError}}
+			<div class="large-4 medium-6 small-10 columns" style="min-width: 320px;">{{if .formError}}
 				<div class="alert-box alert">
 					{{.formError}}
 				</div>{{end}}
@@ -109,9 +109,9 @@ const loginTemplateText = `
 					<div class="tabs-content">
 						<div class="content{{if not .loginSelected}} active{{end}}" id="sign-up-form">
 							<form method="post" action="{{.formAction}}">
-                                <noscript>
-                                    <span id="noscript">This site requires JavaScript to function!</span>
-                                </noscript>
+								<noscript>
+									<small class="error">This site requires JavaScript to function!</small>
+								</noscript>
 								<div{{if .registerUsernameError}} class="error"{{end}}>
 									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
 									<small class="error">{{.registerUsernameError}}</small>{{end}}
