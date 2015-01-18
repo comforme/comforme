@@ -9,7 +9,7 @@ import (
 	"github.com/go-zoo/bone"
 
 	"github.com/comforme/comforme/ajax"
-	"github.com/comforme/comforme/hipster"
+	"github.com/comforme/comforme/fullPage"
 	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/logout"
 	"github.com/comforme/comforme/pages"
@@ -40,7 +40,7 @@ func main() {
 	mux.Handle(
 		"/page/:category/:pagename",
 		http.HandlerFunc(
-			requireLogin.RequireLogin(hipster.HipsterHandler),
+			requireLogin.RequireLogin(fullPage.FullPageHandler),
 		),
 	)
 

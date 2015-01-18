@@ -1,4 +1,4 @@
-package hipster
+package fullPage
 
 import (
 	"html/template"
@@ -10,28 +10,28 @@ import (
 	"github.com/comforme/comforme/templates"
 )
 
-var hipsterTemplate *template.Template
+var fullPageTemplate *template.Template
 
 func init() {
-	hipsterTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
-	template.Must(hipsterTemplate.New("nav").Parse(templates.NavBar))
-	template.Must(hipsterTemplate.New("hipster").Parse(templates.SearchBar))
-	template.Must(hipsterTemplate.New("content").Parse(hipsterTemplateText))
+	fullPageTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(fullPageTemplate.New("nav").Parse(templates.NavBar))
+	template.Must(fullPageTemplate.New("fullPage").Parse(templates.SearchBar))
+	template.Must(fullPageTemplate.New("content").Parse(fullPageTemplateText))
 }
 
-func HipsterHandler(res http.ResponseWriter, req *http.Request) {
+func FullPageHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path
 
-	common.ExecTemplate(hipsterTemplate, res, data)
+	common.ExecTemplate(fullPageTemplate, res, data)
 }
 
-const hipsterTemplateText = `
+const fullPageTemplateText = `
 	<div class="content">
 		<div class="row">
 			<div class="column">
-				<h1><a href="/page/hipster/lorem-hipsum">Lorem Hipsum</a></h1>
+				<h1><a href="/page/fullPage/lorem-hipsum">Lorem Hipsum</a></h1>
 				<p>
 					Odd Future Bushwick irony, Neutra artisan chambray forage Banksy skateboard Schlitz			hoodie cold-pressed sustainable brunch. Freegan Etsy mixtape, selvage small batch pop-up					 distillery VHS. IPhone flexitarian tousled, letterpress Pitchfork readymade cornhole. Shabby chic	irony skateboard, swag lumbersexual DIY Portland ethical Williamsburg forage farm-to-table				 meditation. Intelligentsia quinoa Odd Future semiotics hella Wes Anderson fap, typewriter Austin	 cliche meh lomo tattooed. Trust fund yr cronut, fap mumblecore viral Blue Bottle readymade.				Sriracha street art Thundercats, PBR deep v trust fund fashion axe.
 				</p>
