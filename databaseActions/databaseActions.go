@@ -183,7 +183,7 @@ func LogoutOtherSessions(sessionid string) (loggedOut int, err error) {
 		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
 		return
 	}
-	
+
 	loggedOut, err = db.DeleteOtherSessions(user_id, sessionid)
 	if err != nil {
 		log.Printf(
@@ -194,6 +194,6 @@ func LogoutOtherSessions(sessionid string) (loggedOut int, err error) {
 		)
 		return
 	}
-	
+
 	return
 }
