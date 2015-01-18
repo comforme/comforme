@@ -81,7 +81,7 @@ function registerCommunityCheckboxes()
 				{ "communityid": this.name }
 			).done
 			(
-				function( data )
+				function(data)
 				{
 					console.log(data);
 					// TODO: Notify user of result.
@@ -94,6 +94,17 @@ function registerCommunityCheckboxes()
 function logoutOtherSessions(clickedButton)
 {
 	alert("Logout other sessions button pressed.");
+	$.post("/ajax/logoutOtherSessions").done
+	(
+		function(data)
+		{
+			console.log(data);
+			if(data.number)
+			{
+				$("#numOpenSessions").html(data.number)
+			}
+		}
+	)
 }
 
 $(document).ready(registerCommunityCheckboxes);
