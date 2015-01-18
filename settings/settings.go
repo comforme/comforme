@@ -151,11 +151,6 @@ const settingsTemplateText = `
 					</form>
 				</section>
 				<section>
-					<h2>Sessions</h2>
-					<h6>You currently have {{.openSessions}} sessions open in addition to this one.</h6>
-					<button onclick="logoutOtherSessions(this)" name="logout-sessions">Logout Other Sessions</button>
-				</section>
-				<section>
 					<h2>Your Communities</h2>
 					<h6>Check all that apply.</h6>
 					<div class="row">{{range $col_number, $communitiesCol := $.communitiesCols}}
@@ -168,6 +163,11 @@ const settingsTemplateText = `
 							</div>{{end}}
 						</div>{{end}}
 					</div>
+				</section>
+				<section>
+					<h2>Sessions</h2>
+					<h6>You currently have {{.openSessions}} sessions open in addition to this one.</h6>
+					<button onclick="logoutOtherSessions(this)" name="logout-sessions">Logout Other Sessions</button>
 				</section>{{/*
 				<section>
 					<div class="row">
