@@ -10,13 +10,16 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"log"
 )
 
 var secret string
 
+var recaptchaError = errors.New("Invalid ReCaptcha")
+
 type recaptchaResult struct {
 	Success bool   `json:"success"`
-	Error   string `json:"error-codes"`
+	Errors  []string `json:"error-codes"`
 }
 
 func Init(newSecret string) {
@@ -33,13 +36,18 @@ func Check(response, remoteip string) error {
 	defer resp.Body.Close()
 	if err == nil {
 		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("reCaptcha result:", string(body))
 		if err == nil {
 			var data recaptchaResult
 			json.Unmarshal(body, &data)
 			if data.Success {
 				return nil
 			}
-			err := errors.New(data.Error)
+			if len(data.Errors) >= 1 {
+				err = errors.New("reCaptcha error(s): " + string(data.Errors))
+			} else {
+				err = recaptchaError
+			}
 			return err
 		}
 		return err
