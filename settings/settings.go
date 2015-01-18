@@ -221,7 +221,7 @@ const settingsTemplateText = `
 							<div class="large-4 columns left">
 								<label>
 									New username
-									<input type="input" name="newUsername"{{if .usernameChangePassword}} value="{{.usernameChangePassword}}"{{end}}>
+									<input type="text" name="newUsername"{{if .usernameChangePassword}} value="{{.usernameChangePassword}}"{{end}}>
 								</label>
 							</div>
 						</div>
