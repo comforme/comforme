@@ -10,6 +10,10 @@ func Style(res http.ResponseWriter, req *http.Request) {
 
 	fmt.Fprintln(res, `/* ---------- Sign Up/Log In ---------- */
 
+span#noscript {
+    color: red;
+    font-size: small;
+}
 .sign-up-and-log-in.content {
 	margin-top: 4rem;
 }
