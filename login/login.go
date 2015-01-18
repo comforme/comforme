@@ -148,7 +148,9 @@ const loginTemplateText = `
 								</div>
 								<div>
 									<button type="submit" class="button" name="log-in" value="true">Log In</button>
-									<button type="submit" class="button right" name="reset-password" value="true">Reset Password</button>
+								</div>
+								<div>
+									<button type="submit" class="button tiny" name="reset-password" value="true">Reset Password</button>
 								</div>
 							</form>
 						</div>
