@@ -48,10 +48,11 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 			if err != nil {
 				data["formError"] = err.Error()
 			} else {
-				recaptchaChallengeField := req.PostFormValue("recaptcha_challenge_field")
-				recaptchaResponseField := req.PostFormValue("recaptcha_response_field")
+				recaptchaChallengeField := req.PostFormValue("recaptcha-token")
+				recaptchaResponseField := req.PostFormValue("g-recaptcha-response")
 				log.Println("recaptchaChallengeField", recaptchaChallengeField)
 				log.Println("recaptchaResponseField", recaptchaResponseField)
+				log.Println("ipAddress", ipAddress)
 				result := recaptcha.Confirm(
 					ipAddress,
 					recaptchaChallengeField,
