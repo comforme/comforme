@@ -115,7 +115,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 			
 			err := databaseActions.ChangeUsername(sessionid, newUsername, usernameChangePassword)
 			if err != nil {
-				data["usernameChangePassword"] = usernameChangePassword
+				data["newUsername"] = newUsername
 				data["errorMsg"] = err.Error()
 			} else {
 				data["successMsg"] = "Username changed."
