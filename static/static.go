@@ -99,9 +99,9 @@ function logoutOtherSessions(clickedButton)
 		function(data)
 		{
 			console.log(data);
-			if(data.number)
+			if(data.number > 0)
 			{
-				$("#numOpenSessions").html(data.number)
+				$("#numOpenSessions").html("0");
 			}
 		}
 	)
