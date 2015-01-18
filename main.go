@@ -9,7 +9,6 @@ import (
 	"github.com/go-zoo/bone"
 
 	"github.com/comforme/comforme/ajax"
-	"github.com/comforme/comforme/fullPage"
 	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/logout"
 	"github.com/comforme/comforme/pages"
@@ -33,14 +32,14 @@ func main() {
 	mux.Handle(
 		"/newPage",
 		http.HandlerFunc(
-			requireLogin.RequireLogin(pages.PagesHandler),
+			requireLogin.RequireLogin(pages.NewPageHandler),
 		),
 	)
 
 	mux.Handle(
 		"/page/:category/:pagename",
 		http.HandlerFunc(
-			requireLogin.RequireLogin(fullPage.FullPageHandler),
+			requireLogin.RequireLogin(pages.PageHandler),
 		),
 	)
 
