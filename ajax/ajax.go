@@ -18,11 +18,16 @@ const (
 	JSONError       = "{ \"error\": \"Unknown error.\" }"
 )
 
-type AxaxResult struct {
+type AjaxResultNum struct {
+	Message string `json:"message"`
+	Number  int    `json:"number"`
+}
+
+type AjaxResult struct {
 	Message string `json:"message"`
 }
 
-type AxaxError struct {
+type AjaxError struct {
 	Message string `json:"error"`
 }
 
@@ -34,6 +39,8 @@ func HandleAction(res http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(res, JSONLoginError)
 		return
 	}
+	
+	sessionid := cookie.Value
 
 	action := bone.GetValue(req, "action")
 	var result interface{}
@@ -42,13 +49,27 @@ func HandleAction(res http.ResponseWriter, req *http.Request) {
 		community_id, err := strconv.ParseInt(req.PostFormValue("communityid"), 10, 0)
 		if err != nil {
 			log.Println("Error parsing communityid:", err)
-			result = AxaxError{"Invalid communityid."}
+			result = AjaxError{"Invalid communityid."}
 		} else {
-			err = databaseActions.SetCommunityMembership(cookie.Value, int(community_id), action == "addCommunity")
+			err = databaseActions.SetCommunityMembership(sessionid, int(community_id), action == "addCommunity")
 			if err != nil {
-				result = AxaxError{err.Error()}
+				result = AjaxError{err.Error()}
 			} else {
-				result = AxaxResult{fmt.Sprintf("Successfully set membership in community %d to %t.", community_id, action == "addCommunity")}
+				result = AjaxResult{fmt.Sprintf("Successfully set membership in community %d to %t.", community_id, action == "addCommunity")}
+			}
+		}
+	} else if (action == "logoutOtherSessions") {
+		loggedOut, err := databaseActions.LogoutOtherSessions(sessionid)
+		if err != nil {
+			result = AjaxError{err.Error()}
+		} else {
+			result = AjaxResultNum{
+				fmt.Sprintf(
+					"Successfully logged out %d other sessions for user with sessionid %s.",
+					loggedOut,
+					sessionid,
+				),
+				loggedOut,
 			}
 		}
 	} else {

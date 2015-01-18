@@ -429,3 +429,35 @@ func (db DB) DeleteCommunityMembership(user_id, community_id int) (err error) {
 	}
 	return
 }
+
+func (db DB) OpenSessions(user_id int) (numSessions int, err error) {
+	err = db.conn.QueryRow("SELECT count(*) FROM sessions WHERE user_id = $1;", user_id).Scan(&numSessions)
+	if err != nil {
+		log.Println("Error counting sessions:", err)
+		err = common.DatabaseError
+		return
+	}
+	return
+}
+
+func (db DB) DeleteOtherSessions(user_id int, sessionid string) (loggedOut int, err error) {
+	result, err := db.conn.Exec(
+		"DELETE FROM sessions WHERE user_id = $1 AND id <> $2;",
+		user_id,
+		sessionid,
+	)
+	if err != nil {
+		log.Println("Error deleting other sessions:", err)
+		err = common.InvalidSessionID
+		return
+	}
+	
+	loggedOutNum, err := result.RowsAffected()
+	if err != nil {
+		log.Println("Error deleted sessions:", err)
+		err = common.DatabaseError
+		return
+	}
+	loggedOut = int(loggedOutNum)
+	return
+}

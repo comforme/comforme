@@ -146,7 +146,7 @@ func ListCommunities(sessionid string) (communities []common.Community, err erro
 func SetCommunityMembership(sessionid string, community_id int, value bool) (err error) {
 	user_id, err := db.GetSessionUserID(sessionid)
 	if err != nil {
-		log.Printf("Error getting userid from sessionid %s community: %s\n", sessionid, err.Error())
+		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
 		return
 	}
 
@@ -162,5 +162,38 @@ func SetCommunityMembership(sessionid string, community_id int, value bool) (err
 		}
 	}
 
+	return
+}
+
+func OtherSessions(sessionid string) (num int, err error) {
+	user_id, err := db.GetSessionUserID(sessionid)
+	if err != nil {
+		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
+		return
+	}
+
+	num, err = db.OpenSessions(user_id)
+	num--
+	return
+}
+
+func LogoutOtherSessions(sessionid string) (loggedOut int, err error) {
+	user_id, err := db.GetSessionUserID(sessionid)
+	if err != nil {
+		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
+		return
+	}
+	
+	loggedOut, err = db.DeleteOtherSessions(user_id, sessionid)
+	if err != nil {
+		log.Printf(
+			"Error deleting other sessions for userid (%d) with sessionid (%s): %s\n",
+			user_id,
+			sessionid,
+			err.Error(),
+		)
+		return
+	}
+	
 	return
 }

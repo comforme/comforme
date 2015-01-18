@@ -62,6 +62,15 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 			communities[cut3:],
 		}
 	}
+	
+	openSessions, err := databaseActions.OtherSessions(sessionid)
+	if err != nil {
+		log.Println("Error listing communities:", err)
+		common.Logout(res, req)
+		return
+	} else {
+		data["openSessions"] = openSessions
+	}
 
 	if req.Method == "POST" {
 		//username := req.PostFormValue("username")
@@ -138,8 +147,13 @@ const settingsTemplateText = `
 								</label>
 							</div>
 						</div>
-						<button type="submit" name="user-communites-update" value="true">Update</button>
+						<button type="submit" name="password-update" value="true">Update Password</button>
 					</form>
+				</section>
+				<section>
+					<h2>Sessions</h2>
+					<h6>You currently have {{.openSessions}} sessions open in addition to this one.</h6>
+					<button onclick="logoutOtherSessions(this)" name="logout-sessions">Logout Other Sessions</button>
 				</section>
 				<section>
 					<h2>Your Communities</h2>

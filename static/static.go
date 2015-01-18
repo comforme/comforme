@@ -87,6 +87,11 @@ function registerCommunityCheckboxes()
 	);
 }
 
+function logoutOtherSessions(this)
+{
+	alert("Logout other sessions button pressed.");
+}
+
 $(document).ready(registerCommunityCheckboxes);
 `)
 }
