@@ -49,20 +49,9 @@ func CreatePage(sessionId string, title string, description string, address stri
 }
 
 func ChangePassword(sessionid, oldPassword, newPassword string) (err error) {
-	log.Printf("Looking up email with sessionid: %s\n", sessionid)
-
-	// Get email from session
-	email, err := db.GetEmail(sessionid)
+	email, err := CheckPassword(sessionid, oldPassword)
 	if err != nil {
 		return
-	}
-	log.Printf("Sessionid: %s is associated with the email: %s\n", sessionid, email)
-
-	// Check old password
-	_, err = db.GetUserID(email, oldPassword)
-	if err != nil {
-		log.Printf("Error validating old password while changing password for user (%s): %s\n", email, err.Error())
-		return InvalidPassword
 	}
 
 	// Check new password meets requirements
@@ -107,6 +96,49 @@ func Login(email string, password string) (sessionid string, err error) {
 		return
 	}
 
+	return
+}
+
+func CheckPassword(sessionid, password string) (email string, err error) {
+	log.Printf("Looking up email with sessionid: %s\n", sessionid)
+
+	// Get email from session
+	email, err = db.GetEmail(sessionid)
+	if err != nil {
+		return
+	}
+	log.Printf("Sessionid: %s is associated with the email: %s\n", sessionid, email)
+
+	// Check old password
+	_, err = db.GetUserID(email, password)
+	if err != nil {
+		log.Printf("Error validating old password while changing password for user (%s): %s\n", email, err.Error())
+		err = InvalidPassword
+		return
+	}
+	
+	return
+}
+
+func ChangeUsername(sessionid, newUsername, password string) (err error) {
+	if len(newUsername) < minUsernameLength {
+		err = UsernameTooShort
+		return
+	}
+	
+	_, err = CheckPassword(sessionid, password)
+	if err != nil {
+		return
+	}
+	
+	user_id, err := db.GetSessionUserID(sessionid)
+	if err != nil {
+		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
+		return
+	}
+
+	err = db.ChangeUsername(user_id, newUsername)
+	
 	return
 }
 
