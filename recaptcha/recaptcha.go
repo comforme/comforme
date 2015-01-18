@@ -8,8 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"log"
+	"net/http"
 	"net/url"
 )
 
@@ -18,7 +18,7 @@ var secret string
 var recaptchaError = errors.New("Invalid ReCaptcha")
 
 type recaptchaResult struct {
-	Success bool   `json:"success"`
+	Success bool     `json:"success"`
 	Errors  []string `json:"error-codes"`
 }
 
@@ -28,17 +28,17 @@ func Init(newSecret string) {
 
 func Check(response, remoteip string) error {
 	var Url *url.URL
-    Url, err := url.Parse("https://www.google.com/recaptcha/api/siteverify")
-    if err != nil {
+	Url, err := url.Parse("https://www.google.com/recaptcha/api/siteverify")
+	if err != nil {
 		return err
 	}
-	
+
 	parameters := url.Values{}
 	parameters.Add("secret", secret)
 	parameters.Add("response", response)
 	parameters.Add("remoteip", remoteip)
 	Url.RawQuery = parameters.Encode()
-	
+
 	resp, err := http.Get(Url.String())
 	defer resp.Body.Close()
 	if err == nil {

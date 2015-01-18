@@ -16,6 +16,8 @@ import (
 	"github.com/keighl/mandrill"
 )
 
+var DebugMode = os.Getenv("DEBUG_MODE") == "true"
+
 const (
 	alphaNumeric            = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	sessionIdLength         = 25

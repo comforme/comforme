@@ -1,19 +1,21 @@
 #!/bin/bash
 # Install comforme
 
+DEBUG_MODE="$1"
 GO_VERSION="1.4"
 PKG_URL="https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz"
 INSTALL_DIR="/usr/local"
 DB_NAME="comforme"
 TABLES="users categories pages posts communities community_memberships sessions"
 SEQUENCES="users_id_seq pages_id_seq"
-MANDRILL_APIKEY="$1"
+MANDRILL_APIKEY="$2"
 
 # Install Go
 cd /tmp && wget $PKG_URL && sudo tar -C $INSTALL_DIR -zxf go1.4.linux-amd64.tar.gz
 mkdir ~/go
 USERNAME="`whoami`"
 cat >> ~/.bashrc <<-HERE
+export DEBUG_MODE=${DEBUG_MODE}
 export GOROOT=/usr/local/go
 export GOPATH=\$HOME/go
 export PATH=\$PATH:\$GOROOT/bin
@@ -50,5 +52,5 @@ for table in $TABLES; do
     sudo -u postgres psql -d $DB_NAME -c "GRANT ALL PRIVILEGES ON TABLE ${table} TO ${USERNAME};"
 done
 
-MANDRILL_APIKEY=$MANDRILL_APIKEY PORT=8080 nohup ~/go/bin/comforme &
+DEBUG_MODE=$DEBUG_MODE MANDRILL_APIKEY=$MANDRILL_APIKEY PORT=8080 nohup ~/go/bin/comforme &
 

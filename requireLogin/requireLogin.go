@@ -6,16 +6,16 @@ import (
 	"net/http"
 
 	"github.com/comforme/comforme/ajax"
+	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/login"
 	"github.com/comforme/comforme/settings"
 )
 
-const DebugMode = false
-
 func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
-		if DebugMode {
+		if false && common.DebugMode {
+			// DISABLED
 			log.Printf("Entering debug mode...")
 			handler(res, req)
 			return
@@ -54,7 +54,7 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.Re
 
 func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
-		if DebugMode {
+		if common.DebugMode {
 			log.Printf("Entering debug mode...")
 			handler(res, req)
 			return

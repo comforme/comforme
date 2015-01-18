@@ -47,8 +47,8 @@ Vagrant.configure(2) do |config|
   end
   config.vm.provision "shell" do |s|
     s.path = 'install-comforme.sh'
-    # Insert Mandrill API Key Here
-    #s.args = ""
+    # Debug mode, Mandrill API Key Here
+    s.args = ['true', ""]
     s.privileged = false
   end
 end

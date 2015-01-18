@@ -225,7 +225,7 @@ func (db DB) ResetPassword(email string) (password string, err error) {
 		err = common.InvalidEmail
 		return
 	}
-	
+
 	err = db.requirePasswordReset(email)
 
 	return
