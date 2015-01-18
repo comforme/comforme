@@ -49,6 +49,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 			} else {
 				recaptchaChallengeField := req.PostFormValue("recaptcha_challenge_field")
 				recaptchaResponseField := req.PostFormValue("recaptcha_response_field")
+				log.Println("recaptchaChallengeField", recaptchaChallengeField)
+				log.Println("recaptchaResponseField", recaptchaResponseField)
 				result := recaptcha.Confirm(
 					ipAddress,
 					recaptchaChallengeField,
