@@ -225,6 +225,8 @@ func (db DB) ResetPassword(email string) (password string, err error) {
 		err = common.InvalidEmail
 		return
 	}
+	
+	err = db.requirePasswordReset(email)
 
 	return
 }
@@ -234,6 +236,20 @@ func (db DB) changePassword(email, hashed string) error {
 		"UPDATE users SET password = $2, reset_required = false WHERE email = $1;",
 		email,
 		hashed,
+	)
+
+	if err != nil {
+		common.LogError(err)
+		return common.DatabaseError
+	}
+
+	return checkSingleRow(result, common.InvalidEmail)
+}
+
+func (db DB) requirePasswordReset(email string) error {
+	result, err := db.conn.Exec(
+		"UPDATE users SET reset_required = true WHERE email = $1;",
+		email,
 	)
 
 	if err != nil {
