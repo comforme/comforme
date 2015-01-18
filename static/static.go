@@ -93,7 +93,6 @@ function registerCommunityCheckboxes()
 
 function logoutOtherSessions(clickedButton)
 {
-	alert("Logout other sessions button pressed.");
 	$.post("/ajax/logoutOtherSessions").done
 	(
 		function(data)
