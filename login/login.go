@@ -35,7 +35,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" {
 		isSignup := req.PostFormValue("sign-up") == "true"
 		isLogin := req.PostFormValue("log-in") == "true"
-		isLogin := req.PostFormValue("password-reset") == "true"
+		isReset := req.PostFormValue("password-reset") == "true"
 
 		username := req.PostFormValue("username")
 		data["username"] = username
@@ -88,7 +88,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				return // Not needed, may reduce load on server
 			}
 		} else if isReset {
-			err := common.ResetPassword(email)
+			err := databaseActions.ResetPassword(email)
 			if err != nil {
 				data["formError"] = err.Error()
 			} else {
