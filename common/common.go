@@ -42,6 +42,12 @@ type Page struct {
 	DateCreated time.Time
 }
 
+type Post struct {
+	Author           string
+	Body             string
+	CommonCategories int
+}
+
 // Errors
 var EmailFailed = errors.New("Sending email failed.")
 var EmailInUse = errors.New("You have already registered with this email address.")

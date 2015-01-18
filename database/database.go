@@ -477,3 +477,56 @@ func (db DB) DeleteOtherSessions(user_id int, sessionid string) (loggedOut int, 
 	loggedOut = int(loggedOutNum)
 	return
 }
+
+func (db DB) GetPostsForPage(pageid int) (posts []common.Post, err error) {
+	rows, err := db.conn.Query(
+		`
+		SELECT
+			posts.body,
+			users.username,
+			count(community_memberships.community_id) AS communities_in_common
+		FROM
+			community_memberships,
+			users,
+			posts
+		WHERE
+			community_memberships.user_id = users.id
+			AND posts.user_id = users.id
+			AND posts.page_id = $1
+		GROUP BY
+			posts.id, users.username
+		ORDER BY
+			communities_in_common DESC;
+		`,
+		pageid,
+	)
+	if err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
+		return
+	}
+
+	defer rows.Close()
+
+	posts = []common.Post{}
+	for rows.Next() {
+		var row common.Post
+		if err := rows.Scan(
+			&row.Body,
+			&row.Author,
+			&row.CommonCategories,
+		); err != nil {
+			log.Fatal(err)
+		}
+		posts = append(posts, row)
+	}
+
+	if err = rows.Err(); err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
+		return
+	}
+
+	// Success
+	return
+}
