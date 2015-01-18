@@ -43,7 +43,7 @@ func Check(response, remoteip string) error {
 				return nil
 			}
 			if len(data.Errors) >= 1 {
-				err = errors.New(data.Errors[0])
+				err = errors.New("reCaptcha error(s): " + string(data.Errors))
 			} else {
 				err = recaptchaError
 			}
