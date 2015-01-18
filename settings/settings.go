@@ -34,33 +34,49 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	sessionid := cookie.Value
+	
+	email, err := databaseActions.GetEmail(sessionid)
+	if err != nil {
+		log.Println("Error getting email:", err)
+		common.Logout(res, req)
+		return
+	}
+	data["email"] = email
+	
+	username, err := databaseActions.GetUsername(sessionid)
+	if err != nil {
+		log.Println("Error getting username:", err)
+		common.Logout(res, req)
+		return
+	}
+	data["username"] = username
 
 	communities, err := databaseActions.ListCommunities(sessionid)
 	if err != nil {
 		log.Println("Error listing communities:", err)
 		common.Logout(res, req)
 		return
-	} else {
-		perCol := len(communities) / 4
-		extra := len(communities) % 4
-		cut1 := perCol
-		if extra >= 1 {
-			cut1++
-		}
-		cut2 := cut1 + perCol
-		if extra >= 2 {
-			cut2++
-		}
-		cut3 := cut2 + perCol
-		if extra >= 3 {
-			cut3++
-		}
-		data["communitiesCols"] = [][]common.Community{
-			communities[0:cut1],
-			communities[cut1:cut2],
-			communities[cut2:cut3],
-			communities[cut3:],
-		}
+	}
+	
+	perCol := len(communities) / 4
+	extra := len(communities) % 4
+	cut1 := perCol
+	if extra >= 1 {
+		cut1++
+	}
+	cut2 := cut1 + perCol
+	if extra >= 2 {
+		cut2++
+	}
+	cut3 := cut2 + perCol
+	if extra >= 3 {
+		cut3++
+	}
+	data["communitiesCols"] = [][]common.Community{
+		communities[0:cut1],
+		communities[cut1:cut2],
+		communities[cut2:cut3],
+		communities[cut3:],
 	}
 
 	openSessions, err := databaseActions.OtherSessions(sessionid)
@@ -124,6 +140,17 @@ const settingsTemplateText = `
 				<h1><i class="fi-widget"></i> Settings</h1>
                 {{if .successMsg}}<div class="alert-box success">{{.successMsg}}</div>{{end}}
                 {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
+				<section>
+					<h2>User Information</h2>
+					<div class="row">
+						<div class="large-4 columns left">
+							<h6>Email:</h6> {{.email}}
+						</div>
+						<div class="large-4 columns left">
+							<h6>Username:</h6> {{.username}}
+						</div>
+					</div>
+				</section>
 				<section>
 					<h2>Password Change</h2>
 					<form action="{{.formAction}}" method="post">

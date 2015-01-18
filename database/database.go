@@ -121,8 +121,7 @@ func (db DB) NewPage(sessionId string, title string, description string, address
 	return
 }
 
-func (db DB) RegisterUser(username, email string) (password string, err error) {
-	// Check if email is already in use
+func (db DB) checkEmailInUse(email string) (err error) {
 	var numRows int
 	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE email = $1", email).Scan(&numRows)
 	if err != nil {
@@ -135,7 +134,11 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 		return
 	}
 
-	// Check if username is already in use
+	return
+}
+
+func (db DB) checkUsernameInUse(username string) (err error) {
+	var numRows int
 	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE username = $1", username).Scan(&numRows)
 	if err != nil {
 		log.Printf("Error checking if username (%s) already exists: %s\n", username, err.Error())
@@ -144,6 +147,20 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 	}
 	if numRows != 0 {
 		err = common.UsernameInUse
+		return
+	}
+
+	return
+}
+
+func (db DB) RegisterUser(username, email string) (password string, err error) {
+	err = db.checkEmailInUse(email)
+	if err != nil {
+		return
+	}
+
+	err = db.checkUsernameInUse(username)
+	if err != nil {
 		return
 	}
 
@@ -173,6 +190,26 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 	return
 }
 
+func (db DB) ChangeUsername(user_id int, newUsername string) error {
+	err := db.checkUsernameInUse(newUsername)
+	if err != nil {
+		return err
+	}
+
+	result, err := db.conn.Exec(
+		"UPDATE users SET username = $2 WHERE user_id = $1;",
+		user_id,
+		newUsername,
+	)
+
+	if err != nil {
+		common.LogError(err)
+		return common.DatabaseError
+	}
+
+	return checkSingleRow(result, common.DatabaseError)
+}
+
 func hashPassword(password string) (string, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -187,6 +224,18 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 		"SELECT email FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
 		sessionid,
 	).Scan(&email)
+	if err != nil {
+		log.Printf("Error looking up email associated with sessionid  (%s): %s\n", sessionid, err.Error())
+		err = common.InvalidSessionID
+	}
+	return
+}
+
+func (db DB) GetUsername(sessionid string) (username string, err error) {
+	err = db.conn.QueryRow(
+		"SELECT username FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
+		sessionid,
+	).Scan(&username)
 	if err != nil {
 		log.Printf("Error looking up username associated with sessionid  (%s): %s\n", sessionid, err.Error())
 		err = common.InvalidSessionID
@@ -478,7 +527,8 @@ func (db DB) DeleteOtherSessions(user_id int, sessionid string) (loggedOut int, 
 	return
 }
 
-func (db DB) GetPostsForPage(pageid int) (posts []common.Post, err error) {
+func (db DB) GetPostsForPage(userid, pageid int) (posts []common.Post, err error) {
+	// TODO: Fix query.
 	rows, err := db.conn.Query(
 		`
 		SELECT
@@ -493,11 +543,13 @@ func (db DB) GetPostsForPage(pageid int) (posts []common.Post, err error) {
 			community_memberships.user_id = users.id
 			AND posts.user_id = users.id
 			AND posts.page_id = $1
+			AND 
 		GROUP BY
 			posts.id, users.username
 		ORDER BY
 			communities_in_common DESC;
 		`,
+		userid,
 		pageid,
 	)
 	if err != nil {
@@ -528,5 +580,40 @@ func (db DB) GetPostsForPage(pageid int) (posts []common.Post, err error) {
 	}
 
 	// Success
+	return
+}
+
+func (db DB) GetPage(category, slug string) (page common.Page, err error) {
+	page = common.Page{}
+	err = db.conn.QueryRow(`
+		SELECT
+			id,
+			title,
+			slug,
+			categories.name,
+			description,
+			date_created
+		FROM
+			pages,
+			categories
+		WHERE
+			categories.id = pages.category
+			AND categories.name = $1
+			AND slug = $2;`,
+		category,
+		slug,
+	).Scan(
+		&page.Id,
+		&page.Title,
+		&page.Slug,
+		&page.Category,
+		&page.Description,
+		&page.DateCreated,
+	)
+	if err != nil {
+		log.Println("Error getting page:", err)
+		err = common.PageNotFound
+		return
+	}
 	return
 }
