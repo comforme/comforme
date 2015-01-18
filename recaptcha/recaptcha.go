@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"log"
 )
 
 var secret string
