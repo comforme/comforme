@@ -34,7 +34,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	sessionid := cookie.Value
-	
+
 	email, err := databaseActions.GetEmail(sessionid)
 	if err != nil {
 		log.Println("Error getting email:", err)
@@ -42,7 +42,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	data["email"] = email
-	
+
 	username, err := databaseActions.GetUsername(sessionid)
 	if err != nil {
 		log.Println("Error getting username:", err)
@@ -57,7 +57,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 		common.Logout(res, req)
 		return
 	}
-	
+
 	perCol := len(communities) / 4
 	extra := len(communities) % 4
 	cut1 := perCol
@@ -89,7 +89,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if req.Method == "POST" {
-		if(req.PostFormValue("password-update") == "true") {
+		if req.PostFormValue("password-update") == "true" {
 			oldPassword := req.PostFormValue("oldPassword")
 			newPassword := req.PostFormValue("newPassword")
 			newPasswordAgain := req.PostFormValue("newPasswordAgain")
@@ -109,10 +109,10 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 			} else {
 				data["errorMsg"] = "Passwords do not match."
 			}
-		} else if(req.PostFormValue("username-update") == "true") {
+		} else if req.PostFormValue("username-update") == "true" {
 			usernameChangePassword := req.PostFormValue("usernameChangePassword")
 			newUsername := req.PostFormValue("newUsername")
-			
+
 			err := databaseActions.ChangeUsername(sessionid, newUsername, usernameChangePassword)
 			if err != nil {
 				data["newUsername"] = newUsername

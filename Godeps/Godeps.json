@@ -1,0 +1,27 @@
+{
+	"ImportPath": "github.com/comforme/comforme",
+	"GoVersion": "go1.4",
+	"Deps": [
+		{
+			"ImportPath": "github.com/go-zoo/bone",
+			"Rev": "3de5763aca113fb933391ff6e3dd26c922f62b69"
+		},
+		{
+			"ImportPath": "github.com/keighl/mandrill",
+			"Comment": "0.0.2",
+			"Rev": "50da1e8b9846d082204fe7b9ce7c1e3eb8e24b4c"
+		},
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Rev": "e31e9d09fa0cd168dd1a45ddb1dff76f1f55512a"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
+		}
+	]
+}

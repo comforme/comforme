@@ -116,7 +116,7 @@ func CheckPassword(sessionid, password string) (email string, err error) {
 		err = InvalidPassword
 		return
 	}
-	
+
 	return
 }
 
@@ -125,12 +125,12 @@ func ChangeUsername(sessionid, newUsername, password string) (err error) {
 		err = UsernameTooShort
 		return
 	}
-	
+
 	_, err = CheckPassword(sessionid, password)
 	if err != nil {
 		return
 	}
-	
+
 	user_id, err := db.GetSessionUserID(sessionid)
 	if err != nil {
 		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
@@ -138,7 +138,7 @@ func ChangeUsername(sessionid, newUsername, password string) (err error) {
 	}
 
 	err = db.ChangeUsername(user_id, newUsername)
-	
+
 	return
 }
 
