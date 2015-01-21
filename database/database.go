@@ -352,7 +352,7 @@ func checkSingleRow(result sql.Result, otherwise error) error {
 
 	if rows != 1 {
 		log.Println("Query affected %d rows.", rows)
-		return checkSingleRow(result, otherwise)
+		return otherwise
 	}
 
 	return nil
