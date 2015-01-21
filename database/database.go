@@ -349,8 +349,8 @@ func checkSingleRow(result sql.Result, otherwise error) error {
 		return common.DatabaseError
 	}
 
+	log.Printf("Query affected %d rows.", rows)
 	if rows != 1 {
-		log.Printf("Query affected %d rows.", rows)
 		return otherwise
 	}
 
