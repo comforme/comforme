@@ -342,13 +342,16 @@ func (db DB) Logout(sessionid string) error {
 }
 
 func checkSingleRow(result sql.Result, otherwise error) error {
+	log.Println("Checking single row.")
 	rows, err := result.RowsAffected()
 	if err != nil {
+		log.Println("Calling common.LogErrorSkipLevels(err, 1)")
 		common.LogErrorSkipLevels(err, 1)
 		return common.DatabaseError
 	}
 
 	if rows != 1 {
+		log.Println("Query affected %d rows.", rows)
 		return checkSingleRow(result, otherwise)
 	}
 
