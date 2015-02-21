@@ -4,7 +4,7 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/go-zoo/bone",
-			"Rev": "3de5763aca113fb933391ff6e3dd26c922f62b69"
+			"Rev": "5af089108205fe172b8bdbb238228f9110df2a41"
 		},
 		{
 			"ImportPath": "github.com/keighl/mandrill",

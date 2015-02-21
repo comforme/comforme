@@ -9,8 +9,6 @@ package bone
 
 import (
 	"net/http"
-	"net/url"
-	"sort"
 	"strings"
 )
 
@@ -25,7 +23,8 @@ type Route struct {
 	Path    string
 	Size    int
 	Token   Token
-	Pattern Pattern
+	Params  bool
+	Pattern map[int]string
 	Handler http.Handler
 	Method  string
 }
@@ -34,38 +33,9 @@ type Route struct {
 // Tokens: string value of each token
 // size: number of token
 type Token struct {
+	raw    []int
 	Tokens []string
 	Size   int
-}
-
-type byLength []*Route
-
-func (b byLength) Len() int {
-	return len(b)
-}
-
-func (b byLength) Swap(i int, j int) {
-	b[i], b[j] = b[j], b[i]
-}
-
-func (b byLength) Less(i int, j int) bool {
-	return b[i].Token.Size < b[j].Token.Size
-}
-
-func (b byLength) Sort() {
-	sort.Sort(b)
-}
-
-// Pattern content the required information for the route Pattern
-// Exist: check if a variable was declare on the route
-// ID: the name of the variable
-// Pos: postition of var in the route path
-// Value: is the value of the request parameters
-type Pattern struct {
-	Exist bool
-	ID    string
-	Pos   int
-	Value map[string]string
 }
 
 // NewRoute return a pointer to a Route instance and call save() on it
@@ -79,14 +49,15 @@ func NewRoute(url string, h http.Handler) *Route {
 func (r *Route) save() {
 	r.Size = len(r.Path)
 	r.Token.Tokens = strings.Split(r.Path, "/")
+	r.Pattern = make(map[int]string)
 
 	for i, s := range r.Token.Tokens {
 		if len(s) >= 1 {
 			if s[:1] == ":" {
-				r.Pattern.Exist = true
-				r.Pattern.ID = s[1:]
-				r.Pattern.Pos = i
-				r.Pattern.Value = make(map[string]string)
+				r.Pattern[i] = s[1:]
+				r.Params = true
+			} else {
+				r.Token.raw = append(r.Token.raw, i)
 			}
 		}
 		r.Token.Size++
@@ -94,16 +65,22 @@ func (r *Route) save() {
 }
 
 // Match check if the request match the route Pattern
-func (r *Route) Match(path string) (url.Values, bool) {
-	ss := strings.Split(path, "/")
-	if len(ss) == r.Token.Size && ss[r.Token.Size-1] != "" {
-		if r.Path[:r.Pattern.Pos] == path[:r.Pattern.Pos] {
-			uV := url.Values{}
-			uV.Add(r.Pattern.ID, ss[r.Pattern.Pos])
-			return uV, true
+func (r *Route) Match(req *http.Request) bool {
+	ss := strings.Split(req.URL.Path, "/")
+
+	if len(ss) == r.Token.Size {
+		for _, v := range r.Token.raw {
+			if ss[v] != r.Token.Tokens[v] {
+				return false
+			}
 		}
+		vars[req] = map[string]string{}
+		for k, v := range r.Pattern {
+			vars[req][v] = ss[k]
+		}
+		return true
 	}
-	return nil, false
+	return false
 }
 
 // Get set the route method to Get
@@ -146,4 +123,16 @@ func (r *Route) Patch() *Route {
 func (r *Route) Options() *Route {
 	r.Method = "OPTIONS"
 	return r
+}
+
+func (r *Route) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	if r.Method != "" {
+		if req.Method == r.Method {
+			r.Handler.ServeHTTP(rw, req)
+			return
+		}
+		http.NotFound(rw, req)
+		return
+	}
+	r.Handler.ServeHTTP(rw, req)
 }

@@ -8,11 +8,15 @@ and custom NotFound handler.
 
 ![alt tag](https://c2.staticflickr.com/2/1070/540747396_5542b42cca_z.jpg)
 
-## Update
+## Update 29 january 2015
+
+Speed improvement for url parameters, from ```~ 1500 ns/op ``` to ```~ 1000 ns/op ```. 
+
+## Update 25 december 2014
 
 After trying to find a way of using the default url.Query() for route parameters, i decide to change the way bone is dealing with this. url.Query() is too slow for good router performance.
 So now to get the parameters value in your handler, you need to use 
-` bone.GetValue(request, key) ` instead of ` req.Url.Query().Get(key) `.
+` bone.GetValue(req, key) ` instead of ` req.Url.Query().Get(key) `.
 This change give a big speed improvement for every kind of application using route parameters, like ~80x faster ...
 Really sorry for breaking things, but i think it's worth it.  
 
@@ -45,8 +49,9 @@ import(
 func main () {
   mux := bone.New()
   
-  // Method takes http.HandlerFunc
+  // mux.Get, Post, etc ... takes http.Handler
   mux.Get("/home/:id", HomeHandler)
+  mux.Get("/profil/:id/:var", ProfilHandler)
   mux.Post("/data", DataHandler)
 
   // Handle take http.Handler
@@ -69,7 +74,6 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 - More Testing
 - Debugging
 - Optimisation
-- Refactoring
 
 ## Contributing
 

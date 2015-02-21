@@ -20,7 +20,7 @@ type Mux struct {
 
 var (
 	method = []string{"GET", "POST", "PUT", "DELETE", "HEAD", "PATCH", "OPTIONS"}
-	vars   = make(map[*http.Request]*Route)
+	vars   = make(map[*http.Request]map[string]string)
 )
 
 // New create a pointer to a Mux instance
@@ -33,7 +33,6 @@ func New() *Mux {
 
 // Serve http request
 func (m *Mux) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-
 	// Check if the request path doesn't end with /
 	if !m.valid(req.URL.Path) {
 		if key, ok := m.isStatic(req.URL.Path); ok {
@@ -47,22 +46,19 @@ func (m *Mux) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Location", req.URL.Path)
 		rw.WriteHeader(http.StatusFound)
 	}
-
 	// Loop over all the registred route.
 	for _, r := range m.Routes[req.Method] {
 		// If the route is equal to the request path.
-		if req.URL.Path == r.Path && !r.Pattern.Exist {
+		if req.URL.Path == r.Path && !r.Params {
 			r.Handler.ServeHTTP(rw, req)
 			return
-		} else if r.Pattern.Exist {
-			if v, ok := r.Match(req.URL.Path); ok {
-				r.insert(req, v)
+		} else if r.Params {
+			if ok := r.Match(req); ok {
 				r.Handler.ServeHTTP(rw, req)
+				delete(vars, req)
 				return
 			}
-			continue
 		}
-		continue
 	}
 	// If no valid Route found, check for static file
 	if key, ok := m.isStatic(req.URL.Path); ok {
@@ -74,11 +70,6 @@ func (m *Mux) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 // Handle add a new route to the Mux without a HTTP method
 func (m *Mux) Handle(path string, handler http.Handler) {
-	r := NewRoute(path, handler)
-	if !m.valid(path) {
-		m.Static[path] = r
-		return
-	}
 	for _, mt := range method {
 		m.register(mt, path, handler)
 	}
@@ -131,11 +122,10 @@ func (m *Mux) NotFound(handler http.HandlerFunc) {
 
 // Register the new route in the router with the provided method and handler
 func (m *Mux) register(method string, path string, handler http.Handler) {
+	r := NewRoute(path, handler)
 	if m.valid(path) {
-		r := NewRoute(path, handler)
 		m.Routes[method] = append(m.Routes[method], r)
-		byLength(m.Routes[method]).Sort()
 		return
 	}
-	m.Handle(path, handler)
+	m.Static[path] = r
 }
