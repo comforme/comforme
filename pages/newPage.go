@@ -74,15 +74,15 @@ const newPageTemplateText = `
             <fieldset>
             <legend>Create a New Page</legend>
 			<div>
-				{{if .errorMsg}}<input type="text" name="title" placeholder="page title" value={{ .title}} align="center">
+				{{if .title}}<input type="text" name="title" placeholder="page title" value={{ .title}} align="center">
 				{{else}}<input type="text" name="title" placeholder="page title" align="center">{{end}}
 			</div>
 			<div>
-				{{if .errorMsg}}<textarea name="description" placeholder="description" rows="15">{{ .description}}</textarea>
+				{{if .description}}<textarea name="description" placeholder="description" rows="15">{{ .description}}</textarea>
 				{{else}}<textarea name="description" placeholder="description" rows="15"></textarea>{{end}}
 			</div>
 			<div>
-				{{if .errorMsg}}<input type="text" name="address" placeholder="address" value={{ .address}}>
+				{{if .address}}<input type="text" name="address" placeholder="address" value={{ .address}}>
 				{{else}}<input type="text" name="address" placeholder="address">{{end}}
 			</div>
 			<div>
