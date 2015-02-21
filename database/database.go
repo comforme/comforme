@@ -102,9 +102,6 @@ func (db DB) NewPage(sessionId string, title string, description string, address
 		return
 	}
 
-	category -= 48
-	log.Println("category=", category)
-
 	_, err = db.conn.Exec(
 		"INSERT INTO pages (title, description, address, category, slug, user_id, location) VALUES ($1, $2, $3, $4, $5, $6, '(0, 0)')",
 		title,
