@@ -419,7 +419,7 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 	rows, err := db.conn.Query(`
 		SELECT
-			id,
+			pages.id,
 			title,
 			slug,
 			categories.name,
@@ -430,7 +430,7 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 			categories
 		WHERE
 			categories.id = pages.category AND
-			to_tsvector('english', title) @@ to_tsquery($4) -- Full text search
+			to_tsvector('english', title) @@ to_tsquery($1) -- Full text search
 		ORDER BY date_created DESC
 		`,
 		query,
@@ -641,7 +641,7 @@ func (db DB) GetPage(category, slug string) (page common.Page, err error) {
 	page = common.Page{}
 	err = db.conn.QueryRow(`
 		SELECT
-			id,
+			pages.id,
 			title,
 			slug,
 			categories.name,

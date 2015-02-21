@@ -243,7 +243,7 @@ func SearchPages(sessionid, query string) ([]common.Page, error) {
 }
 
 func GetPage(sessionid, category, slug string) (page common.Page, posts []common.Post, err error) {
-	user_id, err := db.GetSessionUserID(sessionid)
+	//user_id, err := db.GetSessionUserID(sessionid)
 	if err != nil {
 		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
 		return
@@ -255,11 +255,11 @@ func GetPage(sessionid, category, slug string) (page common.Page, posts []common
 		return
 	}
 
-	posts, err = db.GetPostsForPage(user_id, page.Id)
-	if err != nil {
-		log.Printf("Error looking up posts for page (%s) with category (%s) and slug (%s): %s\n", page.Title, category, slug, err.Error())
-		return
-	}
+	//	posts, err = db.GetPostsForPage(user_id, page.Id)
+	//	if err != nil {
+	//		log.Printf("Error looking up posts for page (%s) with category (%s) and slug (%s): %s\n", page.Title, category, slug, err.Error())
+	//		return
+	//	}
 
 	return
 }
