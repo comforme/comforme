@@ -103,7 +103,7 @@ func GenSlug(title string) string {
 	slug := slugFrontCap.ReplaceAll(titleBytes, []byte(""))
 	slug = slugEndCap.ReplaceAll(titleBytes, []byte(""))
 	slug = slugRemove.ReplaceAll(titleBytes, []byte(""))
-	slug = slugMiddle.ReplaceAll(titleBytes, []byte(" "))
+	slug = slugMiddle.ReplaceAll(titleBytes, []byte("-"))
 	return strings.ToLower(string(slug))
 }
 
