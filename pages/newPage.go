@@ -72,8 +72,8 @@ const newPageTemplateText = `
             <fieldset>
             <legend>Create a New Page</legend>
 			<div>
-				{{if .errorMsg}}<input type="text" name="title" placeholder={{ .title}} align="center">{{end}}
-				<input type="text" name="title" placeholder="page title" align="center">
+				{{if .errorMsg}}<input type="text" name="title" placeholder="page title" value={{ .title}} align="center">
+				{{else}}<input type="text" name="title" placeholder="page title" align="center">{{end}}
 			</div>
 			<div>
 				<textarea name="description" placeholder="description" rows="15"></textarea>
