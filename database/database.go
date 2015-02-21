@@ -469,7 +469,7 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 	return
 }
 
-func (db DB) ListCategories() (categories map[int]string, err error) {
+func (db DB) ListCategories() (categories map[string]string, err error) {
 	rows, err := db.conn.Query(`
 		SELECT
 			id,
@@ -486,10 +486,10 @@ func (db DB) ListCategories() (categories map[int]string, err error) {
 
 	defer rows.Close()
 
-	categories = map[int]string{}
+	categories = map[string]string{}
 	for rows.Next() {
 		var category string
-		var id int
+		var id string
 		if err := rows.Scan(
 			&id,
 			&category,
