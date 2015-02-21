@@ -36,6 +36,9 @@ func SearchHandler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println("Failed to retrieve search results for "+
 				query, err)
+		} else {
+			log.Printf("Search results for %s:\n", query)
+			log.Printf("%+v\n", data["results"])
 		}
 	}
 
