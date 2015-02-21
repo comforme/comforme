@@ -33,6 +33,8 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	data["categoryDropdown"].(map[string]interface{})["options"] = options
 	data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
 	data["title"] = req.PostFormValue("title")
+	data["description"] = req.PostFormValue("description")
+	data["address"] = req. PostFormValue("address")
 
 	if req.Method == "POST" {
 		cookie, err := req.Cookie("sessionid")
@@ -69,14 +71,16 @@ const newPageTemplateText = `
             <fieldset>
             <legend>Create a New Page</legend>
 			<div>
-				{{if .errorMsg}}<input type="text" name="title" placeholder="page title" value={{ .title}} align="center">
+				{{if .title}}<input type="text" name="title" placeholder="page title" value={{ .title}} align="center">
 				{{else}}<input type="text" name="title" placeholder="page title" align="center">{{end}}
 			</div>
 			<div>
-				<textarea name="description" placeholder="description" rows="15"></textarea>
+				{{if .description}}<textarea name="description" placeholder="description" rows="15">{{ .description}}</textarea>
+				{{else}}<textarea name="description" placeholder="description" rows="15"></textarea>{{end}}
 			</div>
 			<div>
-				<input type="text" name="address" placeholder="address">
+				{{if .address}}<input type="text" name="address" placeholder="address" value={{ .address}}>
+				{{else}}<input type="text" name="address" placeholder="address">{{end}}
 			</div>
 			<div>
 				{{template "dropdown" .categoryDropdown}}
