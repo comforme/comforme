@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
+	"log"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
@@ -45,6 +46,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 		address := req.PostFormValue("address")
 		category, err := strconv.ParseInt(req.PostFormValue("category"), 0, 0)
 		if err != nil {
+			log.Println("Invalid category:", req.PostFormValue("category"))
 			data["errorMsg"] = "Invalid category."
 			goto render
 		}
