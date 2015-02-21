@@ -491,8 +491,8 @@ func (db DB) ListCategories() (categories map[int]string, err error) {
 		var category string
 		var id int
 		if err := rows.Scan(
-			id,
-			category,
+			&id,
+			&category,
 		); err != nil {
 			log.Fatal(err)
 		}
