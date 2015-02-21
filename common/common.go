@@ -24,6 +24,9 @@ const (
 	generatedPasswordLength = 15
 	fromEmail               = "donotreply@comfor.me"
 	fromName                = "ComFor.Me"
+	slugChars               = "A-Za-z0-9"
+	slugRemoveChars         = "'\""
+	slugLength              = 25
 )
 
 // Database row types
@@ -63,11 +66,19 @@ var PageNotFound = errors.New("Page not found.")
 var mandrillKey = os.Getenv("MANDRILL_APIKEY")
 var emailRegex *regexp.Regexp
 var ipAddressRegex *regexp.Regexp
+var slugFrontCap *regexp.Regexp
+var slugEndCap *regexp.Regexp
+var slugRemove *regexp.Regexp
+var slugMiddle *regexp.Regexp
 
 func init() {
 	rand.Seed(time.Now().Unix() ^ int64(time.Now().Nanosecond()))
 	emailRegex = regexp.MustCompile("^.+@.+\\..+$")
 	ipAddressRegex = regexp.MustCompile("(.+):\\d+$")
+	slugFrontCap = regexp.MustCompile("[^" + slugChars + "]+$")
+	slugEndCap = regexp.MustCompile("^[^" + slugChars + "]+")
+	slugMiddle = regexp.MustCompile("[^" + slugChars + "]+")
+	slugRemove = regexp.MustCompile("[" + slugRemoveChars + "]")
 }
 
 func RandSeq(n int) string {
@@ -199,4 +210,13 @@ func GetSessionId(res http.ResponseWriter, req *http.Request) (sessionid string,
 	}
 	sessionid = cookie.Value
 	return
+}
+
+func GetSlug(title string) string {
+	titleBytes := []byte(title)
+	slug := slugFrontCap.ReplaceAll(titleBytes, []byte(""))
+	slug = slugEndCap.ReplaceAll(titleBytes, []byte(""))
+	slug = slugRemove.ReplaceAll(titleBytes, []byte(""))
+	slug = slugMiddle.ReplaceAll(titleBytes, []byte(" "))
+	return string(slug)
 }
