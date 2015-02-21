@@ -28,13 +28,13 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	options, err := databaseActions.ListCategories()
 	if err != nil {
 		data["errorMsg"] = err.Error()
+		data["title"] = req.PostFormValue("title")
+		data["description"] = req.PostFormValue("description")
+		data["address"] = req. PostFormValue("address")
 		goto render
 	}
 	data["categoryDropdown"].(map[string]interface{})["options"] = options
 	data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
-	data["title"] = req.PostFormValue("title")
-	data["description"] = req.PostFormValue("description")
-	data["address"] = req. PostFormValue("address")
 
 
 	
