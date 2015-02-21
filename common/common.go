@@ -97,9 +97,13 @@ func GenPassword() string {
 	return RandSeq(generatedPasswordLength)
 }
 
-func GenSlug(seed string) string {
-	slug := strings.ToLower(seed)
-	return slug
+func GenSlug(title string) string {
+	titleBytes := []byte(title)
+	slug := slugFrontCap.ReplaceAll(titleBytes, []byte(""))
+	slug = slugEndCap.ReplaceAll(titleBytes, []byte(""))
+	slug = slugRemove.ReplaceAll(titleBytes, []byte(""))
+	slug = slugMiddle.ReplaceAll(titleBytes, []byte(" "))
+	return strings.ToLower(string(slug))
 }
 
 func ExecTemplate(tmpl *template.Template, w http.ResponseWriter, pc map[string]interface{}) {
@@ -210,13 +214,4 @@ func GetSessionId(res http.ResponseWriter, req *http.Request) (sessionid string,
 	}
 	sessionid = cookie.Value
 	return
-}
-
-func GetSlug(title string) string {
-	titleBytes := []byte(title)
-	slug := slugFrontCap.ReplaceAll(titleBytes, []byte(""))
-	slug = slugEndCap.ReplaceAll(titleBytes, []byte(""))
-	slug = slugRemove.ReplaceAll(titleBytes, []byte(""))
-	slug = slugMiddle.ReplaceAll(titleBytes, []byte(" "))
-	return string(slug)
 }
