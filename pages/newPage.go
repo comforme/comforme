@@ -45,7 +45,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 		description := req.PostFormValue("description")
 		address := req.PostFormValue("address")
 		category, err := strconv.ParseInt(req.PostFormValue("category"), 0, 0)
-		if err != nil {
+		if err != nil || category < 0 {
 			log.Println("Invalid category:", req.PostFormValue("category"))
 			data["errorMsg"] = "Invalid category."
 			goto render
