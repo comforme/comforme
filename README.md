@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/comforme/comforme.svg)](https://travis-ci.org/comforme/comforme)
 # comfor.me
 Everyone's personal community
 
