@@ -66,8 +66,8 @@ INSERT INTO public.communities (id, name) VALUES (12, 'Michelle Obama');
 INSERT INTO public.communities (id, name) VALUES (13, 'Genderqueer');
 INSERT INTO public.communities (id, name) VALUES (14, 'Heterosexual');
 
-INSERT INTO public.categories (id, name) VALUES (1, 'Medical');
-INSERT INTO public.categories (id, name) VALUES (2, 'Food');
-INSERT INTO public.categories (id, name) VALUES (3, 'Entertainment');
-INSERT INTO public.categories (id, name) VALUES (4, 'Travel Services');
-INSERT INTO public.categories (id, name) VALUES (5, 'Home/Garden Renovation');
+INSERT INTO public.categories (id, name, slug) VALUES (1, 'Medical', 'medical');
+INSERT INTO public.categories (id, name, slug) VALUES (2, 'Food', 'food');
+INSERT INTO public.categories (id, name, slug) VALUES (3, 'Entertainment', 'entertainment');
+INSERT INTO public.categories (id, name, slug) VALUES (4, 'Travel Services', 'travel-services');
+INSERT INTO public.categories (id, name, slug) VALUES (5, 'Home/Garden Renovation', 'home-garden-renovation');
