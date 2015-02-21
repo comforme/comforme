@@ -188,3 +188,14 @@ func GetIpAddress(req *http.Request) (string, error) {
 	}
 	return string(addrParts[1]), nil
 }
+
+func GetSessionId(res http.ResponseWriter, req *http.Request) (sessionid string, err error) {
+	cookie, err := req.Cookie("sessionid")
+	if err != nil {
+		log.Println("Failed to retrieve sessionid", err)
+		Logout(res, req)
+		return
+	}
+	sessionid = cookie.Value
+	return
+}

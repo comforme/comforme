@@ -22,7 +22,7 @@ func init() {
 func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 	data["formAction"] = req.URL.Path
-	
+
 	data["categoryDropdown"] = map[string]interface{}{}
 	data["categoryDropdown"].(map[string]interface{})["name"] = "category"
 	options, err := databaseActions.ListCategories()
@@ -34,13 +34,10 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
 	data["title"] = req.PostFormValue("title")
 
-
-	
-	
 	if req.Method == "POST" {
 		cookie, err := req.Cookie("sessionid")
 		sessionId := cookie.Value
-		
+
 		title := req.PostFormValue("title")
 		description := req.PostFormValue("description")
 		address := req.PostFormValue("address")
@@ -49,7 +46,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 			data["errorMsg"] = "Invalid category."
 			goto render
 		}
-		
+
 		err = databaseActions.CreatePage(sessionId, title, description, address, int(category))
 		if err == nil {
 			data["successMsg"] = "Created " + title + "!"
@@ -57,8 +54,8 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 			data["errorMsg"] = "Failed to create page!"
 		}
 	}
-	
-	render:
+
+render:
 	common.ExecTemplate(newPageTemplate, res, data)
 }
 
