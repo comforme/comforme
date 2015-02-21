@@ -75,7 +75,7 @@ const newPageTemplateText = `
 				<input type="text" name="address/location" placeholder="address">
 			</div>
 			<div>
-				{{template "dropdown" .categoryDropdown .}}
+				{{template "dropdown" .categoryDropdown}}
 			</div>
 			<div style="text-align:center">
 				<button type="submit" class="button" name="sign-up" value="true">Submit</button>
