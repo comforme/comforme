@@ -32,6 +32,9 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	}
 	data["categoryDropdown"].(map[string]interface{})["options"] = options
 	data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
+	data["title"] = req.PostFormValue("title")
+
+
 	
 	
 	if req.Method == "POST" {
@@ -69,6 +72,7 @@ const newPageTemplateText = `
             <fieldset>
             <legend>Create a New Page</legend>
 			<div>
+				{{if .errorMsg}}<input type="text" name="title" placeholder={{ .title}} align="center">{{end}}
 				<input type="text" name="title" placeholder="page title" align="center">
 			</div>
 			<div>
