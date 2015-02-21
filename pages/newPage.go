@@ -44,13 +44,13 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 		title := req.PostFormValue("title")
 		description := req.PostFormValue("description")
 		address := req.PostFormValue("address")
-		category, err := strconv.Parseint(req.PostFormValue("category"), 0, 0)
+		category, err := strconv.ParseInt(req.PostFormValue("category"), 0, 0)
 		if err != nil {
 			data["errorMsg"] = "Invalid category."
 			goto render
 		}
 		
-		err = databaseActions.CreatePage(sessionId, title, description, address, category)
+		err = databaseActions.CreatePage(sessionId, title, description, address, int(category))
 		if err == nil {
 			data["successMsg"] = "Created " + title + "!"
 		} else {
