@@ -33,6 +33,8 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	data["categoryDropdown"].(map[string]interface{})["options"] = options
 	data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
 	data["title"] = req.PostFormValue("title")
+	data["description"] = req.PostFormValue("description")
+	data["address"] = req. PostFormValue("address")
 
 
 	
@@ -76,10 +78,12 @@ const newPageTemplateText = `
 				{{else}}<input type="text" name="title" placeholder="page title" align="center">{{end}}
 			</div>
 			<div>
-				<textarea name="description" placeholder="description" rows="15"></textarea>
+				{{if .errorMsg}}<textarea name="description" placeholder="description" value={{ .description}} rows="15"></textarea>
+				{{else}}<textarea name="description" placeholder="description" rows="15"></textarea>{{end}}
 			</div>
 			<div>
-				<input type="text" name="address" placeholder="address">
+				{{if .errorMsg}}<input type="text" name="address" placeholder="address" value={{ .address}}>
+				{{else}}<input type="text" name="address" placeholder="address">{{end}}
 			</div>
 			<div>
 				{{template "dropdown" .categoryDropdown}}
