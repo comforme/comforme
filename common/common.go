@@ -46,6 +46,7 @@ type Post struct {
 	Author           string
 	Body             string
 	CommonCategories int
+	Date             string
 }
 
 // Errors

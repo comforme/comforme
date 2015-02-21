@@ -575,6 +575,7 @@ func (db DB) GetPostsForPage(userid, pageid int) (posts []common.Post, err error
 			SELECT
 				posts.body,
 				authors.username AS author,
+				posts.date_created,
 				(
 					SELECT count(*)
 					FROM
@@ -620,6 +621,7 @@ func (db DB) GetPostsForPage(userid, pageid int) (posts []common.Post, err error
 		if err := rows.Scan(
 			&row.Body,
 			&row.Author,
+			&row.Date,
 			&row.CommonCategories,
 		); err != nil {
 			log.Fatal(err)

@@ -37,7 +37,7 @@ func main() {
 	)
 
 	mux.Handle(
-		"/page/:category/:pagename",
+		"/page/:category/:slug",
 		http.HandlerFunc(
 			requireLogin.RequireLogin(pages.PageHandler),
 		),
