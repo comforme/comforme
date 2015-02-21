@@ -3,6 +3,7 @@ package pages
 import (
 	"html/template"
 	"net/http"
+	"strconv"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
@@ -43,8 +44,13 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 		title := req.PostFormValue("title")
 		description := req.PostFormValue("description")
 		address := req.PostFormValue("address")
-		categories := req.PostFormValue("categories")
-		err = databaseActions.CreatePage(sessionId, title, description, address, int(categories[0]))
+		category, err := strconv.Parseint(req.PostFormValue("category"), 0, 0)
+		if err != nil {
+			data["errorMsg"] = "Invalid category."
+			goto render
+		}
+		
+		err = databaseActions.CreatePage(sessionId, title, description, address, category)
 		if err == nil {
 			data["successMsg"] = "Created " + title + "!"
 		} else {
