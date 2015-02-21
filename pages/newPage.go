@@ -75,7 +75,7 @@ const newPageTemplateText = `
 				<textarea name="description" placeholder="description" rows="15"></textarea>
 			</div>
 			<div>
-				<input type="text" name="address/location" placeholder="address">
+				<input type="text" name="address" placeholder="address">
 			</div>
 			<div>
 				{{template "dropdown" .categoryDropdown}}
