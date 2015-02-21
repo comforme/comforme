@@ -7,7 +7,7 @@ COMFORME_PATH=~/go/src/github.com/comforme/comforme
 COMFORME_BIN=~/go/bin/comforme
 export PORT=8080
 
-rsync -avc --exclude *~ --exclude *.sw[op] /vagrant/ ${COMFORME_PATH}/
+rsync -avc --exclude *~ --exclude *.sw[op] --exclude .git /vagrant/ ${COMFORME_PATH}/
 cd $COMFORME_PATH
 pkill comforme
 go clean && go install
