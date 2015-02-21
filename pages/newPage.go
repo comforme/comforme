@@ -31,15 +31,12 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 		goto render
 	}
 	data["categoryDropdown"].(map[string]interface{})["options"] = options
+	data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
 	
 	
 	if req.Method == "POST" {
 		cookie, err := req.Cookie("sessionid")
 		sessionId := cookie.Value
-		data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
-		if err != nil {
-			goto render
-		}
 		
 		title := req.PostFormValue("title")
 		description := req.PostFormValue("description")
