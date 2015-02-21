@@ -84,6 +84,10 @@ func PasswordChangeRequired(sessionid string) (bool, error) {
 	return db.PasswordChangeRequired(sessionid)
 }
 
+func ListCategories() ([]string, error) {
+	return db.ListCategories()
+}
+
 func Login(email string, password string) (sessionid string, err error) {
 	userid, err := db.GetUserID(email, password)
 	if err != nil {

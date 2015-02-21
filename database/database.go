@@ -469,6 +469,43 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 	return
 }
 
+func (db DB) ListCategories() (categories []string, err error) {
+	rows, err := db.conn.Query(`
+		SELECT
+			name
+		FROM
+			categories
+		`,
+	)
+	if err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
+		return
+	}
+
+	defer rows.Close()
+
+	categories = []string{}
+	for rows.Next() {
+		var category string
+		if err := rows.Scan(
+			category,
+		); err != nil {
+			log.Fatal(err)
+		}
+		categories = append(categories, category)
+	}
+
+	if err = rows.Err(); err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
+		return
+	}
+
+	// Success
+	return
+}
+
 func (db DB) AddCommunityMembership(user_id, community_id int) (err error) {
 	_, err = db.conn.Exec(
 		"INSERT INTO community_memberships (user_id, community_id) VALUES ($1, $2)",
@@ -530,26 +567,38 @@ func (db DB) DeleteOtherSessions(user_id int, sessionid string) (loggedOut int, 
 }
 
 func (db DB) GetPostsForPage(userid, pageid int) (posts []common.Post, err error) {
-	// TODO: Fix query.
 	rows, err := db.conn.Query(
 		`
-		SELECT
-			posts.body,
-			users.username,
-			count(community_memberships.community_id) AS communities_in_common
-		FROM
-			community_memberships,
-			users,
-			posts
-		WHERE
-			community_memberships.user_id = users.id
-			AND posts.user_id = users.id
-			AND posts.page_id = $1
-			AND 
-		GROUP BY
-			posts.id, users.username
-		ORDER BY
-			communities_in_common DESC;
+			SELECT
+				posts.body,
+				authors.username AS author,
+				(
+					SELECT count(*)
+					FROM
+						(
+							SELECT community_id
+							FROM
+								community_memberships
+							WHERE
+								user_id = $1
+						) my_communities,
+						(
+							SELECT community_id
+							FROM
+								community_memberships
+							WHERE
+								user_id = authors.id
+						) author_communities
+					WHERE
+						my_communities.community_id = author_communities.community_id
+				) AS common_communities
+			FROM
+				users authors,
+				posts
+			WHERE
+				posts.user_id = authors.id
+				AND posts.page_id = $2
+			ORDER BY common_communities DESC;
 		`,
 		userid,
 		pageid,
