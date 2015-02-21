@@ -84,7 +84,7 @@ func PasswordChangeRequired(sessionid string) (bool, error) {
 	return db.PasswordChangeRequired(sessionid)
 }
 
-func ListCategories() ([]string, error) {
+func ListCategories() (map[int]string, error) {
 	return db.ListCategories()
 }
 

@@ -15,28 +15,44 @@ func init() {
 	newPageTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(newPageTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(newPageTemplate.New("content").Parse(newPageTemplateText))
+	template.Must(newPageTemplate.New("dropdown").Parse(templates.Dropdown))
 }
 
 func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 	data["formAction"] = req.URL.Path
+	
+	data["categoryDropdown"] = map[string]interface{}{}
+	data["categoryDropdown"].(map[string]interface{})["name"] = "category"
+	options, err := databaseActions.ListCategories()
+	if err != nil {
+		data["errorMsg"] = err.Error()
+		goto render
+	}
+	data["categoryDropdown"].(map[string]interface{})["options"] = options
+	
+	
 	if req.Method == "POST" {
 		cookie, err := req.Cookie("sessionid")
 		sessionId := cookie.Value
+		data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
+		if err != nil {
+			goto render
+		}
+		
+		title := req.PostFormValue("title")
+		description := req.PostFormValue("description")
+		address := req.PostFormValue("address")
+		categories := req.PostFormValue("categories")
+		err = databaseActions.CreatePage(sessionId, title, description, address, int(categories[0]))
 		if err == nil {
-			title := req.PostFormValue("title")
-			description := req.PostFormValue("description")
-			address := req.PostFormValue("address")
-			categories := req.PostFormValue("categories")
-			err := databaseActions.CreatePage(sessionId, title, description, address, int(categories[0]))
-			if err == nil {
-				data["successMsg"] = "Created " + title + "!"
-			} else {
-				data["errorMsg"] = "Failed to create page!"
-			}
+			data["successMsg"] = "Created " + title + "!"
+		} else {
+			data["errorMsg"] = "Failed to create page!"
 		}
 	}
-
+	
+	render:
 	common.ExecTemplate(newPageTemplate, res, data)
 }
 
@@ -59,7 +75,7 @@ const newPageTemplateText = `
 				<input type="text" name="address/location" placeholder="address">
 			</div>
 			<div>
-				<input type="text" name="categories" placeholder="categories">
+				{{template "dropdown" categoryDropdown .}}
 			</div>
 			<div style="text-align:center">
 				<button type="submit" class="button" name="sign-up" value="true">Submit</button>
