@@ -32,7 +32,8 @@ CREATE TABLE posts (
    id               SERIAL                   PRIMARY KEY,
    user_id          INT            NOT NULL  REFERENCES users(id),
    page_id          INT            NOT NULL  REFERENCES pages(id),
-   body             TEXT           NOT NULL
+   body             TEXT           NOT NULL,
+   date_created     TIMESTAMP      NOT NULL  DEFAULT now()
 );
 
 CREATE TABLE communities (
@@ -48,7 +49,7 @@ CREATE TABLE community_memberships (
 
 CREATE TABLE sessions (
    id               TEXT                     PRIMARY KEY,
-   user_id           INT            NOT NULL  REFERENCES users(id),
+   user_id          INT            NOT NULL  REFERENCES users(id),
    create_date      TIMESTAMP      NOT NULL  DEFAULT now()
 );
 
