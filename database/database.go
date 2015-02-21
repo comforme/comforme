@@ -638,14 +638,15 @@ func (db DB) GetPostsForPage(userid, pageid int) (posts []common.Post, err error
 	return
 }
 
-func (db DB) GetPage(category, slug string) (page common.Page, err error) {
+func (db DB) GetPage(categorySlug, pageSlug string) (page common.Page, err error) {
 	page = common.Page{}
 	err = db.conn.QueryRow(`
 		SELECT
 			pages.id,
 			title,
-			slug,
+			pages.slug,
 			categories.name,
+			categories.slug,
 			description,
 			date_created
 		FROM
@@ -653,15 +654,16 @@ func (db DB) GetPage(category, slug string) (page common.Page, err error) {
 			categories
 		WHERE
 			categories.id = pages.category
-			AND categories.name = $1
-			AND slug = $2;`,
-		category,
-		slug,
+			AND categories.slug = $1
+			AND pages.slug = $2;`,
+		categorySlug,
+		pageSlug,
 	).Scan(
 		&page.Id,
 		&page.Title,
-		&page.Slug,
+		&page.PageSlug,
 		&page.Category,
+		&page.CategorySlug,
 		&page.Description,
 		&page.DateCreated,
 	)
