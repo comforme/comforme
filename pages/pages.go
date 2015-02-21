@@ -34,6 +34,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 	category := bone.GetValue(req, "category")
 	slug := bone.GetValue(req, "slug")
 
+	log.Printf("Looking up page with category (%s) and slug (%s)...\n", category, slug)
 	page, posts, err := databaseActions.GetPage(sessionid, category, slug)
 	if err != nil {
 		http.NotFound(res, req)
