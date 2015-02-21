@@ -22,6 +22,9 @@ func init() {
 func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 	data["formAction"] = req.URL.Path
+	data["title"] = req.PostFormValue("title")
+	data["description"] = req.PostFormValue("description")
+	data["address"] = req.PostFormValue("address")
 
 	data["categoryDropdown"] = map[string]interface{}{}
 	data["categoryDropdown"].(map[string]interface{})["name"] = "category"
@@ -32,9 +35,6 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	}
 	data["categoryDropdown"].(map[string]interface{})["options"] = options
 	data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
-	data["title"] = req.PostFormValue("title")
-	data["description"] = req.PostFormValue("description")
-	data["address"] = req.PostFormValue("address")
 
 	if req.Method == "POST" {
 		cookie, err := req.Cookie("sessionid")
