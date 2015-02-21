@@ -78,7 +78,7 @@ const newPageTemplateText = `
 				{{else}}<input type="text" name="title" placeholder="page title" align="center">{{end}}
 			</div>
 			<div>
-				{{if .errorMsg}}<textarea name="description" placeholder="description" value={{ .description}} rows="15"></textarea>
+				{{if .errorMsg}}<textarea name="description" placeholder="description" rows="15">{{ .description}}</textarea>
 				{{else}}<textarea name="description" placeholder="description" rows="15"></textarea>{{end}}
 			</div>
 			<div>
