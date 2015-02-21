@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	
+
 	"github.com/go-zoo/bone"
 
 	"github.com/comforme/comforme/common"
@@ -24,27 +24,26 @@ func init() {
 func PageHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 
-	data["formAction"] = req.URL.Path
-	
-	cookie, err := req.Cookie("sessionid")
+	sessionid, err := common.GetSessionId(res, req)
 	if err != nil {
-		log.Println("Failed to retrieve sessionid:", err)
-		common.Logout(res, req)
+		log.Println("Failed to retrieve session id", err)
 		return
 	}
-	sessionid := cookie.Value
-	
+	data["formAction"] = req.URL.Path
+
 	category := bone.GetValue(req, "category")
 	slug := bone.GetValue(req, "slug")
-	
-	//page, posts, err :=
-	_, _, err = databaseActions.GetPage(sessionid, category, slug)
-	
+
+	page, posts, err := databaseActions.GetPage(sessionid, category, slug)
 	if err != nil {
 		http.NotFound(res, req)
 		log.Printf("Error looking up page (%s): %s\n", req.URL.Path, err.Error())
 		return
 	}
+
+	data["title"] = page.Title
+	data["description"] = page.Description
+	data["posts"] = posts
 
 	common.ExecTemplate(pageTemplate, res, data)
 }
@@ -53,7 +52,7 @@ const pageTemplateText = `
 	<div class="content">
 		<div class="row">
 			<div class="columns">
-				<h1><a href="{{.action}}">{{.title}}</a></h1>
+				<h1><a href="{{.formAction}}">{{.title}}</a></h1>
 				<p>
 					{{.description}}
 				</p>
@@ -88,7 +87,7 @@ const pageTemplateText = `
 				</form>
 			</div>
 		</div>
-		<div class="row">{{range $post_number, $post := $.communitiesCols}}
+		<div class="row">{{range $post_number, $post := $.posts}}
 			<div class="columns">
 				<p>
 					<strong>
