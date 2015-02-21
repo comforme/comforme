@@ -2,9 +2,9 @@ package pages
 
 import (
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
-	"log"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
