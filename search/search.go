@@ -58,15 +58,13 @@ const searchTemplateText = `
             </div>
         </div>
 
-        <div class="row">
-            {{ range .results}}
+        <div class="row">{{range .results}}
             <div class="columns">
-                <h2><a href="/page/{{.Category}}/{{.Slug}}">{{.Title}}</a></h2>
+                <h2><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h2>
                 <div>
                     <p>{{.Description}}</p>
                 </div>
-            </div>
-            {{ end }}
+            </div>{{ end }}
         </div>
     </div>
 </div>

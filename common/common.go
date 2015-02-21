@@ -39,8 +39,9 @@ type Community struct {
 type Page struct {
 	Id          int
 	Title       string
-	Slug        string
+	PageSlug        string
 	Category    string
+	CategorySlug    string
 	Description string
 	DateCreated time.Time
 }

@@ -418,8 +418,9 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 		SELECT
 			pages.id,
 			title,
-			slug,
+			pages.slug,
 			categories.name,
+			categories.slug,
 			description,
 			date_created
 		FROM
@@ -446,8 +447,9 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 		if err := rows.Scan(
 			&row.Id,
 			&row.Title,
-			&row.Slug,
+			&row.PageSlug,
 			&row.Category,
+			&row.CategorySlug,
 			&row.Description,
 			&row.DateCreated,
 		); err != nil {
