@@ -107,21 +107,22 @@ func (db DB) NewPage(sessionId, title, slug, description, address string, catego
 			pages.slug
 		FROM
 			pages,
-			categories
+			categories,
+			(INSERT INTO
+				pages (
+					title,
+					description,
+					address,
+					category,
+					slug,
+					user_id,
+					location
+				)
+			VALUES ($1, $2, $3, $4, $5, $6, '(0, 0)')
+			RETURNING id) as new_page
 		WHERE
-			pages.id =
-				(INSERT INTO
-					pages (
-						title,
-						description,
-						address,
-						category,
-						slug,
-						user_id,
-						location
-					)
-				VALUES ($1, $2, $3, $4, $5, $6, '(0, 0)')
-				RETURNING id)`,
+			pages.id = new_page;
+		`,
 		title,
 		description,
 		address,
