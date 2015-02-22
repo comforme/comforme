@@ -57,7 +57,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 		err = databaseActions.CreatePost(sessionid, thoughts, page)
 
 		if err == nil {
-			data["errorMsg"] = "Post successfully added."
+			data["successMsg"] = "Post successfully added."
 		} else {
 			data["errorMsg"] = err.Error()
 			data["thoughts"] = thoughts
@@ -79,9 +79,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 const pageTemplateText = `
-	<div class="content">{{if .successMsg}}
-		<div class="alert-box success">{{.successMsg}}</div>{{end}}{{if .errorMsg}}
-		<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
+	<div class="content">
 		<div class="row">
 			<div class="columns">
 				<h1><a href="{{.formAction}}">{{.title}}</a></h1>
@@ -98,7 +96,9 @@ const pageTemplateText = `
 			</div>
 		</div>{{end}}
 		<div class="row">
-			<div class="columns">
+			<div class="columns">{{if .successMsg}}
+				<div class="alert-box success">{{.successMsg}}</div>{{end}}{{if .errorMsg}}
+				<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
 				<form method="post" action="{{.action}}">
 					<fieldset>
 						<legend>
