@@ -3,6 +3,7 @@ package pages
 import (
 	"html/template"
 	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/go-zoo/bone"
@@ -35,7 +36,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 	slug := bone.GetValue(req, "slug")
 
 	log.Printf("Looking up page with category (%s) and slug (%s)...\n", category, slug)
-	page, posts, err := databaseActions.GetPage(sessionid, category, slug)
+	page, err := databaseActions.GetPage(category, slug)
 	if err != nil {
 		http.NotFound(res, req)
 		log.Printf("Error looking up page (%s): %s\n", req.URL.Path, err.Error())
@@ -44,13 +45,43 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 
 	data["title"] = page.Title
 	data["description"] = page.Description
+
+	if req.Method == "POST" {
+		thoughts := req.PostFormValue("post-your-thoughts")
+		if len(thoughts) < common.MinDescriptionLength {
+			data["errorMsg"] = fmt.Sprintf("Post must be at least %d characters long.", common.MinDescriptionLength)
+			data["thoughts"] = thoughts
+			goto renderPosts
+		}
+
+		err = databaseActions.CreatePost(sessionid, thoughts, page)
+
+		if err == nil {
+			data["errorMsg"] = "Post successfully added."
+		} else {
+			data["errorMsg"] = err.Error()
+			data["thoughts"] = thoughts
+		}
+	}
+
+	renderPosts:
+	log.Printf("Looking up posts for page id (%d)...\n", page.Id)
+	posts, err := databaseActions.GetPosts(sessionid, page)
+	if err != nil {
+		http.NotFound(res, req)
+		log.Printf("Error looking up posts for page (%d): %s\n", page.Id, err.Error())
+		return
+	}
+
 	data["posts"] = posts
 
 	common.ExecTemplate(pageTemplate, res, data)
 }
 
 const pageTemplateText = `
-	<div class="content">
+	<div class="content">{{if .successMsg}}
+		<div class="alert-box success">{{.successMsg}}</div>{{end}}{{if .errorMsg}}
+		<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
 		<div class="row">
 			<div class="columns">
 				<h1><a href="{{.formAction}}">{{.title}}</a></h1>
@@ -58,14 +89,14 @@ const pageTemplateText = `
 					{{.description}}
 				</p>
 			</div>
-		</div>
+		</div>{{if .address}}
 		<div class="row">
 			<div class="columns">
 				<p>
 					<strong>Address:</strong> <span>{{.address}}</span>
 				</p>
 			</div>
-		</div>
+		</div>{{end}}
 		<div class="row">
 			<div class="columns">
 				<form method="post" action="{{.action}}">
@@ -76,7 +107,7 @@ const pageTemplateText = `
 						<div class="row">
 							<div class="columns">
 								<label for="post-your-thoughts">Comment:</label>
-								<textarea name="post-your-thoughts" id="post-your-thoughts"></textarea>
+								<textarea name="post-your-thoughts" id="post-your-thoughts">{{if .thoughts}}{{.thoughts}}{{end}}</textarea>
 							</div>
 						</div>
 						<div class="row">

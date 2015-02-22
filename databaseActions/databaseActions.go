@@ -61,6 +61,21 @@ func CreatePage(sessionId string, title string, description string, address stri
 	return
 }
 
+func CreatePost(sessionId, post string, page common.Page) (err error) {
+	user_id, err := db.GetSessionUserID(sessionId)
+	if err != nil {
+		log.Printf("Error getting userid from sessionid %s: %s\n", sessionId, err.Error())
+		return
+	}
+
+	err = db.NewPost(user_id, page.Id, post)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
 func ChangePassword(sessionid, oldPassword, newPassword string) (err error) {
 	email, err := CheckPassword(sessionid, oldPassword)
 	if err != nil {
@@ -255,22 +270,26 @@ func SearchPages(sessionid, query string) ([]common.Page, error) {
 	return db.SearchPages(query)
 }
 
-func GetPage(sessionid, category, slug string) (page common.Page, posts []common.Post, err error) {
+func GetPage(categorySlug, pageSlug string) (page common.Page, err error) {
+	page, err = db.GetPage(categorySlug, pageSlug)
+	if err != nil {
+		log.Printf("Error looking up page with category (%s) and slug (%s): %s\n", categorySlug, pageSlug, err.Error())
+		return
+	}
+
+	return
+}
+
+func GetPosts(sessionid string, page common.Page) (posts []common.Post, err error) {
 	user_id, err := db.GetSessionUserID(sessionid)
 	if err != nil {
 		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
 		return
 	}
 
-	page, err = db.GetPage(category, slug)
-	if err != nil {
-		log.Printf("Error looking up page with category (%s) and slug (%s): %s\n", category, slug, err.Error())
-		return
-	}
-
 	posts, err = db.GetPostsForPage(user_id, page.Id)
 	if err != nil {
-		log.Printf("Error looking up posts for page (%s) with category (%s) and slug (%s): %s\n", page.Title, category, slug, err.Error())
+		log.Printf("Error looking up posts for page (%d): %s\n", page.Id, err.Error())
 		return
 	}
 

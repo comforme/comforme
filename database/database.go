@@ -186,6 +186,22 @@ func (db DB) checkUsernameInUse(username string) (err error) {
 	return
 }
 
+func (db DB) NewPost(userID, pageID int, post string) (err error) {
+	_, err = db.conn.Exec(
+		"INSERT INTO posts (user_id, page_id, body) VALUES ($1, $2, $3)",
+		userID,
+		pageID,
+		post,
+	)
+	if err != nil {
+		log.Printf("Error post (%s) to page (%d) with user (%d): %s\n", post, pageID, userID, err.Error())
+		err = common.DatabaseError
+		return
+	}
+
+	return
+}
+
 func (db DB) RegisterUser(username, email string) (password string, err error) {
 	err = db.checkEmailInUse(email)
 	if err != nil {
