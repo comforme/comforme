@@ -86,13 +86,15 @@ const newPageTemplateText = `
             <fieldset>
             <legend>Create a Resource New Page</legend>
 			<div>
-				<input type="text" name="title" placeholder="page title"{{if .title}} value={{ .title }}{{end}} align="center">
+				<input type="text" name="title" placeholder="page title"{{if .title}} value="{{ .title }}"{{end}} align="center" />
 			</div>
 			<div>
-				<textarea name="description" placeholder="description" rows="15">{{if .description}}{{ .description }}{{end}}</textarea>
+				<textarea name="description" placeholder="description" rows="15">{{if .description}}
+					{{ .description }}{{end}}
+				</textarea>
 			</div>
 			<div>
-				<input type="text" name="address" placeholder="address"{{if .address}} value={{ .address }}{{end}}>
+				<input type="text" name="address" placeholder="address"{{if .address}} value="{{ .address }}"{{end}} />
 			</div>
 			<div>
 				{{template "dropdown" .categoryDropdown}}
