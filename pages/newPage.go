@@ -1,9 +1,9 @@
 package pages
 
 import (
+	"fmt"
 	"html/template"
 	"log"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -27,7 +27,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	title := req.PostFormValue("title")
 	description := req.PostFormValue("description")
 	address := req.PostFormValue("address")
-	
+
 	data["title"] = title
 	data["description"] = description
 	data["address"] = address
@@ -54,7 +54,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 			data["errorMsg"] = fmt.Sprintf("Description must be at least %d characters long.", common.MinDescriptionLength)
 			goto render
 		}
-		
+
 		category, err := strconv.ParseInt(req.PostFormValue("category"), 0, 0)
 		if err != nil || category < 0 {
 			log.Println("Invalid category:", req.PostFormValue("category"))
@@ -65,7 +65,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 		categorySlug, pageSlug, err := databaseActions.CreatePage(sessionId, title, description, address, int(category))
 		if err == nil {
 			log.Printf("Created %s!\n", title)
-			http.Redirect(res, req, "/" + categorySlug + "/" + pageSlug, http.StatusFound)
+			http.Redirect(res, req, "/"+categorySlug+"/"+pageSlug, http.StatusFound)
 			return
 		} else {
 			data["errorMsg"] = "Failed to create page!"

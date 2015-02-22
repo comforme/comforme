@@ -46,7 +46,7 @@ func CreatePage(sessionId string, title string, description string, address stri
 		err = common.InvalidTitle
 		return
 	}
-	
+
 	categorySlug, pageSlug, err = db.NewPage(sessionId, title, slug, description, address, category)
 	if err != nil {
 		log.Println("Failed to create page", title)
