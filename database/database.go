@@ -626,7 +626,7 @@ func (db DB) GetPostsForPage(userid, pageid int) (posts []common.Post, err error
 			SELECT
 				posts.body,
 				authors.username AS author,
-				posts.date_created,
+				to_char(posts.date_created, 'YYYY-MM-DD HH24:MI:SS'),
 				(
 					SELECT count(*)
 					FROM
