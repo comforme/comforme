@@ -65,7 +65,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 		categorySlug, pageSlug, err := databaseActions.CreatePage(sessionId, title, description, address, int(category))
 		if err == nil {
 			log.Printf("Created %s!\n", title)
-			http.Redirect(res, req, "/"+categorySlug+"/"+pageSlug, http.StatusFound)
+			http.Redirect(res, req, "/page/"+categorySlug+"/"+pageSlug, http.StatusFound)
 			return
 		} else {
 			data["errorMsg"] = err.Error()
