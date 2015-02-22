@@ -140,6 +140,7 @@ func (db DB) GetSlugs(pageID int) (categorySlug, pageSlug string, err error) {
 			pages,
 			categories
 		WHERE
+			pages.category = categories.id AND
 			pages.id = $1;
 		`,
 		pageID,
