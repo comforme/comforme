@@ -68,7 +68,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 			http.Redirect(res, req, "/"+categorySlug+"/"+pageSlug, http.StatusFound)
 			return
 		} else {
-			data["errorMsg"] = "Failed to create page!"
+			data["errorMsg"] = err.Error()
 		}
 	}
 
