@@ -93,7 +93,7 @@ func (db DB) NewSession(userid int) (sessionid string, err error) {
 	return
 }
 
-func (db DB) NewPage(sessionId, title, slug, description, address string, category int) (categorySlug, pageSlug string, err error) {
+func (db DB) NewPage(sessionId, title, slug, description, address string, category int) (pageID int, err error) {
 	// Insert new page
 	userId, err := db.GetSessionUserID(sessionId)
 	if err != nil {
@@ -101,27 +101,19 @@ func (db DB) NewPage(sessionId, title, slug, description, address string, catego
 		return
 	}
 
-	err = db.conn.QueryRow(
-		`SELECT
-			categories.slug,
-			pages.slug
-		FROM
-			pages,
-			categories,
-			(INSERT INTO
-				pages (
-					title,
-					description,
-					address,
-					category,
-					slug,
-					user_id,
-					location
-				)
-			VALUES ($1, $2, $3, $4, $5, $6, '(0, 0)')
-			RETURNING id) as new_page
-		WHERE
-			pages.id = new_page;
+	err = db.conn.QueryRow(`
+		INSERT INTO
+			pages (
+				title,
+				description,
+				address,
+				category,
+				slug,
+				user_id,
+				location
+			)
+		VALUES ($1, $2, $3, $4, $5, $6, '(0, 0)')
+		RETURNING id
 		`,
 		title,
 		description,
@@ -129,10 +121,32 @@ func (db DB) NewPage(sessionId, title, slug, description, address string, catego
 		category,
 		slug,
 		userId,
-	).Scan(&categorySlug, &pageSlug)
+	).Scan(&pageID)
 	if err != nil {
 		log.Println("Failed to insert page: ", err)
 		err = common.PageAlreadyExists
+		return
+	}
+
+	return
+}
+
+func (db DB) GetSlugs(pageID int) (categorySlug, pageSlug string, err error) {
+	err = db.conn.QueryRow(`
+		SELECT
+			categories.slug,
+			pages.slug
+		FROM
+			pages,
+			categories
+		WHERE
+			pages.id = $1;
+		`,
+		pageID,
+	).Scan(&categorySlug, &pageSlug)
+	if err != nil {
+		log.Println("Failed to insert page: ", err)
+		err = common.DatabaseError
 		return
 	}
 
