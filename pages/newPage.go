@@ -90,8 +90,8 @@ const newPageTemplateText = `
 			</div>
 			<div>
 				<textarea name="description" placeholder="description" rows="15">{{if .description}}
-					{{ .description }}{{end}}
-				</textarea>
+					{{ .description }}
+				{{end}}</textarea>
 			</div>
 			<div>
 				<input type="text" name="address" placeholder="address"{{if .address}} value="{{ .address }}"{{end}} />
