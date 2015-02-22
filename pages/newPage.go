@@ -50,7 +50,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 			data["errorMsg"] = "Title must be more than 1 character long."
 			goto render
 		}
-		if len(description) <= common.MinDescriptionLength {
+		if len(description) < common.MinDescriptionLength {
 			data["errorMsg"] = fmt.Sprintf("Description must be at least %d characters long.", common.MinDescriptionLength)
 			goto render
 		}
@@ -79,23 +79,20 @@ render:
 const newPageTemplateText = `
 <div class="row">
 	<div class="large-centered medium-centered large-8 medium-8 columns">
-	<div class="content" id="add-page-form">
-        {{if .successMsg}}<div class="alert-box success">{{.successMsg}}</div>{{end}}
-        {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
+	<div class="content" id="add-page-form">{{if .successMsg}}
+		<div class="alert-box success">{{.successMsg}}</div>{{end}}{{if .errorMsg}}
+		<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
 		<form method="POST" action="{{.formAction}}" align="center">
             <fieldset>
             <legend>Create a Resource New Page</legend>
 			<div>
-				{{if .title}}<input type="text" name="title" placeholder="page title" value={{ .title}} align="center">
-				{{else}}<input type="text" name="title" placeholder="Title of resource" align="center">{{end}}
+				<input type="text" name="title" placeholder="page title"{{if .title}} value={{ .title}}{{end}} align="center">
 			</div>
 			<div>
-				{{if .description}}<textarea name="description" placeholder="description" rows="15">{{ .description}}</textarea>
-				{{else}}<textarea name="description" placeholder="Unbiased description of resource" rows="15"></textarea>{{end}}
+				<textarea name="description" placeholder="description" rows="15">{{if .description}}{{.description}}{{end}}</textarea>
 			</div>
 			<div>
-				{{if .address}}<input type="text" name="address" placeholder="address" value={{ .address}}>
-				{{else}}<input type="text" name="address" placeholder="address (optional)">{{end}}
+				<input type="text" name="address" placeholder="address"{{if .address}} value={{ .address}}{{end}}>
 			</div>
 			<div>
 				{{template "dropdown" .categoryDropdown}}
