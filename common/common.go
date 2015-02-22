@@ -27,6 +27,7 @@ const (
 	slugChars               = "A-Za-z0-9"
 	slugRemoveChars         = "'\""
 	slugLength              = 25
+	MinDescriptionLength    = 3
 )
 
 // Database row types
@@ -62,6 +63,8 @@ var DatabaseError = errors.New("Unknown database error.")
 var InvalidSessionID = errors.New("Invalid sessionid.")
 var InvalidEmail = errors.New("The provided email address is not valid.")
 var InvalidIpAddress = errors.New("There is something wrong with your IP address.")
+var InvalidTitle = errors.New("Invalid page title.")
+var PageAlreadyExists = errors.New("A page with this category and title already exists.")
 var PageNotFound = errors.New("Page not found.")
 
 var mandrillKey = os.Getenv("MANDRILL_APIKEY")

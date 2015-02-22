@@ -3,6 +3,7 @@ package pages
 import (
 	"html/template"
 	"log"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -23,9 +24,13 @@ func init() {
 func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]interface{}{}
 	data["formAction"] = req.URL.Path
-	data["title"] = req.PostFormValue("title")
-	data["description"] = req.PostFormValue("description")
-	data["address"] = req.PostFormValue("address")
+	title := req.PostFormValue("title")
+	description := req.PostFormValue("description")
+	address := req.PostFormValue("address")
+	
+	data["title"] = title
+	data["description"] = description
+	data["address"] = address
 
 	data["categoryDropdown"] = map[string]interface{}{}
 	data["categoryDropdown"].(map[string]interface{})["name"] = "category"
@@ -41,9 +46,15 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 		cookie, err := req.Cookie("sessionid")
 		sessionId := cookie.Value
 
-		title := req.PostFormValue("title")
-		description := req.PostFormValue("description")
-		address := req.PostFormValue("address")
+		if len(title) <= 1 {
+			data["errorMsg"] = "Title must be more than 1 character long."
+			goto render
+		}
+		if len(description) <= common.MinDescriptionLength {
+			data["errorMsg"] = fmt.Sprintf("Description must be at least %d characters long.", common.MinDescriptionLength)
+			goto render
+		}
+		
 		category, err := strconv.ParseInt(req.PostFormValue("category"), 0, 0)
 		if err != nil || category < 0 {
 			log.Println("Invalid category:", req.PostFormValue("category"))
@@ -51,9 +62,11 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 			goto render
 		}
 
-		err = databaseActions.CreatePage(sessionId, title, description, address, int(category))
+		categorySlug, pageSlug, err := databaseActions.CreatePage(sessionId, title, description, address, int(category))
 		if err == nil {
-			data["successMsg"] = "Created " + title + "!"
+			log.Printf("Created %s!\n", title)
+			http.Redirect(res, req, "/" + categorySlug + "/" + pageSlug, http.StatusFound)
+			return
 		} else {
 			data["errorMsg"] = "Failed to create page!"
 		}
@@ -71,18 +84,18 @@ const newPageTemplateText = `
         {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
 		<form method="POST" action="{{.formAction}}" align="center">
             <fieldset>
-            <legend>Create a New Page</legend>
+            <legend>Create a Resource New Page</legend>
 			<div>
 				{{if .title}}<input type="text" name="title" placeholder="page title" value={{ .title}} align="center">
-				{{else}}<input type="text" name="title" placeholder="page title" align="center">{{end}}
+				{{else}}<input type="text" name="title" placeholder="Title of resource" align="center">{{end}}
 			</div>
 			<div>
 				{{if .description}}<textarea name="description" placeholder="description" rows="15">{{ .description}}</textarea>
-				{{else}}<textarea name="description" placeholder="description" rows="15"></textarea>{{end}}
+				{{else}}<textarea name="Unbiased description of resource" placeholder="description" rows="15"></textarea>{{end}}
 			</div>
 			<div>
 				{{if .address}}<input type="text" name="address" placeholder="address" value={{ .address}}>
-				{{else}}<input type="text" name="address" placeholder="address">{{end}}
+				{{else}}<input type="text" name="address" placeholder="address (optional)">{{end}}
 			</div>
 			<div>
 				{{template "dropdown" .categoryDropdown}}
