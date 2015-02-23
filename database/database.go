@@ -701,6 +701,8 @@ func (db DB) GetPage(categorySlug, pageSlug string) (page common.Page, err error
 			categories.name,
 			categories.slug,
 			description,
+			address,
+			website,
 			date_created
 		FROM
 			pages,
@@ -718,6 +720,8 @@ func (db DB) GetPage(categorySlug, pageSlug string) (page common.Page, err error
 		&page.Category,
 		&page.CategorySlug,
 		&page.Description,
+		&page.Address,
+		&page.Website,
 		&page.DateCreated,
 	)
 	if err != nil {
