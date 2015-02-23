@@ -22,8 +22,9 @@ CREATE TABLE pages (
    UNIQUE (slug, category),
    description      TEXT           NOT NULL,
    user_id          INT            NOT NULL  REFERENCES users(id),
-   location         POINT          NOT NULL,
-   address          TEXT           NOT NULL,
+   location         POINT,
+   address          TEXT,
+   website          TEXT,
    date_created     TIMESTAMP      NOT NULL  DEFAULT now()
 );
 CREATE INDEX pages_title_tsvector_idx ON pages (to_tsvector('english', title));
@@ -57,7 +58,7 @@ INSERT INTO public.communities (id, name) VALUES (1, 'Lazy');
 INSERT INTO public.communities (id, name) VALUES (2, 'Baboon');
 INSERT INTO public.communities (id, name) VALUES (4, 'OCD');
 INSERT INTO public.communities (id, name) VALUES (5, 'Stoner');
-INSERT INTO public.communities (id, name) VALUES (6, 'Trans');
+INSERT INTO public.communities (id, name) VALUES (6, 'Transexual/Transgender');
 INSERT INTO public.communities (id, name) VALUES (7, 'BBW');
 INSERT INTO public.communities (id, name) VALUES (8, 'Single');
 INSERT INTO public.communities (id, name) VALUES (10, 'Boring');
@@ -65,6 +66,7 @@ INSERT INTO public.communities (id, name) VALUES (11, 'Business Owner');
 INSERT INTO public.communities (id, name) VALUES (12, 'Michelle Obama');
 INSERT INTO public.communities (id, name) VALUES (13, 'Genderqueer');
 INSERT INTO public.communities (id, name) VALUES (14, 'Heterosexual');
+INSERT INTO public.communities (id, name) VALUES (15, 'Asexual');
 
 INSERT INTO public.categories (id, name, slug) VALUES (1, 'Medical', 'medical');
 INSERT INTO public.categories (id, name, slug) VALUES (2, 'Food', 'food');

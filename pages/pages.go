@@ -43,8 +43,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	data["title"] = page.Title
-	data["description"] = page.Description
+	data["page"] = page
 
 	if req.Method == "POST" {
 		thoughts := req.PostFormValue("post-your-thoughts")
@@ -82,16 +81,23 @@ const pageTemplateText = `
 	<div class="content">
 		<div class="row">
 			<div class="columns">
-				<h1><a href="{{.formAction}}">{{.title}}</a></h1>
+				<h1><a href="{{.formAction}}">{{.page.Title}}</a></h1>
 				<p>
-					{{.description}}
+					{{.page.Description}}
 				</p>
 			</div>
-		</div>{{if .address}}
+		</div>{{if .page.Address}}
 		<div class="row">
 			<div class="columns">
 				<p>
-					<strong>Address:</strong> <span>{{.address}}</span>
+					<strong>Address:</strong> <span>{{.page.Address}}</span>
+				</p>
+			</div>
+		</div>{{end}}{{if .page.Website}}
+		<div class="row">
+			<div class="columns">
+				<p>
+					<strong>Website:</strong> <span>{{.page.Website}}</span>
 				</p>
 			</div>
 		</div>{{end}}

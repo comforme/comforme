@@ -93,7 +93,7 @@ func (db DB) NewSession(userid int) (sessionid string, err error) {
 	return
 }
 
-func (db DB) NewPage(sessionId, title, slug, description, address string, category int) (pageID int, err error) {
+func (db DB) NewPage(sessionId, title, slug, description, address, website string, category int) (pageID int, err error) {
 	// Insert new page
 	userId, err := db.GetSessionUserID(sessionId)
 	if err != nil {
@@ -110,9 +110,9 @@ func (db DB) NewPage(sessionId, title, slug, description, address string, catego
 				category,
 				slug,
 				user_id,
-				location
+				website
 			)
-		VALUES ($1, $2, $3, $4, $5, $6, '(0, 0)')
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 		RETURNING id
 		`,
 		title,
@@ -121,6 +121,7 @@ func (db DB) NewPage(sessionId, title, slug, description, address string, catego
 		category,
 		slug,
 		userId,
+		website,
 	).Scan(&pageID)
 	if err != nil {
 		log.Println("Failed to insert page: ", err)

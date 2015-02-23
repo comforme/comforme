@@ -44,6 +44,8 @@ type Page struct {
 	Category     string
 	CategorySlug string
 	Description  string
+	Address      string
+	Website      string
 	DateCreated  time.Time
 }
 

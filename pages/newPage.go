@@ -27,10 +27,12 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	title := req.PostFormValue("title")
 	description := req.PostFormValue("description")
 	address := req.PostFormValue("address")
+	website := req.PostFormValue("website")
 
 	data["title"] = title
 	data["description"] = description
 	data["address"] = address
+	data["website"] = website
 
 	data["categoryDropdown"] = map[string]interface{}{}
 	data["categoryDropdown"].(map[string]interface{})["name"] = "category"
@@ -62,7 +64,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 			goto render
 		}
 
-		categorySlug, pageSlug, err := databaseActions.CreatePage(sessionId, title, description, address, int(category))
+		categorySlug, pageSlug, err := databaseActions.CreatePage(sessionId, title, description, address, website, int(category))
 		if err == nil {
 			log.Printf("Created %s!\n", title)
 			http.Redirect(res, req, "/page/"+categorySlug+"/"+pageSlug, http.StatusFound)
@@ -93,6 +95,9 @@ const newPageTemplateText = `
 					</div>
 					<div>
 						<input type="text" name="address" placeholder="Physical address of resource (if applicable)"{{if .address}} value="{{ .address }}"{{end}} />
+					</div>
+					<div>
+						<input type="text" name="website" placeholder="Resource's website (if applicable)"{{if .website}} value="{{ .website }}"{{end}} />
 					</div>
 					<div>
 						{{template "dropdown" .categoryDropdown}}
