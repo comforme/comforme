@@ -23,8 +23,8 @@ CREATE TABLE pages (
    description      TEXT           NOT NULL,
    user_id          INT            NOT NULL  REFERENCES users(id),
    location         POINT,
-   address          TEXT,
-   website          TEXT,
+   address          TEXT           NOT NULL,
+   website          TEXT           NOT NULL,
    date_created     TIMESTAMP      NOT NULL  DEFAULT now()
 );
 CREATE INDEX pages_title_tsvector_idx ON pages (to_tsvector('english', title));
