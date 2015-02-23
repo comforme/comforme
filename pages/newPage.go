@@ -79,32 +79,30 @@ render:
 const newPageTemplateText = `
 <div class="row">
 	<div class="large-centered medium-centered large-8 medium-8 columns">
-	<div class="content" id="add-page-form">{{if .successMsg}}
-		<div class="alert-box success">{{.successMsg}}</div>{{end}}{{if .errorMsg}}
-		<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
-		<form method="POST" action="{{.formAction}}" align="center">
-            <fieldset>
-            <legend>Create a Resource New Page</legend>
-			<div>
-				<input type="text" name="title" placeholder="page title"{{if .title}} value="{{ .title }}"{{end}} align="center" />
-			</div>
-			<div>
-				<textarea name="description" placeholder="description" rows="15">{{if .description}}
-					{{ .description }}
-				{{end}}</textarea>
-			</div>
-			<div>
-				<input type="text" name="address" placeholder="address"{{if .address}} value="{{ .address }}"{{end}} />
-			</div>
-			<div>
-				{{template "dropdown" .categoryDropdown}}
-			</div>
-			<div style="text-align:center">
-				<button type="submit" class="button" name="sign-up" value="true">Submit</button>
-			</div>
-            </fieldset>
-		</form>
-	</div>
+		<div class="content" id="add-page-form">{{if .successMsg}}
+			<div class="alert-box success">{{.successMsg}}</div>{{end}}{{if .errorMsg}}
+			<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
+			<form method="POST" action="{{.formAction}}" align="center">
+				<fieldset>
+					<legend>Create a Resource New Page</legend>
+					<div>
+						<input type="text" name="title" placeholder="Resource page title"{{if .title}} value="{{ .title }}"{{end}} align="center" />
+					</div>
+					<div>
+						<textarea name="description" placeholder="Unbiased description of resource" rows="15">{{if .description}}{{ .description }}{{end}}</textarea>
+					</div>
+					<div>
+						<input type="text" name="address" placeholder="Physical address of resource (if applicable)"{{if .address}} value="{{ .address }}"{{end}} />
+					</div>
+					<div>
+						{{template "dropdown" .categoryDropdown}}
+					</div>
+					<div style="text-align:center">
+						<button type="submit" class="button" name="sign-up" value="true">Submit</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
 	</div>
 </div>		
 `

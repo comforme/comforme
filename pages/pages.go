@@ -1,9 +1,9 @@
 package pages
 
 import (
+	"fmt"
 	"html/template"
 	"log"
-	"fmt"
 	"net/http"
 
 	"github.com/go-zoo/bone"
@@ -64,7 +64,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	renderPosts:
+renderPosts:
 	log.Printf("Looking up posts for page id (%d)...\n", page.Id)
 	posts, err := databaseActions.GetPosts(sessionid, page)
 	if err != nil {
