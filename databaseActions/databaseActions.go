@@ -14,7 +14,8 @@ import (
 var PasswordTooShort = errors.New(fmt.Sprintf("The supplied password is too short. Minimum password length is %d characters.", minPasswordLength))
 var UsernameTooShort = errors.New(fmt.Sprintf("The supplied username is too short. Minimum username length is %d characters.", minUsernameLength))
 var EmailFailed = errors.New("Sending email failed.")
-var InvalidPassword = errors.New("Invalid password.")
+var IncorrectPassword = errors.New("Incorrect password.")
+var ShortPassword = errors.New("Password too short.")
 
 const (
 	minPasswordLength = 6
@@ -90,7 +91,7 @@ func ChangePassword(sessionid, oldPassword, newPassword string) (err error) {
 			len(newPassword),
 			minPasswordLength,
 		)
-		return InvalidPassword
+		return ShortPassword
 	}
 
 	return db.ChangePassword(email, newPassword)
@@ -145,7 +146,7 @@ func CheckPassword(sessionid, password string) (email string, err error) {
 	_, err = db.GetUserID(email, password)
 	if err != nil {
 		log.Printf("Error validating old password while changing password for user (%s): %s\n", email, err.Error())
-		err = InvalidPassword
+		err = IncorrectPassword
 		return
 	}
 
