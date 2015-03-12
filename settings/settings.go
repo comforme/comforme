@@ -104,7 +104,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 						return
 					}
 				} else {
-					data["errorMsg"] = "Failed to validate password."
+					data["errorMsg"] = err.Error()
 				}
 			} else {
 				data["errorMsg"] = "Passwords do not match."
