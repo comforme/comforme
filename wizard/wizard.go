@@ -16,6 +16,7 @@ var communitiesTemplate *template.Template
 func init() {
 	communitiesTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(communitiesTemplate.New("nav").Parse(templates.NavlessBar))
+	template.Must(communitiesTemplate.New("communities").Parse(templates.Communities))
 	template.Must(communitiesTemplate.New("content").Parse(communitiesTemplateText))
 }
 
@@ -48,18 +49,7 @@ const communitiesTemplateText = `
                 {{if .successMsg}}<div class="alert-box success">{{.successMsg}}</div>{{end}}
                 {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
 				<section>
-					<h2>Your Communities</h2>
-					<h6>Check all that apply.</h6>
-					<div class="row">{{range $col_number, $communitiesCol := $.communitiesCols}}
-						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $communitiesCol}}
-							<div>
-								<label>
-									<input class="communityCheckbox" type="checkbox" name="{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-									{{$community.Name}}
-								</label>
-							</div>{{end}}
-						</div>{{end}}
-					</div>
+{{ template "communities" .}}
 					<form action="/">
 						<button type="submit">Finish</button>
 					</form>
