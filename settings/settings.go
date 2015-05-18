@@ -51,37 +51,16 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	}
 	data["username"] = username
 
-	communities, err := databaseActions.ListCommunities(sessionid)
+	data["communitiesCols"], err = databaseActions.GetCommunityColumns(sessionid)
 	if err != nil {
 		log.Println("Error listing communities:", err)
 		common.Logout(res, req)
 		return
 	}
 
-	perCol := len(communities) / 4
-	extra := len(communities) % 4
-	cut1 := perCol
-	if extra >= 1 {
-		cut1++
-	}
-	cut2 := cut1 + perCol
-	if extra >= 2 {
-		cut2++
-	}
-	cut3 := cut2 + perCol
-	if extra >= 3 {
-		cut3++
-	}
-	data["communitiesCols"] = [][]common.Community{
-		communities[0:cut1],
-		communities[cut1:cut2],
-		communities[cut2:cut3],
-		communities[cut3:],
-	}
-
 	openSessions, err := databaseActions.OtherSessions(sessionid)
 	if err != nil {
-		log.Println("Error listing communities:", err)
+		log.Println("Error getting open sessions:", err)
 		common.Logout(res, req)
 		return
 	} else {

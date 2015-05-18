@@ -296,3 +296,31 @@ func GetPosts(sessionid string, page common.Page) (posts []common.Post, err erro
 
 	return
 }
+
+func GetCommunityColumns(sessionid string) ([][]common.Community, error) {
+	communities, err := ListCommunities(sessionid)
+	if err != nil {
+		return [][]common.Community{}, err
+	}
+
+	perCol := len(communities) / 4
+	extra := len(communities) % 4
+	cut1 := perCol
+	if extra >= 1 {
+		cut1++
+	}
+	cut2 := cut1 + perCol
+	if extra >= 2 {
+		cut2++
+	}
+	cut3 := cut2 + perCol
+	if extra >= 3 {
+		cut3++
+	}
+	return [][]common.Community{
+		communities[0:cut1],
+		communities[cut1:cut2],
+		communities[cut2:cut3],
+		communities[cut3:],
+	}, nil
+}

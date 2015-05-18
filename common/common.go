@@ -14,9 +14,12 @@ import (
 	"time"
 
 	"github.com/keighl/mandrill"
+	"golang.org/x/crypto/scrypt"
 )
 
 var DebugMode = os.Getenv("DEBUG_MODE") == "true"
+var secret = []byte(os.Getenv("SECRET"))
+var linkAgeLimit = time.Hour * 24 * 14
 
 const (
 	alphaNumeric            = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -220,4 +223,43 @@ func GetSessionId(res http.ResponseWriter, req *http.Request) (sessionid string,
 	}
 	sessionid = cookie.Value
 	return
+}
+
+func generateSecret(password string) (hash string, err error) {
+	hashBytes, err := scrypt.Key([]byte(password), secret, 16384, 8, 1, 32)
+	hash = string(hashBytes)
+	return
+}
+
+func GenerateSecret(email string) (hash string, date string, err error) {
+	date = time.Now().Format(time.RFC3339)
+	hash, err = generateSecret(email + date)
+	if err != nil {
+		log.Println("Error generating secret:", err)
+	}
+	return
+}
+
+func CheckSecret(hash, email, date string) bool {
+	log.Printf("Checking secret: (%s, %s) against hash: \n", email, date, hash)
+	checkDate, err := time.Parse(time.RFC3339, date)
+
+	if err != nil {
+		log.Println("Error parsing date:", err)
+	}
+	if time.Now().Sub(checkDate) > linkAgeLimit {
+		log.Printf("Error date (%s) is more than 14 days old.\n", date)
+	}
+	if err != nil || time.Now().Sub(checkDate) > linkAgeLimit {
+		return false
+	}
+
+	newHash, err := generateSecret(email + date)
+	if err != nil {
+		log.Println("Error generating secret:", err)
+	}
+	if newHash != hash {
+		log.Printf("Error: string (%s%s) does not match hash (%s).\n", email, date, hash)
+	}
+	return err == nil && newHash == hash
 }

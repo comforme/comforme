@@ -31,3 +31,21 @@ const NavBar = `
 		</section>
 	</nav>
 `
+
+const NavlessBar = `
+	<nav class="top-bar" data-topbar>
+		<ul class="title-area">
+			<li class="name"></li>
+			<li class="toggle-topbar menu-icon">
+				<a href="#">Menu <span class="icon-menu"></span></a>
+			</li>
+		</ul>
+		<section class="top-bar-section">
+			<ul class="title-area">
+				<li class="name">
+					<h1><a href="/">ComFor.Me</a></h1>
+				</li>
+			</ul>
+		</section>
+	</nav>
+`
