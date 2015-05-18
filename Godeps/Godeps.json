@@ -22,6 +22,14 @@
 		{
 			"ImportPath": "golang.org/x/crypto/blowfish",
 			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/pbkdf2",
+			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/scrypt",
+			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
 		}
 	]
 }
