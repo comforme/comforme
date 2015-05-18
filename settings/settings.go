@@ -17,6 +17,7 @@ func init() {
 	template.Must(settingsTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(settingsTemplate.New("searchBar").Parse(templates.SearchBar))
 	template.Must(settingsTemplate.New("communitySearch").Parse(templates.CommunitySearch))
+	template.Must(settingsTemplate.New("communities").Parse(templates.Communities))
 	//template.Must(settingsTemplate.New("content").Parse(settingsTemplateText))
 	template.Must(settingsTemplate.New("content").Parse(settingsTemplateText))
 }
@@ -51,37 +52,16 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 	}
 	data["username"] = username
 
-	communities, err := databaseActions.ListCommunities(sessionid)
+	data["communitiesCols"], err = databaseActions.GetCommunityColumns(sessionid)
 	if err != nil {
 		log.Println("Error listing communities:", err)
 		common.Logout(res, req)
 		return
 	}
 
-	perCol := len(communities) / 4
-	extra := len(communities) % 4
-	cut1 := perCol
-	if extra >= 1 {
-		cut1++
-	}
-	cut2 := cut1 + perCol
-	if extra >= 2 {
-		cut2++
-	}
-	cut3 := cut2 + perCol
-	if extra >= 3 {
-		cut3++
-	}
-	data["communitiesCols"] = [][]common.Community{
-		communities[0:cut1],
-		communities[cut1:cut2],
-		communities[cut2:cut3],
-		communities[cut3:],
-	}
-
 	openSessions, err := databaseActions.OtherSessions(sessionid)
 	if err != nil {
-		log.Println("Error listing communities:", err)
+		log.Println("Error getting open sessions:", err)
 		common.Logout(res, req)
 		return
 	} else {
@@ -191,18 +171,7 @@ const settingsTemplateText = `
 					</form>
 				</section>
 				<section>
-					<h2>Your Communities</h2>
-					<h6>Check all that apply.</h6>
-					<div class="row">{{range $col_number, $communitiesCol := $.communitiesCols}}
-						<div class="large-3 medium-6 small-12 columns left">{{range $line_number, $community := $communitiesCol}}
-							<div>
-								<label>
-									<input class="communityCheckbox" type="checkbox" name="{{$community.Id}}"{{if eq $community.IsMember true}} checked="checked"{{end}} value="{{$community.Name}}">
-									{{$community.Name}}
-								</label>
-							</div>{{end}}
-						</div>{{end}}
-					</div>
+{{ template "communities" .}}
 				</section>
 				<section>
 					<h2>Sessions</h2>

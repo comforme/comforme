@@ -16,6 +16,7 @@ import (
 	"github.com/comforme/comforme/search"
 	"github.com/comforme/comforme/settings"
 	"github.com/comforme/comforme/static"
+	"github.com/comforme/comforme/wizard"
 )
 
 func main() {
@@ -26,6 +27,13 @@ func main() {
 		"/settings",
 		http.HandlerFunc(
 			requireLogin.RequireLogin(settings.SettingsHandler),
+		),
+	)
+
+	mux.Handle(
+		"/wizard",
+		http.HandlerFunc(
+			wizard.WizardHandler,
 		),
 	)
 
