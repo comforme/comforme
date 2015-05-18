@@ -159,14 +159,9 @@ func sendEmail(recipient, subject, html, text string) error {
 	message.HTML = html
 	message.Text = text
 
-	responses, apiError, err := client.MessagesSend(message)
-	if err != nil || apiError != nil {
-		if err != nil {
-			log.Printf("Error: %s\n", err.Error())
-		}
-		if apiError != nil {
-			log.Printf("Mandrill API Error: %+v\n", apiError)
-		}
+	responses, err := client.MessagesSend(message)
+	if err != nil {
+		log.Printf("Error: %s\n", err.Error())
 		return EmailFailed
 	}
 	log.Printf("Mandrill responses: %+v\n", responses)

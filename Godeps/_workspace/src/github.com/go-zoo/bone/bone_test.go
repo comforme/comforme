@@ -27,7 +27,7 @@ func TestRouting(t *testing.T) {
 // Test the custom not handler handler sets 404 error code
 func TestNotFoundCustomHandlerSends404(t *testing.T) {
 	mux := New()
-	mux.NotFound(func(rw http.ResponseWriter, req *http.Request) {
+	mux.NotFoundFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Write([]byte("These are not the droids you're looking for ..."))
 	})
 
@@ -215,5 +215,73 @@ func TestStandAloneRoute(t *testing.T) {
 
 	if !valid {
 		t.Error("Route Handler not call")
+	}
+}
+
+func TestRegexParam(t *testing.T) {
+	valid := false
+	mux := New()
+
+	mux.Get("/regex/#ttt^[a-z]$", http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		valid = true
+	}))
+
+	r, _ := http.NewRequest("GET", "/regex/test", nil)
+	w := httptest.NewRecorder()
+	mux.ServeHTTP(w, r)
+
+	if !valid {
+		t.Error("Route Handler not call")
+	}
+}
+
+func TestRegexParam2(t *testing.T) {
+	valid := false
+	mux := New()
+
+	mux.Get("/regex/#tttt^[a-z]$", http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		valid = true
+	}))
+
+	r, _ := http.NewRequest("GET", "/regex/1234", nil)
+	w := httptest.NewRecorder()
+	mux.ServeHTTP(w, r)
+
+	if valid {
+		t.Error("Regex params not valid !")
+	}
+}
+
+func TestRegexParamMutli(t *testing.T) {
+	valid := false
+	mux := New()
+
+	mux.Get("/regex/#ttt^[a-z]$/#yyy^[0-9]$", http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		valid = true
+	}))
+
+	r, _ := http.NewRequest("GET", "/regex/first/2", nil)
+	w := httptest.NewRecorder()
+	mux.ServeHTTP(w, r)
+
+	if !valid {
+		t.Error("Regex multi params not valid !")
+	}
+}
+
+func TestMultiParams(t *testing.T) {
+	valid := false
+	mux := New()
+
+	mux.Get("/regex/#num^[a-z]$/:test", http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		valid = true
+	}))
+
+	r, _ := http.NewRequest("GET", "/regex/first/second", nil)
+	w := httptest.NewRecorder()
+	mux.ServeHTTP(w, r)
+
+	if !valid {
+		t.Error("Regex multi params not valid !")
 	}
 }

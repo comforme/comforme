@@ -7,22 +7,31 @@
 
 package bone
 
-import (
-	"net/http"
-)
+import "net/http"
 
 // Handle when a request does not match a registered handler.
 func (m *Mux) HandleNotFound(rw http.ResponseWriter, req *http.Request) {
 	if m.notFound != nil {
 		rw.WriteHeader(http.StatusNotFound)
-		m.notFound(rw, req)
+		m.notFound.ServeHTTP(rw, req)
 	} else {
 		http.NotFound(rw, req)
 	}
 }
 
+// Clean url path
+func cleanUrl(url string) string {
+	ulen := len(url)
+	if ulen > 1 {
+		if url[ulen-1:] == "/" {
+			return cleanUrl(url[:ulen-1])
+		}
+	}
+	return url
+}
+
 // Check if the path don't end with a /
-func (m *Mux) valid(path string) bool {
+func valid(path string) bool {
 	plen := len(path)
 	if plen > 1 && path[plen-1:] == "/" {
 		return false
