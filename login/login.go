@@ -157,7 +157,7 @@ const loginTemplateText = `
 								<div class="g-recaptcha" data-sitekey="{{.recaptchaPublicKey}}"></div>
 								<div>
 									<button type="submit" class="button expand" name="sign-up" value="true">Sign Up</button>
-									<button type="submit" class="button expand" name="reset-password" value="true">Reset Password</button>
+									<button type="submit" class="button tiny expand" name="reset-password" value="true">Reset Password</button>
 								</div>
 							</form>
 						</div>

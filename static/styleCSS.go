@@ -39,6 +39,7 @@ span#noscript {
 }
 .g-recaptcha {
 	margin: 0 auto 1rem auto;
+	width: 304px;
 }
 
 /* ---------- Communities Settings ---------- */
