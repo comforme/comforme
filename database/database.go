@@ -28,6 +28,20 @@ func connect(constr string) (*sql.DB, error) {
 	return conn, err
 }
 
+func (db DB) GetPasswordHash(email string) (hash string, err error) {
+	log.Printf("Looking up user: %s\n", email)
+
+	// Get hashed password
+	err = db.conn.QueryRow("SELECT password FROM users WHERE email = $1", email).Scan(&hash)
+	if err != nil {
+		common.LogError(err)
+		log.Printf("Error retrieving hashed password for email (%s): %s\n", email, err.Error())
+		err = common.InvalidUsernameOrPassword
+		return
+	}
+	return
+}
+
 func (db DB) GetUserID(email string, password string) (userid int, err error) {
 	log.Printf("Looking up user: %s\n", email)
 
@@ -155,7 +169,7 @@ func (db DB) GetSlugs(pageID int) (categorySlug, pageSlug string, err error) {
 	return
 }
 
-func (db DB) checkEmailInUse(email string) (err error) {
+func (db DB) CheckEmailInUse(email string) (err error) {
 	var numRows int
 	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE email = $1", email).Scan(&numRows)
 	if err != nil {
@@ -203,8 +217,8 @@ func (db DB) NewPost(userID, pageID int, post string) (err error) {
 	return
 }
 
-func (db DB) RegisterUser(username, email string) (password string, err error) {
-	err = db.checkEmailInUse(email)
+func (db DB) RegisterUser(username, email, password string) (err error) {
+	err = db.CheckEmailInUse(email)
 	if err != nil {
 		return
 	}
@@ -215,7 +229,6 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 	}
 
 	// Add new user
-	password = common.GenPassword()
 	hashed, err := hashPassword(password)
 	if err != nil {
 		return
@@ -226,7 +239,7 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 		hashed,
 	)
 	_, err = db.conn.Exec(
-		"INSERT INTO users (email, username, password) VALUES ($1, $2, $3)",
+		"INSERT INTO users (email, username, password, reset_required) VALUES ($1, $2, $3, false)",
 		email,
 		username,
 		hashed,
@@ -276,6 +289,18 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 	).Scan(&email)
 	if err != nil {
 		log.Printf("Error looking up email associated with sessionid  (%s): %s\n", sessionid, err.Error())
+		err = common.InvalidSessionID
+	}
+	return
+}
+
+func (db DB) GetUserInfo(sessionid string) (email, username string, userID int, err error) {
+	err = db.conn.QueryRow(
+		"SELECT email, username, user_id FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
+		sessionid,
+	).Scan(&email, &username, &userID)
+	if err != nil {
+		log.Printf("Error looking up email and ID associated with sessionid  (%s): %s\n", sessionid, err.Error())
 		err = common.InvalidSessionID
 	}
 	return
@@ -407,7 +432,7 @@ func checkSingleRow(result sql.Result, otherwise error) error {
 	return nil
 }
 
-func (db DB) ListCommunities(sessionid string) (communities []common.Community, err error) {
+func (db DB) ListCommunities(userid int) (communities []common.Community, err error) {
 	rows, err := db.conn.Query(`
 		SELECT
 			communities.id,
@@ -421,18 +446,15 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 					community_memberships.community_id,
 					true as member
 				FROM
-					community_memberships,
-					sessions
+					community_memberships
 				WHERE
-					community_memberships.user_id = sessions.user_id
-					AND
-					sessions.id = $1
+					community_memberships.user_id = $1
 			) as my_memberships
 				ON
 					my_memberships.community_id = communities.id
 		ORDER BY communities.id ASC;
 		`,
-		sessionid,
+		userid,
 	)
 	if err != nil {
 		common.LogError(err)

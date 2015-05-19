@@ -1,12 +1,14 @@
 package common
 
 import (
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"html/template"
 	"log"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"runtime"
@@ -123,25 +125,38 @@ func ExecTemplate(tmpl *template.Template, w http.ResponseWriter, pc map[string]
 	}
 }
 
-func SendRegEmail(email, password string) error {
-	emailText := fmt.Sprintf(`Thank you for registerering with ComFor.Me.
+func SendRegEmail(email string) error {
+	hash, date, err := GenerateSecret(email)
+	if err != nil {
+		return err
+	}
 
-Your temporary password is: %s
+	emailText := fmt.Sprintf(`Thank you for registering with ComFor.Me.
 
-Please change your password after logging in.
-`, password)
+To complete your registration, please copy and paste the following link into your web browser:
+https://comfor.me/wizard?action=register&email=%s&date=%s&code=%s
+
+This link will be valid for 14 days.
+
+Hope to see you soon,
+The ComFor.Me team
+`, email, date, hash)
 	return sendEmail(email, "Welcome to ComFor.Me!", "", emailText)
 }
 
-func SendResetEmail(email, password string) error {
+func SendResetEmail(email, date, hash string) error {
 	emailText := fmt.Sprintf(`We received a password reset request for your account on ComFor.Me.
 
-Your new temporary password is: %s
+To complete your password reset, please copy and paste the following link into your web browser:
+https://comfor.me/wizard?action=reset&email=%s&date=%s&code=%s
 
-Please change your password after logging in.
+If you did not request this password reset you can safely ignore this email.
 
-If you did not request this password reset please contact support.
-`, password)
+This link will be valid for 14 days.
+
+Hope to see you soon,
+The ComFor.Me team
+`, email, date, hash)
 	return sendEmail(email, "ComFor.Me Password Reset", "", emailText)
 }
 
@@ -159,14 +174,9 @@ func sendEmail(recipient, subject, html, text string) error {
 	message.HTML = html
 	message.Text = text
 
-	responses, apiError, err := client.MessagesSend(message)
-	if err != nil || apiError != nil {
-		if err != nil {
-			log.Printf("Error: %s\n", err.Error())
-		}
-		if apiError != nil {
-			log.Printf("Mandrill API Error: %+v\n", apiError)
-		}
+	responses, err := client.MessagesSend(message)
+	if err != nil {
+		log.Printf("Error: %s\n", err.Error())
 		return EmailFailed
 	}
 	log.Printf("Mandrill responses: %+v\n", responses)
@@ -227,7 +237,7 @@ func GetSessionId(res http.ResponseWriter, req *http.Request) (sessionid string,
 
 func generateSecret(password string) (hash string, err error) {
 	hashBytes, err := scrypt.Key([]byte(password), secret, 16384, 8, 1, 32)
-	hash = string(hashBytes)
+	hash = hex.EncodeToString(hashBytes)
 	return
 }
 
@@ -241,7 +251,7 @@ func GenerateSecret(email string) (hash string, date string, err error) {
 }
 
 func CheckSecret(hash, email, date string) bool {
-	log.Printf("Checking secret: (%s, %s) against hash: \n", email, date, hash)
+	log.Printf("Checking secret: (%s, %s) against hash: %s\n", email, date, hash)
 	checkDate, err := time.Parse(time.RFC3339, date)
 
 	if err != nil {
@@ -262,4 +272,11 @@ func CheckSecret(hash, email, date string) bool {
 		log.Printf("Error: string (%s%s) does not match hash (%s).\n", email, date, hash)
 	}
 	return err == nil && newHash == hash
+}
+
+func CheckParam(values url.Values, key string) bool {
+	if values[key] != nil || len(values[key]) == 1 {
+		return true
+	}
+	return false
 }

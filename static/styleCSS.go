@@ -7,10 +7,11 @@ span#noscript {
     font-size: small;
 }
 .sign-up-and-log-in.content {
-	margin-top: 4rem;
+	padding-top: 4rem;
+	padding-bottom: 4rem;
 }
 
-.sign-up-and-log-in {
+.sign-up-and-log-in.login-tabs {
 	margin-bottom: 4rem;
 }
 
@@ -37,7 +38,10 @@ span#noscript {
 .tabs-content, .tabs-content form {
 	margin: 0;
 }
-
+.g-recaptcha {
+	margin: 0 auto 1rem auto;
+	width: 304px;
+}
 
 /* ---------- Communities Settings ---------- */
 .communities-settings section {

@@ -22,44 +22,23 @@ func init() {
 	template.Must(settingsTemplate.New("content").Parse(settingsTemplateText))
 }
 
-func SettingsHandler(res http.ResponseWriter, req *http.Request) {
+func SettingsHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "Settings"
-
-	cookie, err := req.Cookie("sessionid")
-	if err != nil {
-		log.Println("Failed to retrieve sessionid:", err)
-		common.Logout(res, req)
-		return
-	}
-	sessionid := cookie.Value
-
-	email, err := databaseActions.GetEmail(sessionid)
-	if err != nil {
-		log.Println("Error getting email:", err)
-		common.Logout(res, req)
-		return
-	}
 	data["email"] = email
-
-	username, err := databaseActions.GetUsername(sessionid)
-	if err != nil {
-		log.Println("Error getting username:", err)
-		common.Logout(res, req)
-		return
-	}
 	data["username"] = username
 
-	data["communitiesCols"], err = databaseActions.GetCommunityColumns(sessionid)
+	var err error
+	data["communitiesCols"], err = databaseActions.GetCommunityColumns(userID)
 	if err != nil {
 		log.Println("Error listing communities:", err)
 		common.Logout(res, req)
 		return
 	}
 
-	openSessions, err := databaseActions.OtherSessions(sessionid)
+	openSessions, err := databaseActions.OtherSessions(userID)
 	if err != nil {
 		log.Println("Error getting open sessions:", err)
 		common.Logout(res, req)
@@ -76,7 +55,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 			if len(oldPassword) == 0 || len(newPassword) == 0 {
 				data["errorMsg"] = "Both old and new password required to change password"
 			} else if newPassword == newPasswordAgain {
-				err := databaseActions.ChangePassword(sessionid, oldPassword, newPassword)
+				err := databaseActions.ChangePassword(email, oldPassword, newPassword)
 				if err == nil {
 					data["successMsg"] = "Password changed."
 					if req.URL.Path != "/settings" {
@@ -93,7 +72,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request) {
 			usernameChangePassword := req.PostFormValue("usernameChangePassword")
 			newUsername := req.PostFormValue("newUsername")
 
-			err := databaseActions.ChangeUsername(sessionid, newUsername, usernameChangePassword)
+			err := databaseActions.ChangeUsername(email, newUsername, usernameChangePassword)
 			if err != nil {
 				data["newUsername"] = newUsername
 				data["errorMsg"] = err.Error()
@@ -130,9 +109,9 @@ const settingsTemplateText = `
 	<div class="content">
 		<div class="row">
 			<div class="columns communities-settings">
-				<h1><i class="fi-widget"></i> Settings</h1>
-                {{if .successMsg}}<div class="alert-box success">{{.successMsg}}</div>{{end}}
-                {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
+				<h1><i class="fi-widget"></i> Settings</h1>{{if .successMsg}}
+				<div class="alert-box success">{{.successMsg}}</div>{{end}}{{if .errorMsg}}
+				<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
 				<section>
 					<h2>User Information</h2>
 					<div class="row">
@@ -150,7 +129,7 @@ const settingsTemplateText = `
 						<div class="row">
 							<div class="large-4 columns left">
 								<label>
-									Old password (Initial password sent via email)
+									Old password
 									<input type="password" name="oldPassword">
 								</label>
 							</div>

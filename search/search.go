@@ -19,19 +19,13 @@ func init() {
 	template.Must(searchTemplate.New("content").Parse(searchTemplateText))
 }
 
-func SearchHandler(res http.ResponseWriter, req *http.Request) {
+func SearchHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 	data := map[string]interface{}{}
 	if req.Method == "POST" {
-		cookie, err := req.Cookie("sessionid")
-		if err != nil {
-			log.Println("Failed to retrieve sessionid in SearchHandler:", err)
-			common.Logout(res, req)
-			return
-		}
-		sessionid := cookie.Value
 		query := req.PostFormValue("page-search")
 		data["query"] = query
 		data["pageTitle"] = req.PostFormValue("page-search")
+		var err error
 		data["results"], err = databaseActions.SearchPages(sessionid, query)
 		if err != nil {
 			log.Println("Failed to retrieve search results for "+

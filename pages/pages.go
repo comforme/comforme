@@ -22,14 +22,9 @@ func init() {
 	template.Must(pageTemplate.New("content").Parse(pageTemplateText))
 }
 
-func PageHandler(res http.ResponseWriter, req *http.Request) {
+func PageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 	data := map[string]interface{}{}
 
-	sessionid, err := common.GetSessionId(res, req)
-	if err != nil {
-		log.Println("Failed to retrieve session id", err)
-		return
-	}
 	data["formAction"] = req.URL.Path
 
 	category := bone.GetValue(req, "category")
@@ -53,7 +48,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 			goto renderPosts
 		}
 
-		err = databaseActions.CreatePost(sessionid, thoughts, page)
+		err = databaseActions.CreatePost(sessionid, userID, thoughts, page)
 
 		if err == nil {
 			data["successMsg"] = "Post successfully added."
@@ -65,7 +60,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request) {
 
 renderPosts:
 	log.Printf("Looking up posts for page id (%d)...\n", page.Id)
-	posts, err := databaseActions.GetPosts(sessionid, page)
+	posts, err := databaseActions.GetPosts(userID, page)
 	if err != nil {
 		http.NotFound(res, req)
 		log.Printf("Error looking up posts for page (%d): %s\n", page.Id, err.Error())

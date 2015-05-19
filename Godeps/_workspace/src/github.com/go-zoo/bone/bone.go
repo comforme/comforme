@@ -15,7 +15,7 @@ import "net/http"
 type Mux struct {
 	Routes   map[string][]*Route
 	Static   map[string]*Route
-	notFound http.HandlerFunc
+	notFound http.Handler
 }
 
 var (
@@ -34,15 +34,13 @@ func New() *Mux {
 // Serve http request
 func (m *Mux) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	// Check if the request path doesn't end with /
-	if !m.valid(req.URL.Path) {
+	if !valid(req.URL.Path) {
 		if key, ok := m.isStatic(req.URL.Path); ok {
 			m.Static[key].Handler.ServeHTTP(rw, req)
 			return
 		}
-		for !m.valid(req.URL.Path) {
-			req.URL.Path = req.URL.Path[:len(req.URL.Path)-1]
-		}
 
+		req.URL.Path = cleanUrl(req.URL.Path)
 		rw.Header().Set("Location", req.URL.Path)
 		rw.WriteHeader(http.StatusFound)
 	}
@@ -52,7 +50,7 @@ func (m *Mux) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		if req.URL.Path == r.Path && !r.Params {
 			r.Handler.ServeHTTP(rw, req)
 			return
-		} else if r.Params {
+		} else if r.Params || r.Regex {
 			if ok := r.Match(req); ok {
 				r.Handler.ServeHTTP(rw, req)
 				delete(vars, req)
@@ -116,14 +114,14 @@ func (m *Mux) Options(path string, handler http.Handler) {
 }
 
 // NotFound the mux custom 404 handler
-func (m *Mux) NotFound(handler http.HandlerFunc) {
+func (m *Mux) NotFound(handler http.Handler) {
 	m.notFound = handler
 }
 
 // Register the new route in the router with the provided method and handler
 func (m *Mux) register(method string, path string, handler http.Handler) {
 	r := NewRoute(path, handler)
-	if m.valid(path) {
+	if valid(path) {
 		m.Routes[method] = append(m.Routes[method], r)
 		return
 	}

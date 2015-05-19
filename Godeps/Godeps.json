@@ -1,35 +1,36 @@
 {
 	"ImportPath": "github.com/comforme/comforme",
-	"GoVersion": "go1.4",
+	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
 			"ImportPath": "github.com/go-zoo/bone",
-			"Rev": "5af089108205fe172b8bdbb238228f9110df2a41"
+			"Rev": "74d8ac2504917ffc9f103361b41ce4cb4b20bc55"
 		},
 		{
 			"ImportPath": "github.com/keighl/mandrill",
-			"Comment": "0.0.2",
-			"Rev": "50da1e8b9846d082204fe7b9ce7c1e3eb8e24b4c"
+			"Comment": "1.0.0",
+			"Rev": "87123e4b91725f27ad18767da8ff3e2d49106ae2"
 		},
 		{
 			"ImportPath": "github.com/lib/pq",
-			"Rev": "e31e9d09fa0cd168dd1a45ddb1dff76f1f55512a"
+			"Comment": "go1.0-cutoff-38-ge51fec1",
+			"Rev": "e51fec16be7847e24d0270a5ce1f95cf2482b5e9"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/bcrypt",
-			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
+			"Rev": "4d48e5fa3d62b5e6e71260571bf76c767198ca02"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/blowfish",
-			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
+			"Rev": "4d48e5fa3d62b5e6e71260571bf76c767198ca02"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/pbkdf2",
-			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
+			"Rev": "4d48e5fa3d62b5e6e71260571bf76c767198ca02"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/scrypt",
-			"Rev": "c89e5683853da5ed97731b507dcd8cda2b11afaf"
+			"Rev": "4d48e5fa3d62b5e6e71260571bf76c767198ca02"
 		}
 	]
 }

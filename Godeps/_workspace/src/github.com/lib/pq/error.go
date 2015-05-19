@@ -459,12 +459,13 @@ func errorf(s string, args ...interface{}) {
 	panic(fmt.Errorf("pq: %s", fmt.Sprintf(s, args...)))
 }
 
-func errRecover(err *error) {
+func (c *conn) errRecover(err *error) {
 	e := recover()
 	switch v := e.(type) {
 	case nil:
 		// Do nothing
 	case runtime.Error:
+		c.bad = true
 		panic(v)
 	case *Error:
 		if v.Fatal() {
@@ -482,6 +483,13 @@ func errRecover(err *error) {
 		}
 
 	default:
+		c.bad = true
 		panic(fmt.Sprintf("unknown error: %#v", e))
+	}
+
+	// Any time we return ErrBadConn, we need to remember it since *Tx doesn't
+	// mark the connection bad in database/sql.
+	if *err == driver.ErrBadConn {
+		c.bad = true
 	}
 }

@@ -31,16 +31,8 @@ type AjaxError struct {
 	Message string `json:"error"`
 }
 
-func HandleAction(res http.ResponseWriter, req *http.Request) {
+func HandleAction(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 	res.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-	cookie, err := req.Cookie("sessionid")
-	if err != nil {
-		fmt.Fprintln(res, JSONLoginError)
-		return
-	}
-
-	sessionid := cookie.Value
 
 	action := bone.GetValue(req, "action")
 	var result interface{}
@@ -51,7 +43,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request) {
 			log.Println("Error parsing communityid:", err)
 			result = AjaxError{"Invalid communityid."}
 		} else {
-			err = databaseActions.SetCommunityMembership(sessionid, int(community_id), action == "addCommunity")
+			err = databaseActions.SetCommunityMembership(userID, int(community_id), action == "addCommunity")
 			if err != nil {
 				result = AjaxError{err.Error()}
 			} else {
@@ -59,7 +51,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 	} else if action == "logoutOtherSessions" {
-		loggedOut, err := databaseActions.LogoutOtherSessions(sessionid)
+		loggedOut, err := databaseActions.LogoutOtherSessions(sessionid, userID)
 		if err != nil {
 			result = AjaxError{err.Error()}
 		} else {

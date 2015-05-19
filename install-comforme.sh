@@ -2,7 +2,7 @@
 # Install comforme
 
 DEBUG_MODE="$1"
-GO_VERSION="1.4"
+GO_VERSION="1.4.2"
 PKG_URL="https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz"
 INSTALL_DIR="/usr/local"
 DB_NAME="comforme"
@@ -35,6 +35,7 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin
 go get golang.org/x/crypto/bcrypt
+go get golang.org/x/crypto/scrypt
 for repo in lib/pq go-zoo/bone keighl/mandrill comforme/comforme; do
     go get github.com/$repo
 done
@@ -52,5 +53,9 @@ for table in $TABLES; do
     sudo -u postgres psql -d $DB_NAME -c "GRANT ALL PRIVILEGES ON TABLE ${table} TO ${USERNAME};"
 done
 
-DEBUG_MODE=$DEBUG_MODE MANDRILL_APIKEY=$MANDRILL_APIKEY PORT=8080 nohup ~/go/bin/comforme &
+# Generate secret key used for hashing salt
+SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
+# Run comforme executable with environmental variables
+DEBUG_MODE=$DEBUG_MODE SECRET=$SECRET MANDRILL_APIKEY=$MANDRILL_APIKEY PORT=8080 nohup ~/go/bin/comforme &
 
