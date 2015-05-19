@@ -367,7 +367,7 @@ func CheckResetLink(email, date, code string) bool {
 }
 
 func CheckRegisterLink(email, date, code string) bool {
-	err = db.CheckEmailInUse(email)
+	err := db.CheckEmailInUse(email)
 	if err != nil {
 		return false
 	}
