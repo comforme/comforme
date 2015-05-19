@@ -247,7 +247,7 @@ func GenerateSecret(email string) (hash string, date string, err error) {
 }
 
 func CheckSecret(hash, email, date string) bool {
-	log.Printf("Checking secret: (%s, %s) against hash: \n", email, date, hash)
+	log.Printf("Checking secret: (%s, %s) against hash: %s\n", email, date, hash)
 	checkDate, err := time.Parse(time.RFC3339, date)
 
 	if err != nil {

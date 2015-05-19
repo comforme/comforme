@@ -107,7 +107,7 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 					} else {
 						sessionid, err := databaseActions.Register2(username, email, newPassword)
 						if err != nil {
-							data["formError"] = err.Error()
+							data["errorMsg"] = err.Error()
 						} else { // No error
 							common.SetSessionCookie(res, sessionid)
 

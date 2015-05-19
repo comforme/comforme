@@ -217,7 +217,6 @@ func Register2(username, email, password string) (sessionid string, err error) {
 
 	// Make new users lazy :)
 	err = SetCommunityMembership(sessionid, 1, true)
-
 	return
 }
 
