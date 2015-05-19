@@ -34,7 +34,7 @@ func init() {
 
 	// Community selection page template
 	communitiesTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
-	template.Must(communitiesTemplate.New("nav").Parse(templates.NavlessBar))
+	template.Must(communitiesTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(communitiesTemplate.New("content").Parse(wizardTemplateText))
 	template.Must(communitiesTemplate.New("wizardContent").Parse(communitiesTemplateText))
 	template.Must(communitiesTemplate.New("communitiesContent").Parse(templates.Communities))
