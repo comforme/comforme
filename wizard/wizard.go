@@ -222,7 +222,7 @@ const registerTemplateText = `
 						<div class="row">
 							<div class="large-4 medium-6 columns left">
 								<label>
-									Username
+									Username (must be between 3 and 20 characters)
 									<input type="text" name="username" {{if .username}} value="{{.username}}"{{end}}>
 								</label>
 							</div>
@@ -230,7 +230,7 @@ const registerTemplateText = `
 						<div class="row">
 							<div class="large-4 medium-6 columns left">
 								<label>
-									New password
+									New password (must be at least 6 characters)
 									<input type="password" name="newPassword">
 								</label>
 							</div>
