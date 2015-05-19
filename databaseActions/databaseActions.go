@@ -357,7 +357,7 @@ func GetCommunityColumns(sessionid string) ([][]common.Community, error) {
 	}, nil
 }
 
-func CheckResetLink(email, date, code string) bool {
+func CheckResetLink(code, email, date string) bool {
 	password, err := db.GetPasswordHash(email)
 	if err != nil {
 		return false
@@ -366,7 +366,7 @@ func CheckResetLink(email, date, code string) bool {
 	return common.CheckSecret(code, email+password, date)
 }
 
-func CheckRegisterLink(email, date, code string) bool {
+func CheckRegisterLink(code, email, date string) bool {
 	err := db.CheckEmailInUse(email)
 	if err != nil {
 		return false
