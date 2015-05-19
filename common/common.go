@@ -218,7 +218,12 @@ func LogErrorSkipLevels(err error, levels int) {
 
 func GetIpAddress(req *http.Request) string {
 	if ipProxy := req.Header.Get("X-FORWARDED-FOR"); len(ipProxy) > 0 {
-		return ipProxy
+		ips := strings.Split(ipProxy, ", ")
+		if len(ips) > 1 {
+			return ips[0]
+		} else {
+			return ipProxy
+		}
 	}
 	ip, _, _ := net.SplitHostPort(req.RemoteAddr)
 	return ip
