@@ -102,7 +102,6 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 					newPasswordAgain := req.PostFormValue("newPasswordAgain")
 					if len(username) == 0 || len(newPassword) == 0 {
 						data["errorMsg"] = "Required field left blank."
-					}
 					} else if newPassword != newPasswordAgain {
 						data["errorMsg"] = "Passwords do not match."
 					} else {
