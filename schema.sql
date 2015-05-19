@@ -18,10 +18,10 @@ CREATE TABLE pages (
    id               SERIAL                   PRIMARY KEY,
    title            TEXT           NOT NULL,
    slug             TEXT           NOT NULL,
-   category         INT            NOT NULL  REFERENCES categories(id),
+   category         INT            NOT NULL  REFERENCES categories(id) ON DELETE CASCADE,
    UNIQUE (slug, category),
    description      TEXT           NOT NULL,
-   user_id          INT            NOT NULL  REFERENCES users(id),
+   user_id          INT            NOT NULL  REFERENCES users(id) ON DELETE CASCADE,
    location         POINT,
    address          TEXT           NOT NULL,
    website          TEXT           NOT NULL,
@@ -31,8 +31,8 @@ CREATE INDEX pages_title_tsvector_idx ON pages (to_tsvector('english', title));
 
 CREATE TABLE posts (
    id               SERIAL                   PRIMARY KEY,
-   user_id          INT            NOT NULL  REFERENCES users(id),
-   page_id          INT            NOT NULL  REFERENCES pages(id),
+   user_id          INT            NOT NULL  REFERENCES users(id) ON DELETE CASCADE,
+   page_id          INT            NOT NULL  REFERENCES pages(id) ON DELETE CASCADE,
    body             TEXT           NOT NULL,
    date_created     TIMESTAMP      NOT NULL  DEFAULT now()
 );
@@ -43,14 +43,14 @@ CREATE TABLE communities (
 );
 
 CREATE TABLE community_memberships (
-   user_id          INT                      REFERENCES users(id),
-   community_id     INT                      REFERENCES communities(id),
+   user_id          INT                      REFERENCES users(id) ON DELETE CASCADE,
+   community_id     INT                      REFERENCES communities(id) ON DELETE CASCADE,
    PRIMARY KEY (user_id, community_id)
 );
 
 CREATE TABLE sessions (
    id               TEXT                     PRIMARY KEY,
-   user_id          INT            NOT NULL  REFERENCES users(id),
+   user_id          INT            NOT NULL  REFERENCES users(id) ON DELETE CASCADE,
    create_date      TIMESTAMP      NOT NULL  DEFAULT now()
 );
 
