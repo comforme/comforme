@@ -8,6 +8,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"runtime"
@@ -267,4 +268,11 @@ func CheckSecret(hash, email, date string) bool {
 		log.Printf("Error: string (%s%s) does not match hash (%s).\n", email, date, hash)
 	}
 	return err == nil && newHash == hash
+}
+
+func CheckParam(values url.Values, key string) bool {
+	if values[key] != nil || len(values[key]) == 1 {
+		return true
+	}
+	return false
 }

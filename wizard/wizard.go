@@ -43,9 +43,46 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 
 	data := map[string]interface{}{}
 
-	data["errorMsg"] = invalidLink
+	// Check for duplicate parameters.
+	for _, value := range req.URL.Query() {
+		if len(value) != 1 {
+			data["errorMsg"] = invalidLink
+			common.ExecTemplate(messageTemplate, res, data)
+			return
+		}
+	}
+
+	// Check for action
+	if !common.CheckParam(req.URL.Query(), "action") {
+		data["errorMsg"] = invalidLink
+		common.ExecTemplate(messageTemplate, res, data)
+		return
+	}
+	actionName := req.URL.Query()["action"][0]
+	log.Printf("Action: %s\n", actionName)
+
+	if !common.CheckParam(req.URL.Query(), "email") ||
+		!common.CheckParam(req.URL.Query(), "date") ||
+		!common.CheckParam(req.URL.Query(), "code") {
+		data["errorMsg"] = invalidLink
+	} else if !common.CheckSecret(
+		req.URL.Query()["code"][0],
+		req.URL.Query()["email"][0],
+		req.URL.Query()["date"][0],
+	) {
+		data["errorMsg"] = invalidLink
+	} else {
+		if actionName == "register" {
+			// Register user (for real this time)
+			data["successMsg"] = "Valid link."
+		} else if actionName == "reset" {
+			// Reset user's password
+			data["successMsg"] = "Valid link."
+		}
+	}
 
 	common.ExecTemplate(messageTemplate, res, data)
+	return
 }
 
 func introWizardHandler(res http.ResponseWriter, req *http.Request) {
