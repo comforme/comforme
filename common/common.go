@@ -1,6 +1,7 @@
 package common
 
 import (
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"html/template"
@@ -231,7 +232,7 @@ func GetSessionId(res http.ResponseWriter, req *http.Request) (sessionid string,
 
 func generateSecret(password string) (hash string, err error) {
 	hashBytes, err := scrypt.Key([]byte(password), secret, 16384, 8, 1, 32)
-	hash = string(hashBytes)
+	hash = hex.EncodeToString(hashBytes)
 	return
 }
 
