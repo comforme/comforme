@@ -177,9 +177,7 @@ const wizardTemplateText = `
 
 const communitiesTemplateText = `
 					{{ template "communitiesContent" .}}
-					<form action="/">
-						<button type="submit">Finish</button>
-					</form>
+					<button onclick="location.href='/'">Finish</button>
 				`
 
 const registerTemplateText = `
