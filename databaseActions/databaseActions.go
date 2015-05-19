@@ -372,5 +372,5 @@ func CheckRegisterLink(email, date, code string) bool {
 		return false
 	}
 
-	return common.CheckSecret(code, email+password, date)
+	return common.CheckSecret(code, email, date)
 }
