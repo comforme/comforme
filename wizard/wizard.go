@@ -15,7 +15,7 @@ import (
 
 // Messages
 const (
-	invalidLink   = "Invalid link. You probably already used it."
+	invalidLink   = "Invalid link. It may have expired or possibly you already used it."
 	accountExists = "You already have an account with this email address."
 	linkUsed      = "This link has been previously used and is no longer valid."
 )
