@@ -163,7 +163,7 @@ const registerTemplateText = `
 					<form method="post" action="{{.formAction}}">
 						<h2>Password Change</h2>
 						<div class="row">
-							<div class="large-4 columns left">
+							<div class="large-4 medium-6 columns left">
 								<label>
 									Email
 									<input type="email" value="{{.email}}" disabled>
@@ -171,7 +171,7 @@ const registerTemplateText = `
 							</div>
 						</div>
 						<div class="row">
-							<div class="large-4 columns left">
+							<div class="large-4 medium-6 columns left">
 								<label>
 									Username
 									<input type="text" name="username" {{if .username}} value="{{.username}}"{{end}}>
@@ -179,13 +179,13 @@ const registerTemplateText = `
 							</div>
 						</div>
 						<div class="row">
-							<div class="large-4 columns left">
+							<div class="large-4 medium-6 columns left">
 								<label>
 									New password
 									<input type="password" name="newPassword">
 								</label>
 							</div>
-							<div class="large-4 columns left">
+							<div class="large-4 medium-6 columns left">
 								<label>
 									New password (again)
 									<input type="password" name="newPasswordAgain">
