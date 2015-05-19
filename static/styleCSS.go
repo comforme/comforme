@@ -7,11 +7,11 @@ span#noscript {
     font-size: small;
 }
 .sign-up-and-log-in.content {
-	margin-top: 4rem;
+	padding-top: 4rem;
 }
 
 .sign-up-and-log-in {
-	margin-bottom: 4rem;
+	padding-bottom: 4rem;
 }
 
 .login-tabs {
