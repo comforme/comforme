@@ -176,7 +176,7 @@ const wizardTemplateText = `
 `
 
 const communitiesTemplateText = `
-					{ template "communitiesContent" .}}
+					{{ template "communitiesContent" .}}
 					<form action="/">
 						<button type="submit">Finish</button>
 					</form>
