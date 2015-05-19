@@ -2,7 +2,7 @@
 # Install comforme
 
 DEBUG_MODE="$1"
-GO_VERSION="1.4"
+GO_VERSION="1.4.2"
 PKG_URL="https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz"
 INSTALL_DIR="/usr/local"
 DB_NAME="comforme"
