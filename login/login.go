@@ -154,14 +154,10 @@ const loginTemplateText = `
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .registerEmailError}}
 									<small class="error">{{.registerEmailError}}</small>{{end}}
 								</div>
+								<div class="g-recaptcha" data-sitekey="{{.recaptchaPublicKey}}"></div>
 								<div>
-									<div class="g-recaptcha" data-sitekey="{{.recaptchaPublicKey}}"></div>
-								</div>
-								<div>
-									<button type="submit" class="button" name="sign-up" value="true">Sign Up</button>
-								</div>
-								<div>
-									<button type="submit" class="button tiny" name="reset-password" value="true">Reset Password</button>
+									<button type="submit" class="button expand" name="sign-up" value="true">Sign Up</button>
+									<button type="submit" class="button expand" name="reset-password" value="true">Reset Password</button>
 								</div>
 							</form>
 						</div>
@@ -176,7 +172,7 @@ const loginTemplateText = `
 									<small class="error">{{.loginError}}</small>{{end}}
 								</div>
 								<div>
-									<button type="submit" class="button" name="log-in" value="true">Log In</button>
+									<button type="submit" class="button expand" name="log-in" value="true">Log In</button>
 								</div>
 							</form>
 						</div>

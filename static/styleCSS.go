@@ -37,7 +37,9 @@ span#noscript {
 .tabs-content, .tabs-content form {
 	margin: 0;
 }
-
+.g-recaptcha {
+	margin: 0 auto 1rem auto;
+}
 
 /* ---------- Communities Settings ---------- */
 .communities-settings section {
