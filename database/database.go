@@ -32,8 +32,7 @@ func (db DB) GetPasswordHash(email string) (hash string, err error) {
 	log.Printf("Looking up user: %s\n", email)
 
 	// Get hashed password
-	var hashed string
-	err = db.conn.QueryRow("SELECT password FROM users WHERE email = $1", email).Scan(&hashed)
+	err = db.conn.QueryRow("SELECT password FROM users WHERE email = $1", email).Scan(&hash)
 	if err != nil {
 		common.LogError(err)
 		log.Printf("Error retrieving hashed password for email (%s): %s\n", email, err.Error())

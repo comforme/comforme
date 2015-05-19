@@ -15,7 +15,7 @@ import (
 var loginTemplate *template.Template
 var recaptchaPublicKey string
 
-var registrationSuccess string = "Registration successful. Please check your email."
+const registrationSuccess = "Registration successful. Please check your email."
 
 func init() {
 	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
@@ -96,7 +96,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 			if err != nil {
 				data["formError"] = err.Error()
 			} else {
-				data["formError"] = "Password reset successful. Check email for new password."
+				data["successMsg"] = "Password reset successful. Check email for new password."
 			}
 		}
 	}

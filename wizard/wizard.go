@@ -156,8 +156,8 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 							} else { // No error
 								common.SetSessionCookie(res, sessionid)
 
-								// Redirect to logged-in wizard
-								http.Redirect(res, req, req.URL.Path, http.StatusFound)
+								// Redirect to home page
+								http.Redirect(res, req, "/", http.StatusFound)
 								return
 							}
 						}
