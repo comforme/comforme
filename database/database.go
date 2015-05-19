@@ -28,6 +28,21 @@ func connect(constr string) (*sql.DB, error) {
 	return conn, err
 }
 
+func (db DB) GetPasswordHash(email string) (hash string, err error) {
+	log.Printf("Looking up user: %s\n", email)
+
+	// Get hashed password
+	var hashed string
+	err = db.conn.QueryRow("SELECT password FROM users WHERE email = $1", email).Scan(&hashed)
+	if err != nil {
+		common.LogError(err)
+		log.Printf("Error retrieving hashed password for email (%s): %s\n", email, err.Error())
+		err = common.InvalidUsernameOrPassword
+		return
+	}
+	return
+}
+
 func (db DB) GetUserID(email string, password string) (userid int, err error) {
 	log.Printf("Looking up user: %s\n", email)
 

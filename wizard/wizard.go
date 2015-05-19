@@ -12,7 +12,12 @@ import (
 	"github.com/comforme/comforme/templates"
 )
 
-const invalidLink = "Invalid link."
+// Messages
+const (
+	invalidLink   = "Invalid link."
+	accountExists = "You already have an account with this email address."
+	linkUsed      = "This link has been previously used and is no longer valid."
+)
 
 var communitiesTemplate *template.Template
 var messageTemplate *template.Template
@@ -31,6 +36,12 @@ func init() {
 	template.Must(communitiesTemplate.New("communitiesContent").Parse(templates.Communities))
 	template.Must(communitiesTemplate.New("wizardContent").Parse(communitiesTemplateText))
 	template.Must(communitiesTemplate.New("content").Parse(wizardTemplateText))
+
+	// Register page template
+	registerTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
+	template.Must(registerTemplate.New("nav").Parse(templates.NavlessBar))
+	template.Must(registerTemplate.New("wizardContent").Parse(registerTemplateText))
+	template.Must(registerTemplate.New("content").Parse(wizardTemplateText))
 }
 
 func WizardHandler(res http.ResponseWriter, req *http.Request) {
@@ -65,19 +76,33 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 		!common.CheckParam(req.URL.Query(), "date") ||
 		!common.CheckParam(req.URL.Query(), "code") {
 		data["errorMsg"] = invalidLink
-	} else if !common.CheckSecret(
-		req.URL.Query()["code"][0],
-		req.URL.Query()["email"][0],
-		req.URL.Query()["date"][0],
-	) {
-		data["errorMsg"] = invalidLink
 	} else {
 		if actionName == "register" {
-			// Register user (for real this time)
-			data["successMsg"] = "Valid link."
+			email := req.URL.Query()["email"][0]
+			if !common.CheckSecret(
+				req.URL.Query()["code"][0],
+				email,
+				req.URL.Query()["date"][0],
+			) {
+				data["errorMsg"] = invalidLink
+			} else {
+				// Register user (for real this time)
+
+				data["email"] = email
+				common.ExecTemplate(registerTemplate, res, data)
+				return
+			}
 		} else if actionName == "reset" {
-			// Reset user's password
-			data["successMsg"] = "Valid link."
+			if !databaseActions.CheckResetLink(
+				req.URL.Query()["code"][0],
+				req.URL.Query()["email"][0],
+				req.URL.Query()["date"][0],
+			) {
+				data["errorMsg"] = invalidLink
+			} else {
+				// Reset user's password
+				data["successMsg"] = "Valid link."
+			}
 		}
 	}
 
@@ -114,16 +139,53 @@ const wizardTemplateText = `
 				<h1><i class="fi-widget"></i> Settings Wizard</h1>
                 {{if .successMsg}}<div class="alert-box success">{{.successMsg}}</div>{{end}}
                 {{if .errorMsg}}<div class="alert-box alert">{{.errorMsg}}</div>{{end}}
-				<section>
-{{ template "wizardContent" .}}
-				</section>
+				<section>{{ template "wizardContent" .}}</section>
 			</div>
 		</div>
 	</div>
 	<script src="/static/js/settings_js"></script>
 `
 
-const communitiesTemplateText = `{ template "communitiesContent" .}}
+const communitiesTemplateText = `
+					{ template "communitiesContent" .}}
 					<form action="/">
 						<button type="submit">Finish</button>
-					</form>`
+					</form>
+				`
+
+const registerTemplateText = `
+					<form method="post" action="{{.formAction}}">
+						<h2>Password Change</h2>
+						<div class="row">
+							<div class="large-4 columns left">
+								<label>
+									Email
+									<input type="email" value="{{.email}}" disabled>
+								</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="large-4 columns left">
+								<label>
+									Username
+									<input type="text" name="username" placeholder="Username"{{if .username}} value="{{.username}}"{{end}}>
+								</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="large-4 columns left">
+								<label>
+									New password
+									<input type="password" name="newPassword">
+								</label>
+							</div>
+							<div class="large-4 columns left">
+								<label>
+									New password (again)
+									<input type="password" name="newPasswordAgain">
+								</label>
+							</div>
+						</div>
+						<button type="submit" name="continue" value="true">Continue</button>
+					</form>
+				`

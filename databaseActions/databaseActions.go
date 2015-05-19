@@ -357,3 +357,12 @@ func GetCommunityColumns(sessionid string) ([][]common.Community, error) {
 		communities[cut3:],
 	}, nil
 }
+
+func CheckResetLink(email, date, code string) bool {
+	password, err := db.GetPasswordHash(email)
+	if err != nil {
+		return false
+	}
+
+	return common.CheckSecret(code, email+password, date)
+}
