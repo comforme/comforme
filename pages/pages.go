@@ -48,7 +48,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, u
 			goto renderPosts
 		}
 
-		err = databaseActions.CreatePost(sessionid, thoughts, page)
+		err = databaseActions.CreatePost(sessionid, userID, thoughts, page)
 
 		if err == nil {
 			data["successMsg"] = "Post successfully added."
@@ -60,7 +60,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, u
 
 renderPosts:
 	log.Printf("Looking up posts for page id (%d)...\n", page.Id)
-	posts, err := databaseActions.GetPosts(sessionid, page)
+	posts, err := databaseActions.GetPosts(userID, page)
 	if err != nil {
 		http.NotFound(res, req)
 		log.Printf("Error looking up posts for page (%d): %s\n", page.Id, err.Error())

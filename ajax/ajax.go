@@ -43,7 +43,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request, sessionid, email, 
 			log.Println("Error parsing communityid:", err)
 			result = AjaxError{"Invalid communityid."}
 		} else {
-			err = databaseActions.SetCommunityMembership(sessionid, int(community_id), action == "addCommunity")
+			err = databaseActions.SetCommunityMembership(userID, int(community_id), action == "addCommunity")
 			if err != nil {
 				result = AjaxError{err.Error()}
 			} else {
@@ -51,7 +51,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request, sessionid, email, 
 			}
 		}
 	} else if action == "logoutOtherSessions" {
-		loggedOut, err := databaseActions.LogoutOtherSessions(sessionid)
+		loggedOut, err := databaseActions.LogoutOtherSessions(sessionid, userID)
 		if err != nil {
 			result = AjaxError{err.Error()}
 		} else {

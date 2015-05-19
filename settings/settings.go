@@ -31,14 +31,14 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request, sessionid, emai
 	data["username"] = username
 
 	var err error
-	data["communitiesCols"], err = databaseActions.GetCommunityColumns(sessionid)
+	data["communitiesCols"], err = databaseActions.GetCommunityColumns(userID)
 	if err != nil {
 		log.Println("Error listing communities:", err)
 		common.Logout(res, req)
 		return
 	}
 
-	openSessions, err := databaseActions.OtherSessions(sessionid)
+	openSessions, err := databaseActions.OtherSessions(userID)
 	if err != nil {
 		log.Println("Error getting open sessions:", err)
 		common.Logout(res, req)
@@ -55,7 +55,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request, sessionid, emai
 			if len(oldPassword) == 0 || len(newPassword) == 0 {
 				data["errorMsg"] = "Both old and new password required to change password"
 			} else if newPassword == newPasswordAgain {
-				err := databaseActions.ChangePassword(sessionid, oldPassword, newPassword)
+				err := databaseActions.ChangePassword(email, oldPassword, newPassword)
 				if err == nil {
 					data["successMsg"] = "Password changed."
 					if req.URL.Path != "/settings" {
@@ -72,7 +72,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request, sessionid, emai
 			usernameChangePassword := req.PostFormValue("usernameChangePassword")
 			newUsername := req.PostFormValue("newUsername")
 
-			err := databaseActions.ChangeUsername(sessionid, newUsername, usernameChangePassword)
+			err := databaseActions.ChangeUsername(email, newUsername, usernameChangePassword)
 			if err != nil {
 				data["newUsername"] = newUsername
 				data["errorMsg"] = err.Error()

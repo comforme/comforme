@@ -64,13 +64,7 @@ func CreatePage(sessionId, title, description, address, website string, category
 	return
 }
 
-func CreatePost(sessionId, post string, page common.Page) (err error) {
-	user_id, err := db.GetSessionUserID(sessionId)
-	if err != nil {
-		log.Printf("Error getting userid from sessionid %s: %s\n", sessionId, err.Error())
-		return
-	}
-
+func CreatePost(sessionId string, user_id int, post string, page common.Page) (err error) {
 	err = db.NewPost(user_id, page.Id, post)
 	if err != nil {
 		return
@@ -79,8 +73,8 @@ func CreatePost(sessionId, post string, page common.Page) (err error) {
 	return
 }
 
-func ChangePassword(sessionid, oldPassword, newPassword string) (err error) {
-	email, err := CheckPassword(sessionid, oldPassword)
+func ChangePassword(email, oldPassword, newPassword string) (err error) {
+	_, err = db.GetUserID(email, oldPassword)
 	if err != nil {
 		return
 	}
@@ -138,7 +132,7 @@ func ListCategories() (map[string]string, error) {
 	return db.ListCategories()
 }
 
-func Login(email string, password string) (sessionid string, err error) {
+func Login(email, password string) (sessionid string, err error) {
 	userid, err := db.GetUserID(email, password)
 	if err != nil {
 		log.Printf("Error while logging in user (%s): %s\n", email, err.Error())
@@ -153,45 +147,18 @@ func Login(email string, password string) (sessionid string, err error) {
 	return
 }
 
-func CheckPassword(sessionid, password string) (email string, err error) {
-	log.Printf("Looking up email with sessionid: %s\n", sessionid)
-
-	// Get email from session
-	email, err = db.GetEmail(sessionid)
-	if err != nil {
-		return
-	}
-	log.Printf("Sessionid: %s is associated with the email: %s\n", sessionid, email)
-
-	// Check old password
-	_, err = db.GetUserID(email, password)
-	if err != nil {
-		log.Printf("Error validating old password while changing password for user (%s): %s\n", email, err.Error())
-		err = IncorrectPassword
-		return
-	}
-
-	return
-}
-
-func ChangeUsername(sessionid, newUsername, password string) (err error) {
+func ChangeUsername(email string, newUsername, password string) (err error) {
 	if len(newUsername) < minUsernameLength {
 		err = UsernameTooShort
 		return
 	}
 
-	_, err = CheckPassword(sessionid, password)
+	userid, err := db.GetUserID(email, password)
 	if err != nil {
 		return
 	}
 
-	user_id, err := db.GetSessionUserID(sessionid)
-	if err != nil {
-		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
-		return
-	}
-
-	err = db.ChangeUsername(user_id, newUsername)
+	err = db.ChangeUsername(userid, newUsername)
 
 	return
 }
@@ -234,8 +201,13 @@ func Register2(username, email, password string) (sessionid string, err error) {
 		return
 	}
 
+	userid, err := db.GetSessionUserID(sessionid)
+	if err != nil {
+		return
+	}
+
 	// Make new users lazy :)
-	err = SetCommunityMembership(sessionid, 1, true)
+	err = SetCommunityMembership(userid, 1, true)
 	return
 }
 
@@ -258,25 +230,14 @@ func Register1(email string) (err error) {
 	return
 }
 
-func ListCommunities(sessionid string) (communities []common.Community, err error) {
-	communities, err = db.ListCommunities(sessionid)
-	return
-}
-
-func SetCommunityMembership(sessionid string, community_id int, value bool) (err error) {
-	user_id, err := db.GetSessionUserID(sessionid)
-	if err != nil {
-		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
-		return
-	}
-
+func SetCommunityMembership(userid int, community_id int, value bool) (err error) {
 	if value {
-		err = db.AddCommunityMembership(user_id, community_id)
+		err = db.AddCommunityMembership(userid, community_id)
 		if err != nil {
 			return
 		}
 	} else {
-		err = db.DeleteCommunityMembership(user_id, community_id)
+		err = db.DeleteCommunityMembership(userid, community_id)
 		if err != nil {
 			return
 		}
@@ -285,30 +246,18 @@ func SetCommunityMembership(sessionid string, community_id int, value bool) (err
 	return
 }
 
-func OtherSessions(sessionid string) (num int, err error) {
-	user_id, err := db.GetSessionUserID(sessionid)
-	if err != nil {
-		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
-		return
-	}
-
-	num, err = db.OpenSessions(user_id)
+func OtherSessions(userid int) (num int, err error) {
+	num, err = db.OpenSessions(userid)
 	num--
 	return
 }
 
-func LogoutOtherSessions(sessionid string) (loggedOut int, err error) {
-	user_id, err := db.GetSessionUserID(sessionid)
-	if err != nil {
-		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
-		return
-	}
-
-	loggedOut, err = db.DeleteOtherSessions(user_id, sessionid)
+func LogoutOtherSessions(sessionid string, userid int) (loggedOut int, err error) {
+	loggedOut, err = db.DeleteOtherSessions(userid, sessionid)
 	if err != nil {
 		log.Printf(
 			"Error deleting other sessions for userid (%d) with sessionid (%s): %s\n",
-			user_id,
+			userid,
 			sessionid,
 			err.Error(),
 		)
@@ -332,14 +281,8 @@ func GetPage(categorySlug, pageSlug string) (page common.Page, err error) {
 	return
 }
 
-func GetPosts(sessionid string, page common.Page) (posts []common.Post, err error) {
-	user_id, err := db.GetSessionUserID(sessionid)
-	if err != nil {
-		log.Printf("Error getting userid from sessionid %s: %s\n", sessionid, err.Error())
-		return
-	}
-
-	posts, err = db.GetPostsForPage(user_id, page.Id)
+func GetPosts(userid int, page common.Page) (posts []common.Post, err error) {
+	posts, err = db.GetPostsForPage(userid, page.Id)
 	if err != nil {
 		log.Printf("Error looking up posts for page (%d): %s\n", page.Id, err.Error())
 		return
@@ -348,8 +291,8 @@ func GetPosts(sessionid string, page common.Page) (posts []common.Post, err erro
 	return
 }
 
-func GetCommunityColumns(sessionid string) ([][]common.Community, error) {
-	communities, err := ListCommunities(sessionid)
+func GetCommunityColumns(userid int) ([][]common.Community, error) {
+	communities, err := db.ListCommunities(userid)
 	if err != nil {
 		return [][]common.Community{}, err
 	}

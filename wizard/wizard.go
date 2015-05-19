@@ -179,7 +179,7 @@ func introWizardHandler(res http.ResponseWriter, req *http.Request, sessionid, e
 	data := map[string]interface{}{}
 
 	var err error
-	data["communitiesCols"], err = databaseActions.GetCommunityColumns(sessionid)
+	data["communitiesCols"], err = databaseActions.GetCommunityColumns(userID)
 	if err != nil {
 		log.Println("Error listing communities:", err)
 		common.Logout(res, req)

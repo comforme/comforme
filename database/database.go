@@ -432,7 +432,7 @@ func checkSingleRow(result sql.Result, otherwise error) error {
 	return nil
 }
 
-func (db DB) ListCommunities(sessionid string) (communities []common.Community, err error) {
+func (db DB) ListCommunities(userid int) (communities []common.Community, err error) {
 	rows, err := db.conn.Query(`
 		SELECT
 			communities.id,
@@ -446,18 +446,15 @@ func (db DB) ListCommunities(sessionid string) (communities []common.Community, 
 					community_memberships.community_id,
 					true as member
 				FROM
-					community_memberships,
-					sessions
+					community_memberships
 				WHERE
-					community_memberships.user_id = sessions.user_id
-					AND
-					sessions.id = $1
+					community_memberships.user_id = $1
 			) as my_memberships
 				ON
 					my_memberships.community_id = communities.id
 		ORDER BY communities.id ASC;
 		`,
-		sessionid,
+		userid,
 	)
 	if err != nil {
 		common.LogError(err)
