@@ -1,6 +1,7 @@
 package wizard
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -53,7 +54,6 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	data := map[string]interface{}{}
-	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "Wizard"
 
 	// Check for duplicate parameters.
@@ -79,12 +79,16 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 		!common.CheckParam(req.URL.Query(), "code") {
 		data["errorMsg"] = invalidLink
 	} else {
+		email := req.URL.Query()["email"][0]
+		code := req.URL.Query()["code"][0]
+		date := req.URL.Query()["date"][0]
+		data["formAction"] = fmt.Sprintf("%s?action=%s&email=%s&date=%s&code=%s", req.URL.Path, actionName, email, date, code)
+
 		if actionName == "register" {
-			email := req.URL.Query()["email"][0]
 			if !common.CheckSecret(
-				req.URL.Query()["code"][0],
+				code,
 				email,
-				req.URL.Query()["date"][0],
+				date,
 			) {
 				data["errorMsg"] = invalidLink
 			} else {
@@ -96,9 +100,9 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 			}
 		} else if actionName == "reset" {
 			if !databaseActions.CheckResetLink(
-				req.URL.Query()["code"][0],
-				req.URL.Query()["email"][0],
-				req.URL.Query()["date"][0],
+				code,
+				email,
+				date,
 			) {
 				data["errorMsg"] = invalidLink
 			} else {
@@ -170,7 +174,7 @@ const registerTemplateText = `
 							<div class="large-4 columns left">
 								<label>
 									Username
-									<input type="text" name="username" placeholder="Username"{{if .username}} value="{{.username}}"{{end}}>
+									<input type="text" name="username" {{if .username}} value="{{.username}}"{{end}}>
 								</label>
 							</div>
 						</div>
