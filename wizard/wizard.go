@@ -93,8 +93,29 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 				data["errorMsg"] = invalidLink
 			} else {
 				// Register user (for real this time)
-
 				data["email"] = email
+
+				if req.Method == "POST" {
+					username := req.PostFormValue("username")
+					data["username"] = username
+					newPassword := req.PostFormValue("newPassword")
+					newPasswordAgain := req.PostFormValue("newPasswordAgain")
+					if newPassword != newPasswordAgain {
+						data["errorMsg"] = "Passwords do not match."
+					} else {
+						sessionid, err := databaseActions.Register2(username, email, newPassword)
+						if err != nil {
+							data["formError"] = err.Error()
+						} else { // No error
+							common.SetSessionCookie(res, sessionid)
+
+							// Redirect to logged-in wizard
+							http.Redirect(res, req, req.URL.Path, http.StatusFound)
+							return
+						}
+					}
+				}
+
 				common.ExecTemplate(registerTemplate, res, data)
 				return
 			}
