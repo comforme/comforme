@@ -240,7 +240,7 @@ func (db DB) RegisterUser(username, email, password string) (err error) {
 		hashed,
 	)
 	_, err = db.conn.Exec(
-		"INSERT INTO users (email, username, password) VALUES ($1, $2, $3)",
+		"INSERT INTO users (email, username, password, reset_required) VALUES ($1, $2, $3, false)",
 		email,
 		username,
 		hashed,
