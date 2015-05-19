@@ -45,35 +45,31 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 
 		if isSignup {
 			// Check ReCaptcha
-			ipAddress, err := common.GetIpAddress(req)
-			if err != nil {
+			ipAddress := common.GetIpAddress(req)
+			recaptchaResponse := req.PostFormValue("g-recaptcha-response")
+			log.Println("recaptchaResponse", recaptchaResponse)
+			log.Println("ipAddress", ipAddress)
+			err := recaptcha.Check(
+				recaptchaResponse,
+				ipAddress,
+			)
+			if err != nil && !common.DebugMode {
+				log.Println("reCaptcha failed:", err)
 				data["formError"] = err.Error()
 			} else {
-				recaptchaResponse := req.PostFormValue("g-recaptcha-response")
-				log.Println("recaptchaResponse", recaptchaResponse)
-				log.Println("ipAddress", ipAddress)
-				err = recaptcha.Check(
-					recaptchaResponse,
-					ipAddress,
-				)
-				if err != nil && !common.DebugMode {
-					log.Println("reCaptcha failed:", err)
+				log.Println("reCaptcha success:", err)
+				err = databaseActions.Register1(email)
+				if err != nil {
 					data["formError"] = err.Error()
-				} else {
-					log.Println("reCaptcha success:", err)
-					err = databaseActions.Register1(email)
-					if err != nil {
-						data["formError"] = err.Error()
-					} else { // No error
-						data["successMsg"] = registrationSuccess
-						/*
-							common.SetSessionCookie(res, sessionid)
+				} else { // No error
+					data["successMsg"] = registrationSuccess
+					/*
+						common.SetSessionCookie(res, sessionid)
 
-							// Redirect to home page
-							http.Redirect(res, req, "/settings", http.StatusFound)
-							return // Not needed, may reduce load on server
-						*/
-					}
+						// Redirect to home page
+						http.Redirect(res, req, "/settings", http.StatusFound)
+						return // Not needed, may reduce load on server
+					*/
 				}
 			}
 		} else if isLogin {
@@ -93,28 +89,24 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 			}
 		} else if isReset {
 			// Check ReCaptcha
-			ipAddress, err := common.GetIpAddress(req)
-			if err != nil {
+			ipAddress := common.GetIpAddress(req)
+			recaptchaResponse := req.PostFormValue("g-recaptcha-response")
+			log.Println("recaptchaResponse", recaptchaResponse)
+			log.Println("ipAddress", ipAddress)
+			err := recaptcha.Check(
+				recaptchaResponse,
+				ipAddress,
+			)
+			if err != nil && !common.DebugMode {
+				log.Println("reCaptcha failed:", err)
 				data["formError"] = err.Error()
 			} else {
-				recaptchaResponse := req.PostFormValue("g-recaptcha-response")
-				log.Println("recaptchaResponse", recaptchaResponse)
-				log.Println("ipAddress", ipAddress)
-				err = recaptcha.Check(
-					recaptchaResponse,
-					ipAddress,
-				)
-				if err != nil && !common.DebugMode {
-					log.Println("reCaptcha failed:", err)
+				log.Println("reCaptcha success:", err)
+				err := databaseActions.ResetPassword(email)
+				if err != nil {
 					data["formError"] = err.Error()
 				} else {
-					log.Println("reCaptcha success:", err)
-					err := databaseActions.ResetPassword(email)
-					if err != nil {
-						data["formError"] = err.Error()
-					} else {
-						data["successMsg"] = "Password reset successful. Check email for new password."
-					}
+					data["successMsg"] = "Password reset successful. Check email for new password."
 				}
 			}
 		}

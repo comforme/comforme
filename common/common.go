@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"math/rand"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -215,13 +216,12 @@ func LogErrorSkipLevels(err error, levels int) {
 	}
 }
 
-func GetIpAddress(req *http.Request) (string, error) {
-	addrParts := ipAddressRegex.FindSubmatch([]byte(req.RemoteAddr))
-	if len(addrParts) != 2 {
-		log.Println("The following remote address did not allow IP address extraction:", req.RemoteAddr)
-		return "", InvalidIpAddress
+func GetIpAddress(req *http.Request) string {
+	if ipProxy := req.Header.Get("X-FORWARDED-FOR"); len(ipProxy) > 0 {
+		return ipProxy
 	}
-	return string(addrParts[1]), nil
+	ip, _, _ := net.SplitHostPort(req.RemoteAddr)
+	return ip
 }
 
 func GetSessionId(res http.ResponseWriter, req *http.Request) (sessionid string, err error) {
