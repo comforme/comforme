@@ -92,11 +92,30 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				return // Not needed, may reduce load on server
 			}
 		} else if isReset {
-			err := databaseActions.ResetPassword(email)
+			// Check ReCaptcha
+			ipAddress, err := common.GetIpAddress(req)
 			if err != nil {
 				data["formError"] = err.Error()
 			} else {
-				data["successMsg"] = "Password reset successful. Check email for new password."
+				recaptchaResponse := req.PostFormValue("g-recaptcha-response")
+				log.Println("recaptchaResponse", recaptchaResponse)
+				log.Println("ipAddress", ipAddress)
+				err = recaptcha.Check(
+					recaptchaResponse,
+					ipAddress,
+				)
+				if err != nil && !common.DebugMode {
+					log.Println("reCaptcha failed:", err)
+					data["formError"] = err.Error()
+				} else {
+					log.Println("reCaptcha success:", err)
+					err := databaseActions.ResetPassword(email)
+					if err != nil {
+						data["formError"] = err.Error()
+					} else {
+						data["successMsg"] = "Password reset successful. Check email for new password."
+					}
+				}
 			}
 		}
 	}
@@ -141,6 +160,9 @@ const loginTemplateText = `
 								<div>
 									<button type="submit" class="button" name="sign-up" value="true">Sign Up</button>
 								</div>
+								<div>
+									<button type="submit" class="button tiny" name="reset-password" value="true">Reset Password</button>
+								</div>
 							</form>
 						</div>
 						<div class="content{{if .loginSelected}} active{{end}}" id="log-in-form">
@@ -155,9 +177,6 @@ const loginTemplateText = `
 								</div>
 								<div>
 									<button type="submit" class="button" name="log-in" value="true">Log In</button>
-								</div>
-								<div>
-									<button type="submit" class="button tiny" name="reset-password" value="true">Reset Password</button>
 								</div>
 							</form>
 						</div>
