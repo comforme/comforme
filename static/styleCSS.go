@@ -8,10 +8,11 @@ span#noscript {
 }
 .sign-up-and-log-in.content {
 	padding-top: 4rem;
+	padding-bottom: 4rem;
 }
 
-.sign-up-and-log-in {
-	padding-bottom: 4rem;
+.sign-up-and-log-in.login-tabs {
+	margin-bottom: 4rem;
 }
 
 .login-tabs {
