@@ -144,15 +144,19 @@ The ComFor.Me team
 	return sendEmail(email, "Welcome to ComFor.Me!", "", emailText)
 }
 
-func SendResetEmail(email, password string) error {
+func SendResetEmail(email, date, hash string) error {
 	emailText := fmt.Sprintf(`We received a password reset request for your account on ComFor.Me.
 
-Your new temporary password is: %s
+To complete your password reset, please copy and paste the following link into your web browser:
+https://comfor.me/wizard?action=reset&email=%s&date=%s&code=%s
 
-Please change your password after logging in.
+If you did not request this password reset you can safely ignore this email.
 
-If you did not request this password reset please contact support.
-`, password)
+This link will be valid for 14 days.
+
+Hope to see you soon,
+The ComFor.Me team
+`, email, date, hash)
 	return sendEmail(email, "ComFor.Me Password Reset", "", emailText)
 }
 

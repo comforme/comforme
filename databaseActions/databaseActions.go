@@ -35,11 +35,11 @@ func init() {
 }
 
 func ResetPassword(email string) error {
-	password, err := db.ResetPassword(email)
+	hash, date, err := GenerateResetCode(email)
 	if err != nil {
 		return err
 	}
-	return common.SendResetEmail(email, password)
+	return common.SendResetEmail(email, date, hash)
 }
 
 func CreatePage(sessionId, title, description, address, website string, category int) (categorySlug, pageSlug string, err error) {
@@ -379,6 +379,15 @@ func CheckResetLink(code, email, date string) bool {
 	}
 
 	return common.CheckSecret(code, email+password, date)
+}
+
+func GenerateResetCode(email string) (hash string, date string, err error) {
+	password, err := db.GetPasswordHash(email)
+	if err != nil {
+		return
+	}
+
+	return common.GenerateSecret(email + password)
 }
 
 func CheckRegisterLink(code, email, date string) bool {
