@@ -22,14 +22,9 @@ func init() {
 	template.Must(pageTemplate.New("content").Parse(pageTemplateText))
 }
 
-func PageHandler(res http.ResponseWriter, req *http.Request) {
+func PageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 	data := map[string]interface{}{}
 
-	sessionid, err := common.GetSessionId(res, req)
-	if err != nil {
-		log.Println("Failed to retrieve session id", err)
-		return
-	}
 	data["formAction"] = req.URL.Path
 
 	category := bone.GetValue(req, "category")

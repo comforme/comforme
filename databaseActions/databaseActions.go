@@ -122,6 +122,10 @@ func GetEmail(sessionid string) (string, error) {
 	return db.GetEmail(sessionid)
 }
 
+func GetUserInfo(sessionid string) (email, username string, userID int, err error) {
+	return db.GetUserInfo(sessionid)
+}
+
 func GetUsername(sessionid string) (string, error) {
 	return db.GetUsername(sessionid)
 }

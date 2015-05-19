@@ -294,6 +294,18 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 	return
 }
 
+func (db DB) GetUserInfo(sessionid string) (email, username string, userID int, err error) {
+	err = db.conn.QueryRow(
+		"SELECT email, username, user_id FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
+		sessionid,
+	).Scan(&email, &username, &userID)
+	if err != nil {
+		log.Printf("Error looking up email and ID associated with sessionid  (%s): %s\n", sessionid, err.Error())
+		err = common.InvalidSessionID
+	}
+	return
+}
+
 func (db DB) GetUsername(sessionid string) (username string, err error) {
 	err = db.conn.QueryRow(
 		"SELECT username FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",

@@ -17,7 +17,7 @@ func init() {
 	template.Must(homeTemplate.New("content").Parse(homeTemplateText))
 }
 
-func HomeHandler(res http.ResponseWriter, req *http.Request) {
+func HomeHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 	data := map[string]interface{}{}
 
 	common.ExecTemplate(homeTemplate, res, data)

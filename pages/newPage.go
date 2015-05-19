@@ -21,7 +21,7 @@ func init() {
 	template.Must(newPageTemplate.New("dropdown").Parse(templates.Dropdown))
 }
 
-func NewPageHandler(res http.ResponseWriter, req *http.Request) {
+func NewPageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 	data := map[string]interface{}{}
 	data["formAction"] = req.URL.Path
 	title := req.PostFormValue("title")
@@ -45,8 +45,6 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 	data["categoryDropdown"].(map[string]interface{})["selected"] = req.PostFormValue("category")
 
 	if req.Method == "POST" {
-		cookie, err := req.Cookie("sessionid")
-		sessionId := cookie.Value
 
 		if len(title) <= 1 {
 			data["errorMsg"] = "Title must be more than 1 character long."
@@ -64,7 +62,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request) {
 			goto render
 		}
 
-		categorySlug, pageSlug, err := databaseActions.CreatePage(sessionId, title, description, address, website, int(category))
+		categorySlug, pageSlug, err := databaseActions.CreatePage(sessionid, title, description, address, website, int(category))
 		if err == nil {
 			log.Printf("Created %s!\n", title)
 			http.Redirect(res, req, "/page/"+categorySlug+"/"+pageSlug, http.StatusFound)

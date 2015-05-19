@@ -6,33 +6,26 @@ import (
 	"net/http"
 
 	"github.com/comforme/comforme/ajax"
-	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/login"
 	"github.com/comforme/comforme/settings"
 )
 
-func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+func RequireLogin(handler func(http.ResponseWriter, *http.Request, string, string, string, int)) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
-		if false && common.DebugMode {
-			// DISABLED
-			log.Printf("Entering debug mode...")
-			handler(res, req)
-			return
-		}
-
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
-			email, err := databaseActions.GetEmail(cookie.Value)
+			sessionid := cookie.Value
+			email, username, userID, err := databaseActions.GetUserInfo(sessionid)
 			if err == nil {
 				log.Printf("User with email %s logged in.", email)
-				isRequired, err := databaseActions.PasswordChangeRequired(cookie.Value)
+				isRequired, err := databaseActions.PasswordChangeRequired(sessionid)
 				if err == nil {
 					if isRequired {
-						settings.SettingsHandler(res, req)
+						settings.SettingsHandler(res, req, sessionid, email, username, userID)
 						return
 					} else {
-						handler(res, req)
+						handler(res, req, sessionid, email, username, userID)
 						return
 					}
 				} else {
@@ -52,20 +45,15 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.Re
 	}
 }
 
-func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request, string, string, string, int)) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
-		if common.DebugMode {
-			log.Printf("Entering debug mode...")
-			handler(res, req)
-			return
-		}
-
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
-			email, err := databaseActions.GetEmail(cookie.Value)
+			sessionid := cookie.Value
+			email, username, userID, err := databaseActions.GetUserInfo(sessionid)
 			if err == nil {
 				log.Printf("User with email %s logged in.", email)
-				handler(res, req)
+				handler(res, req, sessionid, email, username, userID)
 				return
 			}
 

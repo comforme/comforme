@@ -22,36 +22,15 @@ func init() {
 	template.Must(settingsTemplate.New("content").Parse(settingsTemplateText))
 }
 
-func SettingsHandler(res http.ResponseWriter, req *http.Request) {
+func SettingsHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "Settings"
-
-	cookie, err := req.Cookie("sessionid")
-	if err != nil {
-		log.Println("Failed to retrieve sessionid:", err)
-		common.Logout(res, req)
-		return
-	}
-	sessionid := cookie.Value
-
-	email, err := databaseActions.GetEmail(sessionid)
-	if err != nil {
-		log.Println("Error getting email:", err)
-		common.Logout(res, req)
-		return
-	}
 	data["email"] = email
-
-	username, err := databaseActions.GetUsername(sessionid)
-	if err != nil {
-		log.Println("Error getting username:", err)
-		common.Logout(res, req)
-		return
-	}
 	data["username"] = username
 
+	var err error
 	data["communitiesCols"], err = databaseActions.GetCommunityColumns(sessionid)
 	if err != nil {
 		log.Println("Error listing communities:", err)

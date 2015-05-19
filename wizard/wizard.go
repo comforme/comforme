@@ -174,18 +174,11 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 	return
 }
 
-func introWizardHandler(res http.ResponseWriter, req *http.Request) {
+func introWizardHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
 
 	data := map[string]interface{}{}
 
-	cookie, err := req.Cookie("sessionid")
-	if err != nil {
-		log.Println("Failed to retrieve sessionid:", err)
-		common.Logout(res, req)
-		return
-	}
-	sessionid := cookie.Value
-
+	var err error
 	data["communitiesCols"], err = databaseActions.GetCommunityColumns(sessionid)
 	if err != nil {
 		log.Println("Error listing communities:", err)
