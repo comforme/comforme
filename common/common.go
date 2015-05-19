@@ -123,13 +123,22 @@ func ExecTemplate(tmpl *template.Template, w http.ResponseWriter, pc map[string]
 	}
 }
 
-func SendRegEmail(email, password string) error {
-	emailText := fmt.Sprintf(`Thank you for registerering with ComFor.Me.
+func SendRegEmail(email string) error {
+	hash, date, err := GenerateSecret(email)
+	if err != nil {
+		return err
+	}
 
-Your temporary password is: %s
+	emailText := fmt.Sprintf(`Thank you for registering with ComFor.Me.
 
-Please change your password after logging in.
-`, password)
+To complete your registration, please copy and paste the following link into your web browser:
+https://comfor.me/wizard?action=register&email=%s&date=%s&code=%s
+
+This link will be valid for 14 days.
+
+Hope to see you soon,
+The ComFor.Me team
+`, email, date, hash)
 	return sendEmail(email, "Welcome to ComFor.Me!", "", emailText)
 }
 

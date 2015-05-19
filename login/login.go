@@ -15,6 +15,8 @@ import (
 var loginTemplate *template.Template
 var recaptchaPublicKey string
 
+var registrationSuccess string = "Registration successful. Please check your email."
+
 func init() {
 	loginTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(loginTemplate.New("nav").Parse(""))
@@ -35,8 +37,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 		isLogin := req.PostFormValue("log-in") == "true"
 		isReset := req.PostFormValue("reset-password") == "true"
 
-		username := req.PostFormValue("username")
-		data["username"] = username
+		//		username := req.PostFormValue("username")
+		//		data["username"] = username
 
 		email := req.PostFormValue("email")
 		data["email"] = email
@@ -59,15 +61,18 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 					data["formError"] = err.Error()
 				} else {
 					log.Println("reCaptcha success:", err)
-					sessionid, err := databaseActions.Register(username, email)
+					err = databaseActions.Register1(email)
 					if err != nil {
 						data["formError"] = err.Error()
 					} else { // No error
-						common.SetSessionCookie(res, sessionid)
+						data["successMsg"] = registrationSuccess
+						/*
+							common.SetSessionCookie(res, sessionid)
 
-						// Redirect to home page
-						http.Redirect(res, req, "/settings", http.StatusFound)
-						return // Not needed, may reduce load on server
+							// Redirect to home page
+							http.Redirect(res, req, "/settings", http.StatusFound)
+							return // Not needed, may reduce load on server
+						*/
 					}
 				}
 			}
@@ -107,6 +112,9 @@ const loginTemplateText = `
 			<div class="large-6 medium-6 columns" style="min-width: 320px;">{{if .formError}}
 				<div class="alert-box alert">
 					{{.formError}}
+				</div>{{end}}{{if .successMsg}}
+				<div class="alert-box success">
+					{{.successMsg}}
 				</div>{{end}}
 				<section class="login-tabs sign-up-and-log-in">
 					<dl class="tabs" data-tab>
@@ -118,11 +126,11 @@ const loginTemplateText = `
 							<form method="post" action="{{.formAction}}">
 								<noscript>
 									<small class="error">This site requires JavaScript to function!</small>
-								</noscript>
+								</noscript>{{/*
 								<div{{if .registerUsernameError}} class="error"{{end}}>
 									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
 									<small class="error">{{.registerUsernameError}}</small>{{end}}
-								</div>
+								</div>*/}}
 								<div{{if .registerEmailError}} class="error"{{end}}>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .registerEmailError}}
 									<small class="error">{{.registerEmailError}}</small>{{end}}

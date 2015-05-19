@@ -13,6 +13,7 @@ import (
 // Errors
 var PasswordTooShort = errors.New(fmt.Sprintf("The supplied password is too short. Minimum password length is %d characters.", minPasswordLength))
 var UsernameTooShort = errors.New(fmt.Sprintf("The supplied username is too short. Minimum username length is %d characters.", minUsernameLength))
+var UsernameTooLong = errors.New(fmt.Sprintf("The supplied username is too long. Maximum username length is %d characters.", maxUsernameLength))
 var EmailFailed = errors.New("Sending email failed.")
 var IncorrectPassword = errors.New("Incorrect password.")
 var ShortPassword = errors.New("Password too short.")
@@ -20,6 +21,7 @@ var ShortPassword = errors.New("Password too short.")
 const (
 	minPasswordLength = 6
 	minUsernameLength = 3
+	maxUsernameLength = 20
 )
 
 var db database.DB
@@ -175,7 +177,7 @@ func ChangeUsername(sessionid, newUsername, password string) (err error) {
 	return
 }
 
-func Register(username, email string) (sessionid string, err error) {
+func Register2(username, email, password string) (sessionid string, err error) {
 	if !common.ValidEmail(email) {
 		err = common.InvalidEmail
 		return
@@ -186,12 +188,24 @@ func Register(username, email string) (sessionid string, err error) {
 		return
 	}
 
-	password, err := db.RegisterUser(username, email)
-	if err != nil {
+	if len(username) > maxUsernameLength {
+		err = UsernameTooLong
 		return
 	}
 
-	err = common.SendRegEmail(email, password)
+	// Check new password meets requirements
+	if len(password) < minPasswordLength {
+		log.Printf(
+			"New password for user %s of length %d is too short. %d required.\n",
+			email,
+			len(password),
+			minPasswordLength,
+		)
+		err = ShortPassword
+		return
+	}
+
+	err = db.RegisterUser(username, email, password)
 	if err != nil {
 		return
 	}
@@ -203,6 +217,25 @@ func Register(username, email string) (sessionid string, err error) {
 
 	// Make new users lazy :)
 	err = SetCommunityMembership(sessionid, 1, true)
+
+	return
+}
+
+func Register1(email string) (err error) {
+	if !common.ValidEmail(email) {
+		err = common.InvalidEmail
+		return
+	}
+
+	err = db.CheckEmailInUse(email)
+	if err != nil {
+		return
+	}
+
+	err = common.SendRegEmail(email)
+	if err != nil {
+		return
+	}
 
 	return
 }

@@ -155,7 +155,7 @@ func (db DB) GetSlugs(pageID int) (categorySlug, pageSlug string, err error) {
 	return
 }
 
-func (db DB) checkEmailInUse(email string) (err error) {
+func (db DB) CheckEmailInUse(email string) (err error) {
 	var numRows int
 	err = db.conn.QueryRow("SELECT count(*) FROM users WHERE email = $1", email).Scan(&numRows)
 	if err != nil {
@@ -203,8 +203,8 @@ func (db DB) NewPost(userID, pageID int, post string) (err error) {
 	return
 }
 
-func (db DB) RegisterUser(username, email string) (password string, err error) {
-	err = db.checkEmailInUse(email)
+func (db DB) RegisterUser(username, email, password string) (err error) {
+	err = db.CheckEmailInUse(email)
 	if err != nil {
 		return
 	}
@@ -215,7 +215,6 @@ func (db DB) RegisterUser(username, email string) (password string, err error) {
 	}
 
 	// Add new user
-	password = common.GenPassword()
 	hashed, err := hashPassword(password)
 	if err != nil {
 		return
