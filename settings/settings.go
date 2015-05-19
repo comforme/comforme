@@ -150,7 +150,7 @@ const settingsTemplateText = `
 						<div class="row">
 							<div class="large-4 columns left">
 								<label>
-									Old password (Initial password sent via email)
+									Old password
 									<input type="password" name="oldPassword">
 								</label>
 							</div>
