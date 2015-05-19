@@ -99,6 +99,21 @@ func ChangePassword(sessionid, oldPassword, newPassword string) (err error) {
 	return db.ChangePassword(email, newPassword)
 }
 
+func SetPassword(email, newPassword string) (err error) {
+	// Check new password meets requirements
+	if len(newPassword) < minPasswordLength {
+		log.Printf(
+			"New password for user %s of length %d is too short. %d required.\n",
+			email,
+			len(newPassword),
+			minPasswordLength,
+		)
+		return ShortPassword
+	}
+
+	return db.ChangePassword(email, newPassword)
+}
+
 func Logout(sessionid string) error {
 	return db.Logout(sessionid)
 }
