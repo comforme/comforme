@@ -365,3 +365,12 @@ func CheckResetLink(email, date, code string) bool {
 
 	return common.CheckSecret(code, email+password, date)
 }
+
+func CheckRegisterLink(email, date, code string) bool {
+	err = db.CheckEmailInUse(email)
+	if err != nil {
+		return false
+	}
+
+	return common.CheckSecret(code, email+password, date)
+}

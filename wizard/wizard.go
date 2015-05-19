@@ -85,7 +85,7 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 		data["formAction"] = fmt.Sprintf("%s?action=%s&email=%s&date=%s&code=%s", req.URL.Path, actionName, email, date, code)
 
 		if actionName == "register" {
-			if !common.CheckSecret(
+			if !databaseActions.CheckRegisterLink(
 				code,
 				email,
 				date,
