@@ -53,6 +53,8 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	data := map[string]interface{}{}
+	data["formAction"] = req.URL.Path
+	data["pageTitle"] = "Wizard"
 
 	// Check for duplicate parameters.
 	for _, value := range req.URL.Query() {
