@@ -58,7 +58,7 @@ const searchTemplateText = `
 		</div>
 		<div class="row">{{range .results}}
 			<div class="columns">
-				<h2><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h2>
+				<h3><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h3>
 				<div>
 					<p>{{.Description}}</p>
 				</div>
