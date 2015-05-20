@@ -91,6 +91,7 @@ var InvalidIpAddress = errors.New("There is something wrong with your IP address
 var InvalidTitle = errors.New("Invalid page title.")
 var PageAlreadyExists = errors.New("A page with this category and title already exists.")
 var PageNotFound = errors.New("Page not found.")
+var InvalidLink = errors.New("Invalid link. It may have expired or possibly you already used it.")
 
 var mandrillKey = os.Getenv("MANDRILL_APIKEY")
 var emailRegex *regexp.Regexp
@@ -152,7 +153,7 @@ func SendRegEmail(email string) error {
 	emailText := fmt.Sprintf(`Thank you for registering with ComFor.Me.
 
 To complete your registration, please copy and paste the following link into your web browser:
-https://comfor.me/wizard?action=register&email=%s&date=%s&code=%s
+https://comfor.me/register?email=%s&date=%s&code=%s
 
 This link will be valid for 14 days.
 
@@ -166,7 +167,7 @@ func SendResetEmail(email, date, hash string) error {
 	emailText := fmt.Sprintf(`We received a password reset request for your account on ComFor.Me.
 
 To complete your password reset, please copy and paste the following link into your web browser:
-https://comfor.me/wizard?action=reset&email=%s&date=%s&code=%s
+https://comfor.me/passwordReset?email=%s&date=%s&code=%s
 
 If you did not request this password reset you can safely ignore this email.
 

@@ -41,11 +41,29 @@ func main() {
 
 	router.GET(
 		"/wizard",
-		wizard.WizardHandler,
+		requireLogin.RequireLogin(wizard.WizardHandler),
 	)
 	router.POST(
 		"/wizard",
-		wizard.WizardHandler,
+		requireLogin.RequireLogin(wizard.WizardHandler),
+	)
+
+	router.GET(
+		"/register",
+		hashLinks.RegisterHandler,
+	)
+	router.POST(
+		"/register",
+		hashLinks.RegisterHandler,
+	)
+
+	router.GET(
+		"/passwordReset",
+		hashLinks.ResetHandler,
+	)
+	router.POST(
+		"/passwordReset",
+		hashLinks.ResetHandler,
 	)
 
 	router.GET(
