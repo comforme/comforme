@@ -50,12 +50,11 @@ span#noscript {
 	margin-bottom: 0;
 }
 
-/* ----------------- Tabs ------------------- */
-.tabs li {
-	padding:0;
-	margin:0;
+/* ---------------- Wizard ----------------- */
+.wizard-tabs {
+	margin: 0;
+	border: 1px solid #CCCCCC;
 }
-ul.tabs {
-	padding:0;
-	margin:0;
+.wizard-tabs dd.active a {
+	background-color: #C8C8C8;
 }

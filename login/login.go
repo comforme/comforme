@@ -124,19 +124,15 @@ const loginTemplateText = `
 				</div>{{end}}
 				<section class="login-tabs sign-up-and-log-in">
 					<dl class="tabs" data-tab>
-						<dd{{if not .loginSelected}} class="active"{{end}}><a href="#sign-up-form">Sign Up</a></dd>
-						<dd{{if .loginSelected}} class="active"{{end}}><a href="#log-in-form">Log In</a></dd>
+						<dd{{if not .loginSelected}} class="active"{{end}}><a href="#tab-sign-up">Sign Up</a></dd>
+						<dd{{if .loginSelected}} class="active"{{end}}><a href="#tab-log-in">Log In</a></dd>
 					</dl>
 					<div class="tabs-content">
-						<div class="content{{if not .loginSelected}} active{{end}}" id="sign-up-form">
+						<div class="content{{if not .loginSelected}} active{{end}}" id="tab-sign-up">
 							<form method="post" action="{{.formAction}}">
 								<noscript>
 									<small class="error">This site requires JavaScript to function!</small>
-								</noscript>{{/*
-								<div{{if .registerUsernameError}} class="error"{{end}}>
-									<input type="text" name="username" placeholder="User Name"{{if .username}} value="{{.username}}"{{end}}>{{if .registerUsernameError}}
-									<small class="error">{{.registerUsernameError}}</small>{{end}}
-								</div>*/}}
+								</noscript>
 								<div{{if .registerEmailError}} class="error"{{end}}>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .registerEmailError}}
 									<small class="error">{{.registerEmailError}}</small>{{end}}
@@ -148,7 +144,7 @@ const loginTemplateText = `
 								</div>
 							</form>
 						</div>
-						<div class="content{{if .loginSelected}} active{{end}}" id="log-in-form">
+						<div class="content{{if .loginSelected}} active{{end}}" id="tab-log-in">
 							<form method="post" action="{{.formAction}}">
 								<div{{if .loginError}} class="error"{{end}}>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginError}}
