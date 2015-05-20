@@ -34,6 +34,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	data["recaptchaPublicKey"] = recaptchaPublicKey
 
 	if req.Method == "POST" {
+		res.Header().Set("cache-control", "private, max-age=0, no-cache")
+
 		isSignup := req.PostFormValue("sign-up") == "true"
 		isLogin := req.PostFormValue("log-in") == "true"
 		isReset := req.PostFormValue("reset-password") == "true"
@@ -101,6 +103,8 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				}
 			}
 		}
+	} else {
+		res.Header().Set("cache-control", "public")
 	}
 
 	common.ExecTemplate(loginTemplate, res, data)

@@ -16,6 +16,8 @@ import (
 
 func RequireLogin(handler func(http.ResponseWriter, *http.Request, httprouter.Params, common.UserInfo)) func(http.ResponseWriter, *http.Request, httprouter.Params) {
 	return func(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		res.Header().Set("cache-control", "private, max-age=0, no-cache")
+
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			sessionid := cookie.Value
@@ -50,6 +52,8 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request, httprouter.Pa
 
 func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request, httprouter.Params, common.UserInfo)) func(http.ResponseWriter, *http.Request, httprouter.Params) {
 	return func(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		res.Header().Set("cache-control", "private, max-age=0, no-cache")
+
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			sessionid := cookie.Value
