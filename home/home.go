@@ -45,11 +45,13 @@ const homeTemplateText = `
 			{{template "searchBar" .}}
 			<p>{{.Top}}</p>
 		</div>
-		<div class="row">
-			<h2>Top Resources</h2>{{range .topPages}}
-			<div class="columns">
-				<h3><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h3>
-			</div>{{ end }}
-		</div>
+	</div>
+	<div class="row">
+		<div class="columns">
+			<h2>Top Resources</h2>
+		</div>{{range .topPages}}
+		<div class="columns">
+			<h3><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h3>
+		</div>{{ end }}
 	</div>
 </div>`
