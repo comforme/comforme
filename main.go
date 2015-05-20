@@ -70,6 +70,10 @@ func main() {
 		"/search",
 		requireLogin.RequireLogin(search.SearchHandler),
 	)
+	router.POST(
+		"/search",
+		requireLogin.RequireLogin(search.SearchHandler),
+	)
 
 	router.GET(
 		"/static/*filepath",
@@ -85,8 +89,16 @@ func main() {
 		"/logout",
 		logout.LogoutHandler,
 	)
+	router.POST(
+		"/logout",
+		logout.LogoutHandler,
+	)
 
 	router.GET(
+		"/",
+		requireLogin.RequireLogin(home.HomeHandler),
+	)
+	router.POST(
 		"/",
 		requireLogin.RequireLogin(home.HomeHandler),
 	)
