@@ -86,10 +86,9 @@ func ResetHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Para
 						}
 					}
 				}
-
-				common.ExecTemplate(resetTemplate, res, data)
-				return
 			}
+			common.ExecTemplate(resetTemplate, res, data)
+			return
 		}
 	}
 
