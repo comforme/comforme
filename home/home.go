@@ -1,13 +1,16 @@
 package home
 
 import (
+	"fmt"
 	"github.com/comforme/comforme/common"
 	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 
 	"github.com/comforme/comforme/common"
+	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
 )
 
@@ -22,6 +25,12 @@ func init() {
 
 func HomeHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
+	pages, err := databaseActions.GetTopPages()
+	if err != nil {
+		log.Println("Failed to retrieve top results:", err)
+	} else {
+		data["Top"] = fmt.Sprintf("%+v", pages)
+	}
 
 	common.ExecTemplate(homeTemplate, res, data)
 }
@@ -36,6 +45,7 @@ const homeTemplateText = `
 	<div class="row">
 		<div class="columns">
 			{{template "searchBar" .}}
+			<p>{{.Top}}</p>
 		</div>
 	</div>
 </div>`

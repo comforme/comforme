@@ -46,6 +46,14 @@ type UserInfo struct {
 }
 
 // Database row types
+type PagePostCount struct {
+	Title        string
+	Slug         string
+	Category     string
+	CategorySlug string
+	PostCount    int
+}
+
 type Community struct {
 	Id       int
 	Name     string

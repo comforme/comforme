@@ -684,7 +684,6 @@ func (db DB) GetPostsForPage(userid, pageid int) (posts []common.Post, err error
 
 	defer rows.Close()
 
-	posts = []common.Post{}
 	for rows.Next() {
 		var row common.Post
 		if err := rows.Scan(
@@ -709,7 +708,6 @@ func (db DB) GetPostsForPage(userid, pageid int) (posts []common.Post, err error
 }
 
 func (db DB) GetPage(categorySlug, pageSlug string) (page common.Page, err error) {
-	page = common.Page{}
 	err = db.conn.QueryRow(`
 		SELECT
 			pages.id,
@@ -746,5 +744,68 @@ func (db DB) GetPage(categorySlug, pageSlug string) (page common.Page, err error
 		err = common.PageNotFound
 		return
 	}
+	return
+}
+
+func (db DB) GetTopPages() (pages []common.PagePostCount, err error) {
+	rows, err := db.conn.Query(`
+		SELECT
+			top_pages.title,
+			top_pages.slug AS page_slug,
+			categories.name AS category_name,
+			categories.slug AS category_slug,
+			top_pages.count
+		FROM
+			categories,
+			(
+				SELECT
+					pages.id,
+					pages.title,
+					pages.slug,
+					pages.category,
+					COUNT(*) as count
+				FROM
+					pages,
+					posts
+				WHERE
+					pages.id = posts.page_id
+				GROUP BY
+					pages.id
+				ORDER BY
+					COUNT(*) DESC
+				LIMIT 5
+			) as top_pages
+		WHERE
+			categories.id = top_pages.category;`,
+	)
+	if err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var row common.PagePostCount
+		if err := rows.Scan(
+			&row.Title,
+			&row.Slug,
+			&row.Category,
+			&row.CategorySlug,
+			&row.PostCount,
+		); err != nil {
+			log.Fatal(err)
+		}
+		pages = append(pages, row)
+	}
+
+	if err = rows.Err(); err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
+		return
+	}
+
+	// Success
 	return
 }
