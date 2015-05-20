@@ -7,8 +7,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/go-zoo/bone"
+	"github.com/julienschmidt/httprouter"
 
+	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 )
 
@@ -31,10 +32,10 @@ type AjaxError struct {
 	Message string `json:"error"`
 }
 
-func HandleAction(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
+func HandleAction(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	res.Header().Set("Content-Type", "application/json; charset=utf-8")
 
-	action := bone.GetValue(req, "action")
+	action := ps.ByName("action")
 	var result interface{}
 
 	if action == "addCommunity" || action == "removeCommunity" {
@@ -43,7 +44,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request, sessionid, email, 
 			log.Println("Error parsing communityid:", err)
 			result = AjaxError{"Invalid communityid."}
 		} else {
-			err = databaseActions.SetCommunityMembership(userID, int(community_id), action == "addCommunity")
+			err = databaseActions.SetCommunityMembership(userInfo.UserID, int(community_id), action == "addCommunity")
 			if err != nil {
 				result = AjaxError{err.Error()}
 			} else {
@@ -51,7 +52,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request, sessionid, email, 
 			}
 		}
 	} else if action == "logoutOtherSessions" {
-		loggedOut, err := databaseActions.LogoutOtherSessions(sessionid, userID)
+		loggedOut, err := databaseActions.LogoutOtherSessions(userInfo.SessionID, userInfo.UserID)
 		if err != nil {
 			result = AjaxError{err.Error()}
 		} else {
@@ -59,7 +60,7 @@ func HandleAction(res http.ResponseWriter, req *http.Request, sessionid, email, 
 				fmt.Sprintf(
 					"Successfully logged out %d other sessions for user with sessionid %s.",
 					loggedOut,
-					sessionid,
+					userInfo.SessionID,
 				),
 				loggedOut,
 			}

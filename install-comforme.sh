@@ -36,7 +36,7 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin
 go get golang.org/x/crypto/bcrypt
 go get golang.org/x/crypto/scrypt
-for repo in lib/pq go-zoo/bone keighl/mandrill comforme/comforme; do
+for repo in lib/pq julienschmidt/httprouter keighl/mandrill comforme/comforme; do
     go get github.com/$repo
 done
 

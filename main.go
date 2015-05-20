@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/go-zoo/bone"
+	"github.com/julienschmidt/httprouter"
 
 	"github.com/comforme/comforme/ajax"
 	"github.com/comforme/comforme/home"
@@ -21,81 +21,69 @@ import (
 
 func main() {
 	log.Println("Starting server on port " + os.Getenv("PORT") + "...")
-	mux := bone.New()
+	router := httprouter.New()
 
-	mux.Handle(
+	router.GET(
 		"/settings",
-		http.HandlerFunc(
-			requireLogin.RequireLogin(settings.SettingsHandler),
-		),
+		requireLogin.RequireLogin(settings.SettingsHandler),
+	)
+	router.POST(
+		"/settings",
+		requireLogin.RequireLogin(settings.SettingsHandler),
 	)
 
-	mux.Handle(
+	router.GET(
 		"/wizard",
-		http.HandlerFunc(
-			wizard.WizardHandler,
-		),
+		wizard.WizardHandler,
+	)
+	router.POST(
+		"/wizard",
+		wizard.WizardHandler,
 	)
 
-	mux.Handle(
+	router.GET(
 		"/newPage",
-		http.HandlerFunc(
-			requireLogin.RequireLogin(pages.NewPageHandler),
-		),
+		requireLogin.RequireLogin(pages.NewPageHandler),
+	)
+	router.POST(
+		"/newPage",
+		requireLogin.RequireLogin(pages.NewPageHandler),
 	)
 
-	mux.Handle(
+	router.GET(
 		"/page/:category/:slug",
-		http.HandlerFunc(
-			requireLogin.RequireLogin(pages.PageHandler),
-		),
+		requireLogin.RequireLogin(pages.PageHandler),
+	)
+	router.POST(
+		"/page/:category/:slug",
+		requireLogin.RequireLogin(pages.PageHandler),
 	)
 
-	mux.Handle(
+	router.POST(
 		"/search",
-		http.HandlerFunc(
-			requireLogin.RequireLogin(search.SearchHandler),
-		),
+		requireLogin.RequireLogin(search.SearchHandler),
 	)
 
-	mux.Handle(
-		"/static/style_css",
-		http.HandlerFunc(
-			static.Style,
-		),
+	router.GET(
+		"/static/*filepath",
+		static.StaticHandler,
 	)
 
-	mux.Handle(
-		"/static/js/settings_js",
-		http.HandlerFunc(
-			static.SettingsJS,
-		),
-	)
-
-	mux.Handle(
+	router.POST(
 		"/ajax/:action",
-		http.HandlerFunc(
-			requireLogin.AjaxRequireLogin(ajax.HandleAction),
-		),
+		requireLogin.AjaxRequireLogin(ajax.HandleAction),
 	)
 
-	mux.Handle(
+	router.GET(
 		"/logout",
-		http.HandlerFunc(
-			logout.LogoutHandler,
-		),
+		logout.LogoutHandler,
 	)
 
-	mux.Handle(
+	router.GET(
 		"/",
-		http.HandlerFunc(
-			requireLogin.RequireLogin(home.HomeHandler),
-		),
+		requireLogin.RequireLogin(home.HomeHandler),
 	)
 
 	// Start the server
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), mux)
-	if err != nil {
-		panic(err)
-	}
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
 }

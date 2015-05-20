@@ -4,7 +4,9 @@ import (
 	"github.com/comforme/comforme/common"
 	"html/template"
 	"net/http"
-	// "github.com/comforme/comforme/databaseActions"
+
+	"github.com/julienschmidt/httprouter"
+
 	"github.com/comforme/comforme/templates"
 )
 
@@ -17,7 +19,7 @@ func init() {
 	template.Must(homeTemplate.New("content").Parse(homeTemplateText))
 }
 
-func HomeHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
+func HomeHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
 
 	common.ExecTemplate(homeTemplate, res, data)

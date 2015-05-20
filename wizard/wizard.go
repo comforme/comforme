@@ -5,7 +5,8 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	//"os"
+
+	"github.com/julienschmidt/httprouter"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
@@ -52,11 +53,11 @@ func init() {
 	template.Must(resetTemplate.New("content").Parse(wizardTemplateText))
 }
 
-func WizardHandler(res http.ResponseWriter, req *http.Request) {
+func WizardHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 	_, err := req.Cookie("sessionid")
 	if err == nil { // Found cookie
-		requireLogin.RequireLogin(introWizardHandler)(res, req)
+		requireLogin.RequireLogin(introWizardHandler)(res, req, ps)
 		return
 	}
 
@@ -174,12 +175,12 @@ func WizardHandler(res http.ResponseWriter, req *http.Request) {
 	return
 }
 
-func introWizardHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
+func introWizardHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 
 	data := map[string]interface{}{}
 
 	var err error
-	data["communitiesCols"], err = databaseActions.GetCommunityColumns(userID)
+	data["communitiesCols"], err = databaseActions.GetCommunityColumns(userInfo.UserID)
 	if err != nil {
 		log.Println("Error listing communities:", err)
 		common.Logout(res, req)
@@ -200,7 +201,7 @@ const wizardTemplateText = `
 			</div>
 		</div>
 	</div>
-	<script src="/static/js/settings_js"></script>
+	<script src="/static/js/settings.js"></script>
 `
 
 const communitiesTemplateText = `

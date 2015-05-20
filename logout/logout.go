@@ -4,10 +4,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/julienschmidt/httprouter"
+
 	"github.com/comforme/comforme/databaseActions"
 )
 
-func LogoutHandler(res http.ResponseWriter, req *http.Request) {
+func LogoutHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	cookie, err := req.Cookie("sessionid")
 	if err == nil {
 		log.Println("Logging out sessionid:", cookie.Value)

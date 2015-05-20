@@ -29,12 +29,21 @@ const (
 	sessionIdLength         = 25
 	generatedPasswordLength = 15
 	fromEmail               = "donotreply@comfor.me"
+	Protocol                = "https"
+	Domain                  = "comfor.me"
 	fromName                = "ComFor.Me"
 	slugChars               = "A-Za-z0-9"
 	slugRemoveChars         = "'\""
 	slugLength              = 25
 	MinDescriptionLength    = 3
 )
+
+type UserInfo struct {
+	SessionID string
+	Email     string
+	Username  string
+	UserID    int
+}
 
 // Database row types
 type Community struct {

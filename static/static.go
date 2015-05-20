@@ -1,18 +1,11 @@
 package static
 
 import (
-	"fmt"
 	"net/http"
+
+	"github.com/julienschmidt/httprouter"
 )
 
-func Style(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "text/css; charset=utf-8")
-
-	fmt.Fprintln(res, styleCSS)
-}
-
-func SettingsJS(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "application/javascript; charset=utf-8")
-
-	fmt.Fprintln(res, settingsJS)
+func StaticHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	http.ServeFile(res, req, "../staticFiles/"+ps.ByName("filepath"))
 }

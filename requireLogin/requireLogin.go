@@ -5,27 +5,30 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/julienschmidt/httprouter"
+
 	"github.com/comforme/comforme/ajax"
+	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/login"
 	"github.com/comforme/comforme/settings"
 )
 
-func RequireLogin(handler func(http.ResponseWriter, *http.Request, string, string, string, int)) func(http.ResponseWriter, *http.Request) {
-	return func(res http.ResponseWriter, req *http.Request) {
+func RequireLogin(handler func(http.ResponseWriter, *http.Request, httprouter.Params, common.UserInfo)) func(http.ResponseWriter, *http.Request, httprouter.Params) {
+	return func(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			sessionid := cookie.Value
-			email, username, userID, err := databaseActions.GetUserInfo(sessionid)
+			userInfo, err := databaseActions.GetUserInfo(sessionid)
 			if err == nil {
-				log.Printf("User with email %s logged in.", email)
+				log.Printf("User with email %s logged in.", userInfo.Email)
 				isRequired, err := databaseActions.PasswordChangeRequired(sessionid)
 				if err == nil {
 					if isRequired {
-						settings.SettingsHandler(res, req, sessionid, email, username, userID)
+						settings.SettingsHandler(res, req, ps, userInfo)
 						return
 					} else {
-						handler(res, req, sessionid, email, username, userID)
+						handler(res, req, ps, userInfo)
 						return
 					}
 				} else {
@@ -45,15 +48,15 @@ func RequireLogin(handler func(http.ResponseWriter, *http.Request, string, strin
 	}
 }
 
-func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request, string, string, string, int)) func(http.ResponseWriter, *http.Request) {
-	return func(res http.ResponseWriter, req *http.Request) {
+func AjaxRequireLogin(handler func(http.ResponseWriter, *http.Request, httprouter.Params, common.UserInfo)) func(http.ResponseWriter, *http.Request, httprouter.Params) {
+	return func(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 		cookie, err := req.Cookie("sessionid")
 		if err == nil {
 			sessionid := cookie.Value
-			email, username, userID, err := databaseActions.GetUserInfo(sessionid)
+			userInfo, err := databaseActions.GetUserInfo(sessionid)
 			if err == nil {
-				log.Printf("User with email %s logged in.", email)
-				handler(res, req, sessionid, email, username, userID)
+				log.Printf("User with email %s logged in.", userInfo.Email)
+				handler(res, req, ps, userInfo)
 				return
 			}
 

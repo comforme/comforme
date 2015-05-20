@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/julienschmidt/httprouter"
+
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
@@ -19,14 +21,14 @@ func init() {
 	template.Must(searchTemplate.New("content").Parse(searchTemplateText))
 }
 
-func SearchHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
+func SearchHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
 	if req.Method == "POST" {
 		query := req.PostFormValue("page-search")
 		data["query"] = query
 		data["pageTitle"] = req.PostFormValue("page-search")
 		var err error
-		data["results"], err = databaseActions.SearchPages(sessionid, query)
+		data["results"], err = databaseActions.SearchPages(userInfo.SessionID, query)
 		if err != nil {
 			log.Println("Failed to retrieve search results for "+
 				query, err)

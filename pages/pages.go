@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-zoo/bone"
+	"github.com/julienschmidt/httprouter"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
@@ -22,13 +22,13 @@ func init() {
 	template.Must(pageTemplate.New("content").Parse(pageTemplateText))
 }
 
-func PageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
+func PageHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path
 
-	category := bone.GetValue(req, "category")
-	slug := bone.GetValue(req, "slug")
+	category := ps.ByName("category")
+	slug := ps.ByName("slug")
 
 	log.Printf("Looking up page with category (%s) and slug (%s)...\n", category, slug)
 	page, err := databaseActions.GetPage(category, slug)
@@ -48,7 +48,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, u
 			goto renderPosts
 		}
 
-		err = databaseActions.CreatePost(sessionid, userID, thoughts, page)
+		err = databaseActions.CreatePost(userInfo.UserID, thoughts, page)
 
 		if err == nil {
 			data["successMsg"] = "Post successfully added."
@@ -60,7 +60,7 @@ func PageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, u
 
 renderPosts:
 	log.Printf("Looking up posts for page id (%d)...\n", page.Id)
-	posts, err := databaseActions.GetPosts(userID, page)
+	posts, err := databaseActions.GetPosts(userInfo.UserID, page)
 	if err != nil {
 		http.NotFound(res, req)
 		log.Printf("Error looking up posts for page (%d): %s\n", page.Id, err.Error())

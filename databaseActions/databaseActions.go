@@ -42,7 +42,7 @@ func ResetPassword(email string) error {
 	return common.SendResetEmail(email, date, hash)
 }
 
-func CreatePage(sessionId, title, description, address, website string, category int) (categorySlug, pageSlug string, err error) {
+func CreatePage(userID int, title, description, address, website string, category int) (categorySlug, pageSlug string, err error) {
 	// TODO: Resolve location from address and update lower-level function to accept point
 	slug := common.GenSlug(title)
 	if len(slug) <= 1 {
@@ -50,7 +50,7 @@ func CreatePage(sessionId, title, description, address, website string, category
 		return
 	}
 
-	pageID, err := db.NewPage(sessionId, title, slug, description, address, website, category)
+	pageID, err := db.NewPage(userID, title, slug, description, address, website, category)
 	if err != nil {
 		log.Println("Failed to create page", title)
 		return
@@ -64,7 +64,7 @@ func CreatePage(sessionId, title, description, address, website string, category
 	return
 }
 
-func CreatePost(sessionId string, user_id int, post string, page common.Page) (err error) {
+func CreatePost(user_id int, post string, page common.Page) (err error) {
 	err = db.NewPost(user_id, page.Id, post)
 	if err != nil {
 		return
@@ -116,7 +116,7 @@ func GetEmail(sessionid string) (string, error) {
 	return db.GetEmail(sessionid)
 }
 
-func GetUserInfo(sessionid string) (email, username string, userID int, err error) {
+func GetUserInfo(sessionid string) (common.UserInfo, error) {
 	return db.GetUserInfo(sessionid)
 }
 

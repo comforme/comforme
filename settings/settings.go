@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/julienschmidt/httprouter"
+
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
@@ -22,23 +24,23 @@ func init() {
 	template.Must(settingsTemplate.New("content").Parse(settingsTemplateText))
 }
 
-func SettingsHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
+func SettingsHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
 
 	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "Settings"
-	data["email"] = email
-	data["username"] = username
+	data["email"] = userInfo.Email
+	data["username"] = userInfo.Username
 
 	var err error
-	data["communitiesCols"], err = databaseActions.GetCommunityColumns(userID)
+	data["communitiesCols"], err = databaseActions.GetCommunityColumns(userInfo.UserID)
 	if err != nil {
 		log.Println("Error listing communities:", err)
 		common.Logout(res, req)
 		return
 	}
 
-	openSessions, err := databaseActions.OtherSessions(userID)
+	openSessions, err := databaseActions.OtherSessions(userInfo.UserID)
 	if err != nil {
 		log.Println("Error getting open sessions:", err)
 		common.Logout(res, req)
@@ -55,7 +57,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request, sessionid, emai
 			if len(oldPassword) == 0 || len(newPassword) == 0 {
 				data["errorMsg"] = "Both old and new password required to change password"
 			} else if newPassword == newPasswordAgain {
-				err := databaseActions.ChangePassword(email, oldPassword, newPassword)
+				err := databaseActions.ChangePassword(userInfo.Email, oldPassword, newPassword)
 				if err == nil {
 					data["successMsg"] = "Password changed."
 					if req.URL.Path != "/settings" {
@@ -72,7 +74,7 @@ func SettingsHandler(res http.ResponseWriter, req *http.Request, sessionid, emai
 			usernameChangePassword := req.PostFormValue("usernameChangePassword")
 			newUsername := req.PostFormValue("newUsername")
 
-			err := databaseActions.ChangeUsername(email, newUsername, usernameChangePassword)
+			err := databaseActions.ChangeUsername(userInfo.Email, newUsername, usernameChangePassword)
 			if err != nil {
 				data["newUsername"] = newUsername
 				data["errorMsg"] = err.Error()

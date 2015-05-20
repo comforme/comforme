@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/julienschmidt/httprouter"
+
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
@@ -21,7 +23,7 @@ func init() {
 	template.Must(newPageTemplate.New("dropdown").Parse(templates.Dropdown))
 }
 
-func NewPageHandler(res http.ResponseWriter, req *http.Request, sessionid, email, username string, userID int) {
+func NewPageHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
 	data["formAction"] = req.URL.Path
 	title := req.PostFormValue("title")
@@ -62,7 +64,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request, sessionid, email
 			goto render
 		}
 
-		categorySlug, pageSlug, err := databaseActions.CreatePage(sessionid, title, description, address, website, int(category))
+		categorySlug, pageSlug, err := databaseActions.CreatePage(userInfo.UserID, title, description, address, website, int(category))
 		if err == nil {
 			log.Printf("Created %s!\n", title)
 			http.Redirect(res, req, "/page/"+categorySlug+"/"+pageSlug, http.StatusFound)

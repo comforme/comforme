@@ -107,14 +107,8 @@ func (db DB) NewSession(userid int) (sessionid string, err error) {
 	return
 }
 
-func (db DB) NewPage(sessionId, title, slug, description, address, website string, category int) (pageID int, err error) {
+func (db DB) NewPage(userID int, title, slug, description, address, website string, category int) (pageID int, err error) {
 	// Insert new page
-	userId, err := db.GetSessionUserID(sessionId)
-	if err != nil {
-		common.LogError(err)
-		return
-	}
-
 	err = db.conn.QueryRow(`
 		INSERT INTO
 			pages (
@@ -134,7 +128,7 @@ func (db DB) NewPage(sessionId, title, slug, description, address, website strin
 		address,
 		category,
 		slug,
-		userId,
+		userID,
 		website,
 	).Scan(&pageID)
 	if err != nil {
@@ -294,11 +288,12 @@ func (db DB) GetEmail(sessionid string) (email string, err error) {
 	return
 }
 
-func (db DB) GetUserInfo(sessionid string) (email, username string, userID int, err error) {
+func (db DB) GetUserInfo(sessionid string) (userInfo common.UserInfo, err error) {
+	userInfo.SessionID = sessionid
 	err = db.conn.QueryRow(
 		"SELECT email, username, user_id FROM sessions, users WHERE sessions.id = $1 AND sessions.user_id = users.id",
 		sessionid,
-	).Scan(&email, &username, &userID)
+	).Scan(&userInfo.Email, &userInfo.Username, &userInfo.UserID)
 	if err != nil {
 		log.Printf("Error looking up email and ID associated with sessionid  (%s): %s\n", sessionid, err.Error())
 		err = common.InvalidSessionID
