@@ -24,11 +24,11 @@ func init() {
 
 func HomeHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
-	pages, err := databaseActions.GetTopPages()
+	topPages, err := databaseActions.GetTopPages()
 	if err != nil {
 		log.Println("Failed to retrieve top results:", err)
 	} else {
-		data["Top"] = fmt.Sprintf("%+v", pages)
+		data["topPages"] = topPages
 	}
 
 	common.ExecTemplate(homeTemplate, res, data)
@@ -45,6 +45,12 @@ const homeTemplateText = `
 		<div class="columns">
 			{{template "searchBar" .}}
 			<p>{{.Top}}</p>
+		</div>
+		<div class="row">
+			<h2>Top Resources</h2>{{range .topPages}}
+			<div class="columns">
+				<h3><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h3>
+			</div>{{ end }}
 		</div>
 	</div>
 </div>`
