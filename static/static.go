@@ -7,5 +7,5 @@ import (
 )
 
 func StaticHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	http.ServeFile(res, req, "../staticFiles/"+ps.ByName("filepath"))
+	http.ServeFile(res, req, "staticFiles/"+ps.ByName("filepath"))
 }
