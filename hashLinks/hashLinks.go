@@ -140,7 +140,7 @@ func RegisterHandler(res http.ResponseWriter, req *http.Request, ps httprouter.P
 						common.SetSessionCookie(res, sessionid)
 
 						// Redirect to logged-in wizard
-						http.Redirect(res, req, req.URL.Path, http.StatusFound)
+						http.Redirect(res, req, "/wizard", http.StatusFound)
 						return
 					}
 				}
