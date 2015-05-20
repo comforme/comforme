@@ -45,25 +45,25 @@ func SearchHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Par
 
 // TODO add description limits and ellipses link to full page
 const searchTemplateText = `
-    <div class="content">
-        <div class="row">
-            <div class="columns">
-                <h1>Search</h1>
-                {{template "searchBar" .}}
-                {{if .results}}
-                    <div class="alert-box secondary">Results for <span style="color:red">{{.query}}</span></div>
-                {{end}}{{if not .results}}
-				<div class="alert-box alert">No matches found. Would you like to <a href="/newPage">add a new resource</a>?</div>{{end}}
-            </div>
-        </div>
-        <div class="row">{{range .results}}
-            <div class="columns">
-                <h2><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h2>
-                <div>
-                    <p>{{.Description}}</p>
-                </div>
-            </div>{{ end }}
-        </div>
-    </div>
+	<div class="content">
+		<div class="row">
+			<div class="columns">
+				<h1>Search</h1>
+				{{template "searchBar" .}}
+				<div class="alert-box secondary">{{if .results}}
+					Results for <span style="color:red">{{.query}}</span>{{else}}
+					<span style="color:red">No matches found.</span> Would you like to <a href="/newPage">add a new resource</a>?{{end}}
+				</div>
+			</div>
+		</div>
+		<div class="row">{{range .results}}
+			<div class="columns">
+				<h2><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h2>
+				<div>
+					<p>{{.Description}}</p>
+				</div>
+			</div>{{ end }}
+		</div>
+	</div>
 </div>
 `
