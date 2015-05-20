@@ -63,7 +63,9 @@ const searchTemplateText = `
                 </div>
             </div>{{ end }}
         </div>{{if not .results}}
-			<div class="alert-box alert">No matches found. Would you like to <a href="/newPage">add a new resource</a>?</div>{{end}}
+        <div class="row">
+			<div class="alert-box alert">No matches found. Would you like to <a href="/newPage">add a new resource</a>?</div>
+		</div>{{end}}
     </div>
 </div>
 `
