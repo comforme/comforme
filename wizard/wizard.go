@@ -202,17 +202,18 @@ const wizardTemplateText = `
 		</div>
 	</div>
 	<script src="/static/js/settings.js"></script>
+	<script src="/static/js/wizard.js"></script>
 `
 
 const communitiesTemplateText = `
 					<section class="wizard-tabs">
 						<ul class="tabs small-block-grid-2 medium-block-grid-3 xlarge-block-grid-6" data-tab role="tablist">
-							<li class="tab-title active" role="presentational" ><a href="#tab-communities" role="tab" tabindex="0" aria-selected="false" controls="tab-communities" id="tab-communities-navigation">Your Communities</a></li>
-							<li class="tab-title" role="presentational" ><a href="#tab-nav-bar" role="tab" tabindex="0" aria-selected="true" controls="tab-nav-bar" id="tab-nav-bar-navigation">The Nav Bar</a></li>
+							<li class="tab-title active" role="presentational"><a href="#tab-communities" role="tab" tabindex="0" aria-selected="false" controls="tab-communities" id="tab-communities-navigation">Your Communities</a></li>
+							<li class="tab-title" role="presentational"><a href="#tab-nav-bar" role="tab" tabindex="0" aria-selected="true" controls="tab-nav-bar" id="tab-nav-bar-navigation">The Nav Bar</a></li>
 							<li class="tab-title" role="presentational"><a href="#tab-finding-resources" role="tab" tabindex="0" aria-selected="false" controls="tab-finding-resources" id="tab-finding-resources-navigation">Finding Resources</a></li>
-							<li class="tab-title" role="presentational" ><a href="#tab-reviews" role="tab" tabindex="0" aria-selected="false" controls="tab-reviews" id="tab-reviews-navigation">Reviews</a></li>
-							<li class="tab-title" role="presentational" ><a href="#tab-adding-resources" role="tab" tabindex="0" aria-selected="false" controls="tab-adding-resources" id="tab-adding-resources-navigation">Adding Resources</a></li>
-							<li class="tab-title" role="presentational" ><a href="#tab-settings" role="tab" tabindex="0" aria-selected="false" controls="tab-settings" id="tab-settings-navigation">Changing Settings</a></li>
+							<li class="tab-title" role="presentational"><a href="#tab-reviews" role="tab" tabindex="0" aria-selected="false" controls="tab-reviews" id="tab-reviews-navigation">Reviews</a></li>
+							<li class="tab-title" role="presentational"><a href="#tab-adding-resources" role="tab" tabindex="0" aria-selected="false" controls="tab-adding-resources" id="tab-adding-resources-navigation">Adding Resources</a></li>
+							<li class="tab-title" role="presentational"><a href="#tab-settings" role="tab" tabindex="0" aria-selected="false" controls="tab-settings" id="tab-settings-navigation">Changing Settings</a></li>
 						</ul>
 					</section>
 					<div class="tabs-content">

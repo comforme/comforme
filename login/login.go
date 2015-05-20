@@ -123,12 +123,16 @@ const loginTemplateText = `
 					{{.successMsg}}
 				</div>{{end}}
 				<section class="login-tabs sign-up-and-log-in">
-					<dl class="tabs" data-tab>
-						<dd{{if not .loginSelected}} class="active"{{end}}><a href="#tab-sign-up">Sign Up</a></dd>
-						<dd{{if .loginSelected}} class="active"{{end}}><a href="#tab-log-in">Log In</a></dd>
+					<ul class="tabs small-block-grid-2" data-tab role="tablist">
+						<li class="tab-title{{if not .loginSelected}} active{{end}}" role="presentational" >
+							<a href="#sign-up-form" role="tab" tabindex="0" aria-selected="false" controls="sign-up-form">Sign Up</a>
+						</li>
+						<li class="tab-title{{if .loginSelected}} active{{end}}" role="presentational" >
+							<a href="#log-in-form" role="tab" tabindex="0" aria-selected="false" controls="log-in-form">Log In</a>
+						</li>
 					</dl>
 					<div class="tabs-content">
-						<div class="content{{if not .loginSelected}} active{{end}}" id="tab-sign-up">
+						<div class="content{{if not .loginSelected}} active{{end}}" id="sign-up-form">
 							<form method="post" action="{{.formAction}}">
 								<noscript>
 									<small class="error">This site requires JavaScript to function!</small>
@@ -144,7 +148,7 @@ const loginTemplateText = `
 								</div>
 							</form>
 						</div>
-						<div class="content{{if .loginSelected}} active{{end}}" id="tab-log-in">
+						<div class="content{{if .loginSelected}} active{{end}}" id="log-in-form">
 							<form method="post" action="{{.formAction}}">
 								<div{{if .loginError}} class="error"{{end}}>
 									<input type="email" name="email" placeholder="Email"{{if .email}} value="{{.email}}"{{end}}>{{if .loginError}}

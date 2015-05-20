@@ -16,12 +16,12 @@ span#noscript {
 .login-tabs {
 	border: 1px solid #CCCCCC;
 }
-
-.login-tabs dd {
+/*
+.login-tabs li {
 	width: 50%;
 	text-align: center;
-}
-.login-tabs dd.active a {
+}*/
+.login-tabs li.active a {
 	background-color: #C8C8C8;
 }
 
@@ -55,6 +55,6 @@ span#noscript {
 	margin: 0;
 	border: 1px solid #CCCCCC;
 }
-.wizard-tabs dd.active a {
+.wizard-tabs li.active a {
 	background-color: #C8C8C8;
 }

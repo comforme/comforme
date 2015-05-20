@@ -18,7 +18,6 @@ const SiteLayout = `<!DOCTYPE html>
     {{ template "nav" .}}
     {{ template "content" .}}
 	<script>$(document).foundation();</script>
-	<script src="/static/js/common.js"></script>
 </body>
 </html>
 `
