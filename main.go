@@ -9,6 +9,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 
 	"github.com/comforme/comforme/ajax"
+	"github.com/comforme/comforme/hashLinks"
 	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/logout"
 	"github.com/comforme/comforme/pages"

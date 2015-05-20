@@ -1,16 +1,14 @@
-package wizard
+package hashLinks
 
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
-	"github.com/comforme/comforme/requireLogin"
 	"github.com/comforme/comforme/templates"
 )
 
@@ -47,7 +45,7 @@ func ResetHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Para
 	if !common.CheckParam(req.URL.Query(), "email") ||
 		!common.CheckParam(req.URL.Query(), "date") ||
 		!common.CheckParam(req.URL.Query(), "code") {
-		data["errorMsg"] = invalidLink
+		data["errorMsg"] = common.InvalidLink.Error()
 	} else {
 		email := req.URL.Query()["email"][0]
 		data["email"] = email
@@ -60,7 +58,7 @@ func ResetHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Para
 			email,
 			date,
 		) {
-			data["errorMsg"] = invalidLink
+			data["errorMsg"] = common.InvalidLink.Error()
 		} else {
 			// Reset user's password
 			if req.Method == "POST" {
@@ -108,7 +106,7 @@ func RegisterHandler(res http.ResponseWriter, req *http.Request, ps httprouter.P
 	if !common.CheckParam(req.URL.Query(), "email") ||
 		!common.CheckParam(req.URL.Query(), "date") ||
 		!common.CheckParam(req.URL.Query(), "code") {
-		data["errorMsg"] = invalidLink
+		data["errorMsg"] = common.InvalidLink.Error()
 	} else {
 		email := req.URL.Query()["email"][0]
 		data["email"] = email
@@ -116,41 +114,40 @@ func RegisterHandler(res http.ResponseWriter, req *http.Request, ps httprouter.P
 		date := req.URL.Query()["date"][0]
 		data["formAction"] = fmt.Sprintf("%s?email=%s&date=%s&code=%s", req.URL.Path, email, date, code)
 
-			if !databaseActions.CheckRegisterLink(
-				code,
-				email,
-				date,
-			) {
-				data["errorMsg"] = invalidLink
-			} else {
-				// Register user (for real this time)
+		if !databaseActions.CheckRegisterLink(
+			code,
+			email,
+			date,
+		) {
+			data["errorMsg"] = common.InvalidLink.Error()
+		} else {
+			// Register user (for real this time)
 
-				if req.Method == "POST" {
-					username := req.PostFormValue("username")
-					data["username"] = username
-					newPassword := req.PostFormValue("newPassword")
-					newPasswordAgain := req.PostFormValue("newPasswordAgain")
-					if len(username) == 0 || len(newPassword) == 0 {
-						data["errorMsg"] = "Required field(s) left blank."
-					} else if newPassword != newPasswordAgain {
-						data["errorMsg"] = "Passwords do not match."
-					} else {
-						sessionid, err := databaseActions.Register2(username, email, newPassword)
-						if err != nil {
-							data["errorMsg"] = err.Error()
-						} else { // No error
-							common.SetSessionCookie(res, sessionid)
+			if req.Method == "POST" {
+				username := req.PostFormValue("username")
+				data["username"] = username
+				newPassword := req.PostFormValue("newPassword")
+				newPasswordAgain := req.PostFormValue("newPasswordAgain")
+				if len(username) == 0 || len(newPassword) == 0 {
+					data["errorMsg"] = "Required field(s) left blank."
+				} else if newPassword != newPasswordAgain {
+					data["errorMsg"] = "Passwords do not match."
+				} else {
+					sessionid, err := databaseActions.Register2(username, email, newPassword)
+					if err != nil {
+						data["errorMsg"] = err.Error()
+					} else { // No error
+						common.SetSessionCookie(res, sessionid)
 
-							// Redirect to logged-in wizard
-							http.Redirect(res, req, req.URL.Path, http.StatusFound)
-							return
-						}
+						// Redirect to logged-in wizard
+						http.Redirect(res, req, req.URL.Path, http.StatusFound)
+						return
 					}
 				}
-
-				common.ExecTemplate(registerTemplate, res, data)
-				return
 			}
+
+			common.ExecTemplate(registerTemplate, res, data)
+			return
 		}
 	}
 

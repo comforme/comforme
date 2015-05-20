@@ -1,7 +1,6 @@
 package wizard
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -10,7 +9,6 @@ import (
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
-	"github.com/comforme/comforme/requireLogin"
 	"github.com/comforme/comforme/templates"
 )
 
