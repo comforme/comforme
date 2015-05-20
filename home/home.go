@@ -1,7 +1,6 @@
 package home
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
