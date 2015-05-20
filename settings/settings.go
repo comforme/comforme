@@ -178,17 +178,9 @@ const settingsTemplateText = `
 						</div>
 						<button type="submit" name="username-update" value="true">Update Username</button>
 					</form>
-				</section>{{/*
-				<section>
-					<div class="row">
-						<div class="columns">
-							<h2>Find Communities</h2>
-							{{template "communitySearch" . }}
-						</div>
-					</div>
-				</section>*/}}
+				</section>
 			</div>
 		</div>
 	</div>
-	<script src="/static/js/settings_js"></script>
+	<script src="/static/js/settings.js"></script>
 `
