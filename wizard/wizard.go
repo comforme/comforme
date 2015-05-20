@@ -215,7 +215,6 @@ const communitiesTemplateText = `
 					</ul>
 					<div class="tabs-content">
 						<section role="tabtab" aria-hidden="false" class="content active" id="tab-communities">
-							<h2>Join Communities</h2>
 							{{ template "communitiesContent" .}}
 							<button onClick="location.href='#tab-nav-bar'">Next</button>
 						</section>
@@ -226,18 +225,22 @@ const communitiesTemplateText = `
 						</section>
 						<section role="tabtab" aria-hidden="true" class="content" id="tab-finding-resources">
 							<h2>Finding Resources</h2>
+							<p>Search for resources on the home page.</p>
 							<button onClick="location.href='#tab-reviews'">Next</button>
 						</section>
 						<section role="tabtab" aria-hidden="true" class="content" id="tab-reviews">
 							<h2>Reviews</h2>
+							<p>View a resource to read its reviews or post your own. Reviews are sorted by how many communities you have in common with the reviewer.</p>
 							<button onClick="location.href='#tab-adding-resources'">Next</button>
 						</section>
 						<section role="tabtab" aria-hidden="true" class="content" id="tab-adding-resources">
 							<h2>Adding Resources</h2>
+							<p>Add new resources on the add new resource page.</p>
 							<button onClick="location.href='#tab-settings'">Next</button>
 						</section>
 						<section role="tabtab" aria-hidden="true" class="content" id="tab-settings">
 							<h2>Changing Settings</h2>
+							<p>Change your username or password, or update your communities on the settings page.</p>
 							<button onclick="location.href='/'">Finish</button>
 						</section>
 					</div>
