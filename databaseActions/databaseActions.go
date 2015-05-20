@@ -345,3 +345,7 @@ func CheckRegisterLink(code, email, date string) bool {
 
 	return common.CheckSecret(code, email, date)
 }
+
+func GetTopPages() (pages []common.PagePostCount, err error) {
+	return db.GetTopPages()
+}
