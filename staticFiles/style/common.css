@@ -16,18 +16,13 @@ span#noscript {
 .login-tabs {
 	border: 1px solid #CCCCCC;
 }
-/*
-.login-tabs li {
-	width: 50%;
-	text-align: center;
-}*/
-.login-tabs li.active {
+
+.login-tabs li.active a {
 	background-color: #C8C8C8;
 }
 
-.tabs-content {
+.tabs-content li a {
 	border-top: 1px solid #CCCCCC;
-	/*padding: 0 1rem 0;*/
 }
 .tabs-content .content {
 	float: none;
@@ -53,8 +48,10 @@ span#noscript {
 /* ---------------- Wizard ----------------- */
 .wizard-tabs {
 	margin: 0;
+}
+.wizard-tabs li a {
 	border: 1px solid #CCCCCC;
 }
-.wizard-tabs li.active {
+.wizard-tabs li.active a {
 	background-color: #C8C8C8;
 }
