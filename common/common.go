@@ -48,7 +48,7 @@ type UserInfo struct {
 // Database row types
 type PagePostCount struct {
 	Title        string
-	Slug         string
+	PageSlug     string
 	Category     string
 	CategorySlug string
 	PostCount    int

@@ -790,7 +790,7 @@ func (db DB) GetTopPages() (pages []common.PagePostCount, err error) {
 		var row common.PagePostCount
 		if err := rows.Scan(
 			&row.Title,
-			&row.Slug,
+			&row.PageSlug,
 			&row.Category,
 			&row.CategorySlug,
 			&row.PostCount,
