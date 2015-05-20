@@ -218,7 +218,7 @@ func LogErrorSkipLevels(err error, levels int) {
 
 func GetIpAddress(req *http.Request) string {
 	if ipProxy := req.Header.Get("X-FORWARDED-FOR"); len(ipProxy) > 0 {
-		ips := strings.Split(ipProxy, ", ")
+		ips := strings.Split(ipProxy, ", ") // Check for double forwarding ex. CloudFlare
 		if len(ips) > 1 {
 			return ips[0]
 		} else {

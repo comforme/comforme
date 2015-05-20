@@ -61,13 +61,6 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 					data["formError"] = err.Error()
 				} else { // No error
 					data["successMsg"] = registrationSuccess
-					/*
-						common.SetSessionCookie(res, sessionid)
-
-						// Redirect to home page
-						http.Redirect(res, req, "/settings", http.StatusFound)
-						return // Not needed, may reduce load on server
-					*/
 				}
 			}
 		} else if isLogin {
