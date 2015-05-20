@@ -21,13 +21,13 @@ span#noscript {
 	width: 50%;
 	text-align: center;
 }*/
-.login-tabs li.active a {
+.login-tabs li.active {
 	background-color: #C8C8C8;
 }
 
 .tabs-content {
 	border-top: 1px solid #CCCCCC;
-	padding: 0 1rem 0;
+	/*padding: 0 1rem 0;*/
 }
 .tabs-content .content {
 	float: none;
@@ -55,6 +55,6 @@ span#noscript {
 	margin: 0;
 	border: 1px solid #CCCCCC;
 }
-.wizard-tabs li.active a {
+.wizard-tabs li.active {
 	background-color: #C8C8C8;
 }
