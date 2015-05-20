@@ -3,8 +3,8 @@
 	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
-			"ImportPath": "github.com/go-zoo/bone",
-			"Rev": "74d8ac2504917ffc9f103361b41ce4cb4b20bc55"
+			"ImportPath": "github.com/julienschmidt/httprouter",
+			"Rev": "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
 		},
 		{
 			"ImportPath": "github.com/keighl/mandrill",
