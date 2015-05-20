@@ -48,7 +48,7 @@ const homeTemplateText = `
 	</div>
 	<div class="row">
 		<div class="columns left">
-			<h2>Top Resources</h2>
+			<h2>Top Resources:</h2>
 		</div>{{range .topPages}}
 		<div class="columns left large-3 medium-4 small-6 xsmall-12">
 			<h3><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h3>
