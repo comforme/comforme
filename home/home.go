@@ -7,6 +7,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
+	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/templates"
 )
 

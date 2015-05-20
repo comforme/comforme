@@ -23,19 +23,21 @@ func init() {
 
 func SearchHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
-	if req.Method == "POST" {
-		query := req.PostFormValue("page-search")
+	if common.CheckParam(req.URL.Query(), "q") {
+		query := req.URL.Query()["q"][0]
+		log.Println("Performing search for:", query)
 		data["query"] = query
-		data["pageTitle"] = req.PostFormValue("page-search")
+		data["pageTitle"] = query
 		var err error
 		data["results"], err = databaseActions.SearchPages(userInfo.SessionID, query)
 		if err != nil {
 			log.Println("Failed to retrieve search results for "+
 				query, err)
 		} else {
-			log.Printf("Search results for %s:\n", query)
-			log.Printf("%+v\n", data["results"])
+			log.Printf("Search results for %s:\n%+v\n", query, data["results"])
 		}
+	} else {
+		data["pageTitle"] = "Search"
 	}
 
 	common.ExecTemplate(searchTemplate, res, data)
@@ -53,7 +55,6 @@ const searchTemplateText = `
                 {{end}}
             </div>
         </div>
-
         <div class="row">{{range .results}}
             <div class="columns">
                 <h2><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h2>
@@ -61,7 +62,8 @@ const searchTemplateText = `
                     <p>{{.Description}}</p>
                 </div>
             </div>{{ end }}
-        </div>
+        </div>{{if not .results}}
+			<div class="alert-box alert">No matches found. Would you like to <a href="/newPage">add a new resource</a>?</div>{{end}}
     </div>
 </div>
 `

@@ -66,7 +66,7 @@ func main() {
 		requireLogin.RequireLogin(pages.PageHandler),
 	)
 
-	router.POST(
+	router.GET(
 		"/search",
 		requireLogin.RequireLogin(search.SearchHandler),
 	)

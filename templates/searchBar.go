@@ -1,10 +1,10 @@
 package templates
 
 const SearchBar = `
-	<form method="post" action="/search">
+	<form method="get" action="/search">
 		<div class="row collapse">
 			<div class="small-10 columns">
-				<input type="text" placeholder="Page Search" name="page-search" id="page-search-textbox">
+				<input type="text" placeholder="Page Search" name="q" id="page-search-textbox">
 			</div>
 			<div class="small-2 columns">
 				<button type="submit" class="button postfix">Search</button>
