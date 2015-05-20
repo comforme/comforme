@@ -260,7 +260,7 @@ const registerTemplateText = `
 						<div class="row">
 							<div class="large-4 medium-6 columns left">
 								<label>
-									Username (must be between 3 and 20 characters)
+									Username (between 3 and 20 characters)
 									<input type="text" name="username" {{if .username}} value="{{.username}}"{{end}}>
 								</label>
 							</div>
