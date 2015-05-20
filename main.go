@@ -21,6 +21,13 @@ import (
 
 func main() {
 	log.Println("Starting server on port " + os.Getenv("PORT") + "...")
+
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Println("Current working directory:", dir)
+
 	router := httprouter.New()
 
 	router.GET(
