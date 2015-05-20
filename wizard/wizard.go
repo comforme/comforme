@@ -54,12 +54,13 @@ func init() {
 }
 
 func WizardHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-
 	_, err := req.Cookie("sessionid")
 	if err == nil { // Found cookie
 		requireLogin.RequireLogin(introWizardHandler)(res, req, ps)
 		return
 	}
+
+	res.Header().Set("cache-control", "private, max-age=0, no-cache")
 
 	data := map[string]interface{}{}
 	data["pageTitle"] = "Wizard"
