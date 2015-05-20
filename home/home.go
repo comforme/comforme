@@ -2,7 +2,6 @@ package home
 
 import (
 	"fmt"
-	"github.com/comforme/comforme/common"
 	"html/template"
 	"log"
 	"net/http"
