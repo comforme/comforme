@@ -50,9 +50,10 @@ const searchTemplateText = `
             <div class="columns">
                 <h1>Search</h1>
                 {{template "searchBar" .}}
-                {{if .query}}
+                {{if .results}}
                     <div class="alert-box secondary">Results for <span style="color:red">{{.query}}</span></div>
-                {{end}}
+                {{end}}{{if not .results}}
+				<div class="alert-box alert">No matches found. Would you like to <a href="/newPage">add a new resource</a>?</div>{{end}}
             </div>
         </div>
         <div class="row">{{range .results}}
@@ -62,10 +63,7 @@ const searchTemplateText = `
                     <p>{{.Description}}</p>
                 </div>
             </div>{{ end }}
-        </div>{{if not .results}}
-        <div class="row">
-			<div class="alert-box alert">No matches found. Would you like to <a href="/newPage">add a new resource</a>?</div>
-		</div>{{end}}
+        </div>
     </div>
 </div>
 `
