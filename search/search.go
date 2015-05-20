@@ -51,8 +51,8 @@ const searchTemplateText = `
 				<h1>Search</h1>
 				{{template "searchBar" .}}
 				<div class="alert-box secondary">{{if .results}}
-					Results for "<span style="color:red">{{.query}}</span>"{{else}}
-					<span style="color:red">No matches found for "<span style="color:black">{{.query}}</span>".</span> Would you like to <a href="/newPage">add a new resource</a>?{{end}}
+					Results for <span style="color:red">{{.query}}</span>{{else}}
+					<span style="color:red">No matches found for "{{.query}}".</span> Would you like to <a href="/newPage">add a new resource</a>?{{end}}
 				</div>
 			</div>
 		</div>
