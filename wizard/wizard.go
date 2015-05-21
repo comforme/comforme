@@ -60,7 +60,7 @@ const communitiesTemplateText = `					<section class="wizard-tabs">
 						</section>
 						<section role="tabtab" aria-hidden="true" class="content" id="tab-finding-resources">
 							<h2>Finding Resources</h2>
-							<p>Search for resources on the home page.</p>
+							<p>Search for resources on the <i class="fi-home"> Home</i> page.</p>
 							<button onClick="location.href='#tab-reviews'">Next</button>
 						</section>
 						<section role="tabtab" aria-hidden="true" class="content" id="tab-reviews">
@@ -70,12 +70,12 @@ const communitiesTemplateText = `					<section class="wizard-tabs">
 						</section>
 						<section role="tabtab" aria-hidden="true" class="content" id="tab-adding-resources">
 							<h2>Adding Resources</h2>
-							<p>Add new resources on the add new resource page.</p>
+							<p>Add new resources on the <i class="fi-page-add"> Add Resource</i> page.</p>
 							<button onClick="location.href='#tab-settings'">Next</button>
 						</section>
 						<section role="tabtab" aria-hidden="true" class="content" id="tab-settings">
 							<h2>Changing Settings</h2>
-							<p>Change your username or password, or update your communities on the settings page.</p>
+							<p>Change your username or password, or update your communities on the <i class="fi-widget"> Settings</i> page.</p>
 							<button onclick="location.href='/'">Finish</button>
 						</section>
 					</div>
