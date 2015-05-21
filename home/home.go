@@ -54,4 +54,9 @@ const homeTemplateText = `
 			<h3><a href="/page/{{.CategorySlug}}/{{.PageSlug}}">{{.Title}}</a></h3>
 		</div>{{ end }}
 	</div>
+	<div class="row">
+		<div class="columns left">
+			Lost? <a href="/wizard">Take the tour</a> again.
+		</div>
+	</div>
 </div>`
