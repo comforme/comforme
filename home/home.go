@@ -48,7 +48,7 @@ const homeTemplateText = `
 	</div>
 	<div class="row">
 		<div class="columns left">
-			Lost? <a href="/wizard">Take the tour</a> again.
+			Lost? <a href="/tour">Take the tour</a> again.
 		</div>
 	</div>
 	<div class="row">
