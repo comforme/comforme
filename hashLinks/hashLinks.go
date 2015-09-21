@@ -138,8 +138,8 @@ func RegisterHandler(res http.ResponseWriter, req *http.Request, ps httprouter.P
 					} else { // No error
 						common.SetSessionCookie(res, sessionid)
 
-						// Redirect to logged-in wizard
-						http.Redirect(res, req, "/wizard", http.StatusFound)
+						// Redirect to tour
+						http.Redirect(res, req, "/tour", http.StatusFound)
 						return
 					}
 				}

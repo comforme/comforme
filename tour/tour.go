@@ -1,4 +1,4 @@
-package wizard
+package tour
 
 import (
 	"html/template"
@@ -18,12 +18,12 @@ func init() {
 	// Community selection page template
 	communitiesTemplate = template.Must(template.New("siteLayout").Parse(templates.SiteLayout))
 	template.Must(communitiesTemplate.New("nav").Parse(templates.NavBar))
-	template.Must(communitiesTemplate.New("content").Parse(templates.Wizard))
+	template.Must(communitiesTemplate.New("content").Parse(templates.Tour))
 	template.Must(communitiesTemplate.New("wizardContent").Parse(communitiesTemplateText))
 	template.Must(communitiesTemplate.New("communitiesContent").Parse(templates.Communities))
 }
 
-func WizardHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
+func TourHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 
 	data := map[string]interface{}{}
 

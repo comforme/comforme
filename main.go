@@ -17,7 +17,7 @@ import (
 	"github.com/comforme/comforme/search"
 	"github.com/comforme/comforme/settings"
 	"github.com/comforme/comforme/static"
-	"github.com/comforme/comforme/wizard"
+	"github.com/comforme/comforme/tour"
 )
 
 func main() {
@@ -41,12 +41,12 @@ func main() {
 	)
 
 	router.GET(
-		"/wizard",
-		requireLogin.RequireLogin(wizard.WizardHandler),
+		"/tour",
+		requireLogin.RequireLogin(tour.TourHandler),
 	)
 	router.POST(
-		"/wizard",
-		requireLogin.RequireLogin(wizard.WizardHandler),
+		"/tour",
+		requireLogin.RequireLogin(tour.TourHandler),
 	)
 
 	router.GET(
