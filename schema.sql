@@ -54,22 +54,32 @@ CREATE TABLE sessions (
    create_date      TIMESTAMP      NOT NULL  DEFAULT now()
 );
 
-INSERT INTO public.communities (id, name) VALUES (1, 'Lazy');
-INSERT INTO public.communities (id, name) VALUES (2, 'Baboon');
-INSERT INTO public.communities (id, name) VALUES (4, 'OCD');
-INSERT INTO public.communities (id, name) VALUES (5, 'Stoner');
-INSERT INTO public.communities (id, name) VALUES (6, 'Transexual/Transgender');
-INSERT INTO public.communities (id, name) VALUES (7, 'BBW');
-INSERT INTO public.communities (id, name) VALUES (8, 'Single');
-INSERT INTO public.communities (id, name) VALUES (10, 'Boring');
-INSERT INTO public.communities (id, name) VALUES (11, 'Business Owner');
-INSERT INTO public.communities (id, name) VALUES (12, 'Michelle Obama');
-INSERT INTO public.communities (id, name) VALUES (13, 'Genderqueer');
-INSERT INTO public.communities (id, name) VALUES (14, 'Heterosexual');
-INSERT INTO public.communities (id, name) VALUES (15, 'Asexual');
+-- Users are automatically enrolled in community #1.
+INSERT INTO public.communities (name, id) VALUES ('Lazy', 1);
 
-INSERT INTO public.categories (id, name, slug) VALUES (1, 'Medical', 'medical');
-INSERT INTO public.categories (id, name, slug) VALUES (2, 'Food', 'food');
-INSERT INTO public.categories (id, name, slug) VALUES (3, 'Entertainment', 'entertainment');
-INSERT INTO public.categories (id, name, slug) VALUES (4, 'Travel Services', 'travel-services');
-INSERT INTO public.categories (id, name, slug) VALUES (5, 'Home/Garden Renovation', 'home-garden-renovation');
+INSERT INTO public.communities (name) VALUES ('Baboon');
+INSERT INTO public.communities (name) VALUES ('Detail Oriented');
+INSERT INTO public.communities (name) VALUES ('OCD');
+INSERT INTO public.communities (name) VALUES ('Crazy Cat Person');
+INSERT INTO public.communities (name) VALUES ('Python 2 Holdout');
+INSERT INTO public.communities (name) VALUES ('Stoner');
+INSERT INTO public.communities (name) VALUES ('BBW');
+INSERT INTO public.communities (name) VALUES ('Boring');
+INSERT INTO public.communities (name) VALUES ('Single');
+INSERT INTO public.communities (name) VALUES ('Business Owner');
+INSERT INTO public.communities (name) VALUES ('Michelle Obama');
+INSERT INTO public.communities (name) VALUES ('Chia Pet Enthusiast');
+INSERT INTO public.communities (name) VALUES ('Gay');
+INSERT INTO public.communities (name) VALUES ('Transexual/Transgender');
+INSERT INTO public.communities (name) VALUES ('Genderqueer');
+INSERT INTO public.communities (name) VALUES ('Heterosexual');
+INSERT INTO public.communities (name) VALUES ('Homosexual');
+INSERT INTO public.communities (name) VALUES ('Asexual');
+INSERT INTO public.communities (name) VALUES ('Bisexual');
+INSERT INTO public.communities (name) VALUES ('Transexual/Transgender');
+
+INSERT INTO public.categories (name, slug) VALUES ('Medical', 'medical');
+INSERT INTO public.categories (name, slug) VALUES ('Food', 'food');
+INSERT INTO public.categories (name, slug) VALUES ('Entertainment', 'entertainment');
+INSERT INTO public.categories (name, slug) VALUES ('Travel Services', 'travel');
+INSERT INTO public.categories (name, slug) VALUES ('Home/Garden', 'home-garden');
