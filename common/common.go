@@ -195,7 +195,7 @@ func sendEmail(recipient, subject, text string) error {
 	message.AddTo(recipient)
 	message.SetFrom(fromEmail)
 	message.SetFromName(SiteName)
-	message.Subject = subject
+	message.SetSubject(subject)
 	message.SetText(text)
 
 	if r := sg.Send(message); r != nil {
