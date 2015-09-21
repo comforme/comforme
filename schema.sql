@@ -54,7 +54,7 @@ CREATE TABLE sessions (
    create_date      TIMESTAMP      NOT NULL  DEFAULT now()
 );
 
--- Users are automatically enrolled in community #1.
+-- Users are automatically enrolled in community #1 at signup, but are given the option to opt-out.
 INSERT INTO public.communities (name, id) VALUES ('Lazy', 1);
 
 INSERT INTO public.communities (name) VALUES ('Baboon');
@@ -70,6 +70,7 @@ INSERT INTO public.communities (name) VALUES ('Business Owner');
 INSERT INTO public.communities (name) VALUES ('Michelle Obama');
 INSERT INTO public.communities (name) VALUES ('Chia Pet Enthusiast');
 INSERT INTO public.communities (name) VALUES ('Gay');
+INSERT INTO public.communities (name) VALUES ('Lesbian');
 INSERT INTO public.communities (name) VALUES ('Transexual/Transgender');
 INSERT INTO public.communities (name) VALUES ('Genderqueer');
 INSERT INTO public.communities (name) VALUES ('Heterosexual');
