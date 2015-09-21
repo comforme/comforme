@@ -25,7 +25,7 @@ Other social networks makes you use your real name, lock you into only one kind 
 Click the purple button at the top of the page.
 
 ### Using Vagrant for Development
-Warning: Deprecated!
+#### Warning: Currently broken!
 * First install VirtualBox and Vagrant
 * Vagrant will be able to create a virtual machine hosting the
   comfor.me application locally. The application is installed
