@@ -1,0 +1,7 @@
+{
+  "name": "Comforme",
+  "description": "Community for Me",
+  "repository": "https://github.com/comforme/comforme",
+  "keywords": ["go", "comfor.me", "comfor", "comforme", "community", "social"],
+  "addons": ["heroku-postgresql:hobby-dev", "papertrail", "mandrill:starter"],
+}
