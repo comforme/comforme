@@ -22,10 +22,10 @@ With a website that offers a smooth, clean interface that gives you what you wan
 Other social networks makes you use your real name, lock you into only one kind of content, limit finding communities you identify with, or do any number of other things to ensure you're easy to predict and generate as much advertising revenue as possible. Comfor.me does none of these things, instead we help you express your freedom to create and be a part of anything you want to, we build the tools for you to find people like you, then we step back when you step forward and become part of our community.
 
 ## Instructions for setting up development server
-### Deploying to Heroku
-TODO
+Click the purple button at the top of the page.
 
 ### Using Vagrant for Development
+Warning: Deprecated!
 * First install VirtualBox and Vagrant
 * Vagrant will be able to create a virtual machine hosting the
   comfor.me application locally. The application is installed
