@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/keighl/mandrill"
+	"github.com/sendgrid/sendgrid-go"
 	"golang.org/x/crypto/scrypt"
 )
 
@@ -24,6 +24,8 @@ var (
 	fromEmail    = os.Getenv("EMAIL")
 	SiteName     = os.Getenv("SITENAME")
 	protocol     = os.Getenv("PROTOCOL")
+	sendgridUser = os.Getenv("SENDGRID_USERNAME")
+	sendgridKey  = os.Getenv("SENDGRID_PASSWORD")
 	secret       = []byte(os.Getenv("SECRET"))
 	linkAgeLimit = time.Hour * 24 * 14
 )
@@ -80,26 +82,30 @@ type Post struct {
 }
 
 // Errors
-var EmailFailed = errors.New("Sending email failed.")
-var EmailInUse = errors.New("You have already registered with this email address.")
-var UsernameInUse = errors.New("This username is in use. Please select a different one.")
-var InvalidUsernameOrPassword = errors.New("Invalid username or password.")
-var DatabaseError = errors.New("Unknown database error.")
-var InvalidSessionID = errors.New("Invalid sessionid.")
-var InvalidEmail = errors.New("The provided email address is not valid.")
-var InvalidIpAddress = errors.New("There is something wrong with your IP address.")
-var InvalidTitle = errors.New("Invalid page title.")
-var PageAlreadyExists = errors.New("A page with this category and title already exists.")
-var PageNotFound = errors.New("Page not found.")
-var InvalidLink = errors.New("Invalid link. It may have expired or possibly you already used it.")
+var (
+	EmailFailed               = errors.New("Sending email failed.")
+	EmailInUse                = errors.New("You have already registered with this email address.")
+	UsernameInUse             = errors.New("This username is in use. Please select a different one.")
+	InvalidUsernameOrPassword = errors.New("Invalid username or password.")
+	DatabaseError             = errors.New("Unknown database error.")
+	InvalidSessionID          = errors.New("Invalid sessionid.")
+	InvalidEmail              = errors.New("The provided email address is not valid.")
+	InvalidIpAddress          = errors.New("There is something wrong with your IP address.")
+	InvalidTitle              = errors.New("Invalid page title.")
+	PageAlreadyExists         = errors.New("A page with this category and title already exists.")
+	PageNotFound              = errors.New("Page not found.")
+	InvalidLink               = errors.New("Invalid link. It may have expired or possibly you already used it.")
+)
 
-var mandrillKey = os.Getenv("MANDRILL_APIKEY")
-var emailRegex *regexp.Regexp
-var ipAddressRegex *regexp.Regexp
-var slugFrontCap *regexp.Regexp
-var slugEndCap *regexp.Regexp
-var slugRemove *regexp.Regexp
-var slugMiddle *regexp.Regexp
+// Regex
+var (
+	emailRegex     *regexp.Regexp
+	ipAddressRegex *regexp.Regexp
+	slugFrontCap   *regexp.Regexp
+	slugEndCap     *regexp.Regexp
+	slugRemove     *regexp.Regexp
+	slugMiddle     *regexp.Regexp
+)
 
 func init() {
 	rand.Seed(time.Now().Unix() ^ int64(time.Now().Nanosecond()))
@@ -179,26 +185,23 @@ The %s team
 	return sendEmail(email, SiteName+" Password Reset", "", emailText)
 }
 
-func sendEmail(recipient, subject, html, text string) error {
+func sendEmail(recipient, subject, text string) error {
 	log.Printf("Sending email to: %s\n", recipient)
 	log.Printf("Subject: %s\nText:\n%s\n", subject, text)
 
-	client := mandrill.ClientWithKey(mandrillKey)
+	sg := sendgrid.NewSendGridClient(sendgridUser, sendgridKey)
+	message := sendgrid.NewMail()
 
-	message := &mandrill.Message{}
-	message.AddRecipient(recipient, recipient, "to")
-	message.FromEmail = fromEmail
-	message.FromName = SiteName
+	message.AddTo(recipient, recipient, "to")
+	message.SetFromEmail(fromEmail)
+	message.SetFromName(SiteName)
 	message.Subject = subject
-	message.HTML = html
-	message.Text = text
+	message.SetText(text)
 
-	responses, err := client.MessagesSend(message)
-	if err != nil {
-		log.Printf("Error: %s\n", err.Error())
+	if r := sg.Send(message); r != nil {
+		log.Println("Sendgrid error:", r)
 		return EmailFailed
 	}
-	log.Printf("Mandrill responses: %+v\n", responses)
 	return nil
 }
 
