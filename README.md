@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/comforme/comforme.svg)](https://travis-ci.org/comforme/comforme)
+
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 # comfor.me
 Everyone's personal community
