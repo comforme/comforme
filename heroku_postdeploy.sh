@@ -1,3 +1,3 @@
 #!/bin/bash
 # Postdeploy script for automated Heroku deployment.
-cat schema.sql | psql
+cat schema.sql | psql $DATABASE_URL
