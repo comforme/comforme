@@ -1,7 +1,7 @@
 {
 	"name": "Comforme",
 	"description": "Community for Me",
-	"image": "heroku/go:1.5",
+	"buildpacks": [{"url": "https://github.com/heroku/heroku-buildpack-go"}],
 	"website": "https://github.com/comforme/comforme",
 	"repository": "https://github.com/comforme/comforme",
 	"keywords": ["go", "comfor.me", "comfor", "comforme", "community", "social"],
