@@ -24,6 +24,7 @@ func init() {
 
 func PageHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
+	data["siteName"] = common.SiteName
 
 	data["formAction"] = req.URL.Path
 

@@ -11,7 +11,7 @@ const NavBar = `
 		<section class="top-bar-section">
 			<ul class="title-area">
 				<li class="name">
-					<h1><a href="/">ComFor.Me</a></h1>
+					<h1><a href="/">{{.siteName}}</a></h1>
 				</li>
 			</ul>
 			<ul class="right">
@@ -43,7 +43,7 @@ const NavlessBar = `
 		<section class="top-bar-section">
 			<ul class="title-area">
 				<li class="name">
-					<h1><a href="/">ComFor.Me</a></h1>
+					<h1><a href="/">{{.siteName}}</a></h1>
 				</li>
 			</ul>
 		</section>

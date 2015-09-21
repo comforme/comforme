@@ -20,18 +20,17 @@ import (
 	"golang.org/x/crypto/scrypt"
 )
 
-var DebugMode = os.Getenv("DEBUG_MODE") == "true"
-var secret = []byte(os.Getenv("SECRET"))
-var linkAgeLimit = time.Hour * 24 * 14
+var (
+	fromEmail    = os.Getenv("EMAIL")
+	SiteName     = os.Getenv("SITENAME")
+	secret       = []byte(os.Getenv("SECRET"))
+	linkAgeLimit = time.Hour * 24 * 14
+)
 
 const (
 	alphaNumeric            = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	sessionIdLength         = 25
 	generatedPasswordLength = 15
-	fromEmail               = "donotreply@comfor.me"
-	Protocol                = "https"
-	Domain                  = "comfor.me"
-	fromName                = "ComFor.Me"
 	slugChars               = "A-Za-z0-9"
 	slugRemoveChars         = "'\""
 	slugLength              = 25
@@ -144,39 +143,39 @@ func ExecTemplate(tmpl *template.Template, w http.ResponseWriter, pc map[string]
 	}
 }
 
-func SendRegEmail(email string) error {
+func SendRegEmail(email, baseURL string) error {
 	hash, date, err := GenerateSecret(email)
 	if err != nil {
 		return err
 	}
 
-	emailText := fmt.Sprintf(`Thank you for registering with ComFor.Me.
+	emailText := fmt.Sprintf(`Thank you for registering with %s.
 
 To complete your registration, please copy and paste the following link into your web browser:
-https://comfor.me/register?email=%s&date=%s&code=%s
+%s/register?email=%s&date=%s&code=%s
 
 This link will be valid for 14 days.
 
 Hope to see you soon,
-The ComFor.Me team
-`, email, date, hash)
-	return sendEmail(email, "Welcome to ComFor.Me!", "", emailText)
+The %s team
+`, SiteName, baseURL, email, date, hash, SiteName)
+	return sendEmail(email, "Welcome to "+SiteName+"!", "", emailText)
 }
 
-func SendResetEmail(email, date, hash string) error {
-	emailText := fmt.Sprintf(`We received a password reset request for your account on ComFor.Me.
+func SendResetEmail(email, date, hash, baseURL string) error {
+	emailText := fmt.Sprintf(`We received a password reset request for your account on %s.
 
 To complete your password reset, please copy and paste the following link into your web browser:
-https://comfor.me/passwordReset?email=%s&date=%s&code=%s
+%s/passwordReset?email=%s&date=%s&code=%s
 
 If you did not request this password reset you can safely ignore this email.
 
 This link will be valid for 14 days.
 
 Hope to see you soon,
-The ComFor.Me team
-`, email, date, hash)
-	return sendEmail(email, "ComFor.Me Password Reset", "", emailText)
+The %s team
+`, SiteName, baseURL, email, date, hash, SiteName)
+	return sendEmail(email, SiteName+" Password Reset", "", emailText)
 }
 
 func sendEmail(recipient, subject, html, text string) error {
@@ -188,7 +187,7 @@ func sendEmail(recipient, subject, html, text string) error {
 	message := &mandrill.Message{}
 	message.AddRecipient(recipient, recipient, "to")
 	message.FromEmail = fromEmail
-	message.FromName = fromName
+	message.FromName = SiteName
 	message.Subject = subject
 	message.HTML = html
 	message.Text = text
@@ -302,4 +301,8 @@ func CheckParam(values url.Values, key string) bool {
 		return true
 	}
 	return false
+}
+
+func GetBaseURL(req *http.Request) string {
+	return fmt.Sprintf("%s://%s", req.URL.Scheme, req.URL.Host)
 }

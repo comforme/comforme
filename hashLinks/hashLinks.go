@@ -41,6 +41,7 @@ func ResetHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Para
 
 	data := map[string]interface{}{}
 	data["pageTitle"] = "Password Reset"
+	data["siteName"] = common.SiteName
 
 	if !common.CheckParam(req.URL.Query(), "email") ||
 		!common.CheckParam(req.URL.Query(), "date") ||
@@ -101,6 +102,7 @@ func RegisterHandler(res http.ResponseWriter, req *http.Request, ps httprouter.P
 
 	data := map[string]interface{}{}
 	data["pageTitle"] = "Registration"
+	data["siteName"] = common.SiteName
 
 	if !common.CheckParam(req.URL.Query(), "email") ||
 		!common.CheckParam(req.URL.Query(), "date") ||

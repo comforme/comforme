@@ -26,6 +26,7 @@ func init() {
 func TourHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 
 	data := map[string]interface{}{}
+	data["siteName"] = common.SiteName
 
 	var err error
 	data["communitiesCols"], err = databaseActions.GetCommunityColumns(userInfo.UserID)

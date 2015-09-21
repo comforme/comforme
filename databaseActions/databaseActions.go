@@ -34,12 +34,12 @@ func init() {
 	}
 }
 
-func ResetPassword(email string) error {
+func ResetPassword(email, baseURL string) error {
 	hash, date, err := GenerateResetCode(email)
 	if err != nil {
 		return err
 	}
-	return common.SendResetEmail(email, date, hash)
+	return common.SendResetEmail(email, date, hash, baseURL)
 }
 
 func CreatePage(userID int, title, description, address, website string, category int) (categorySlug, pageSlug string, err error) {
@@ -211,7 +211,7 @@ func Register2(username, email, password string) (sessionid string, err error) {
 	return
 }
 
-func Register1(email string) (err error) {
+func Register1(email, baseURL string) (err error) {
 	if !common.ValidEmail(email) {
 		err = common.InvalidEmail
 		return
@@ -222,7 +222,7 @@ func Register1(email string) (err error) {
 		return
 	}
 
-	err = common.SendRegEmail(email)
+	err = common.SendRegEmail(email, baseURL)
 	if err != nil {
 		return
 	}

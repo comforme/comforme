@@ -32,6 +32,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	data["formAction"] = req.URL.Path
 	data["pageTitle"] = "Login"
 	data["recaptchaPublicKey"] = recaptchaPublicKey
+	data["siteName"] = common.SiteName
 
 	if req.Method == "POST" {
 		isSignup := req.PostFormValue("sign-up") == "true"
@@ -51,12 +52,12 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				recaptchaResponse,
 				ipAddress,
 			)
-			if err != nil && !common.DebugMode {
+			if err != nil {
 				log.Println("reCaptcha failed:", err)
 				data["formError"] = err.Error()
 			} else {
 				log.Println("reCaptcha success:", err)
-				err = databaseActions.Register1(email)
+				err = databaseActions.Register1(email, common.GetBaseURL(req))
 				if err != nil {
 					data["formError"] = err.Error()
 				} else { // No error
@@ -88,12 +89,12 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 				recaptchaResponse,
 				ipAddress,
 			)
-			if err != nil && !common.DebugMode {
+			if err != nil {
 				log.Println("reCaptcha failed:", err)
 				data["formError"] = err.Error()
 			} else {
 				log.Println("reCaptcha success:", err)
-				err := databaseActions.ResetPassword(email)
+				err := databaseActions.ResetPassword(email, common.GetBaseURL(req))
 				if err != nil {
 					data["formError"] = err.Error()
 				} else {
@@ -160,9 +161,9 @@ const loginTemplateText = `
 			</div>
 			<div class="large-2 medium-2 show-for-medium-up columns">&nbsp;</div>
 			<div class="large-12 columns">
-				<h2>What is Comfor.me?</h2>
+				<h2>What is {{.siteName}}?</h2>
 					<div>
-						<p>Comfor.me (Community for Me) is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. Comfor.me makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
+						<p>{{.siteName}} (Community for Me) is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. {{.siteName}} makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
 					</div>
 				</div>
 			</div>
