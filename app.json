@@ -1,9 +1,18 @@
 {
-  "name": "Comforme",
-  "description": "Community for Me",
-  "image": "heroku/go:1.5",
-  "website": "https://github.com/comforme/comforme",
-  "repository": "https://github.com/comforme/comforme",
-  "keywords": ["go", "comfor.me", "comfor", "comforme", "community", "social"],
-  "addons": ["heroku-postgresql:hobby-dev", "papertrail"]
+	"name": "Comforme",
+	"description": "Community for Me",
+	"image": "heroku/go:1.5",
+	"website": "https://github.com/comforme/comforme",
+	"repository": "https://github.com/comforme/comforme",
+	"keywords": ["go", "comfor.me", "comfor", "comforme", "community", "social"],
+	"addons": ["heroku-postgresql:hobby-dev", "papertrail"],
+	"env": {
+		"SECRET": {
+			"description": "This gets generated",
+			"generator": "secret"
+		}
+	},
+	"scripts": {
+		"postdeploy": "heroku_postdeploy.sh"
+	}
 }
