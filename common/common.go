@@ -23,6 +23,7 @@ import (
 var (
 	fromEmail    = os.Getenv("EMAIL")
 	SiteName     = os.Getenv("SITENAME")
+	protocol     = os.Getenv("PROTOCOL")
 	secret       = []byte(os.Getenv("SECRET"))
 	linkAgeLimit = time.Hour * 24 * 14
 )
@@ -304,5 +305,5 @@ func CheckParam(values url.Values, key string) bool {
 }
 
 func GetBaseURL(req *http.Request) string {
-	return fmt.Sprintf("%s://%s", req.URL.Scheme, req.URL.Host)
+	return fmt.Sprintf("%s://%s", protocol, req.Host)
 }
