@@ -166,7 +166,7 @@ This link will be valid for 14 days.
 Hope to see you soon,
 The %s team
 `, SiteName, baseURL, email, date, hash, SiteName)
-	return sendEmail(email, "Welcome to "+SiteName+"!", "", emailText)
+	return sendEmail(email, "Welcome to "+SiteName+"!", emailText)
 }
 
 func SendResetEmail(email, date, hash, baseURL string) error {
@@ -182,7 +182,7 @@ This link will be valid for 14 days.
 Hope to see you soon,
 The %s team
 `, SiteName, baseURL, email, date, hash, SiteName)
-	return sendEmail(email, SiteName+" Password Reset", "", emailText)
+	return sendEmail(email, SiteName+" Password Reset", emailText)
 }
 
 func sendEmail(recipient, subject, text string) error {
@@ -192,8 +192,8 @@ func sendEmail(recipient, subject, text string) error {
 	sg := sendgrid.NewSendGridClient(sendgridUser, sendgridKey)
 	message := sendgrid.NewMail()
 
-	message.AddTo(recipient, recipient, "to")
-	message.SetFromEmail(fromEmail)
+	message.AddTo(recipient)
+	message.SetFrom(fromEmail)
 	message.SetFromName(SiteName)
 	message.Subject = subject
 	message.SetText(text)
