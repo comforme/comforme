@@ -5,5 +5,5 @@
   "website": "https://github.com/comforme/comforme",
   "repository": "https://github.com/comforme/comforme",
   "keywords": ["go", "comfor.me", "comfor", "comforme", "community", "social"],
-  "addons": ["heroku-postgresql:hobby-dev", "papertrail", "mandrill:starter"]
+  "addons": ["heroku-postgresql:hobby-dev", "papertrail"]
 }
