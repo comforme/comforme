@@ -31,6 +31,6 @@
 		}
 	},
 	"scripts": {
-		"postdeploy": "./heroku_postdeploy.sh"
+		"postdeploy": "./scripts/heroku_postdeploy.sh"
 	}
 }
