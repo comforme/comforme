@@ -19,6 +19,10 @@
 			"description": "The name of the website.",
 			"value": "ComFor.Me"
 		},
+		"SITELONGNAME" : {
+			"description": "The expanded name of the website. Can be the same as SITENAME.",
+			"value": "Community for Me"
+		},
 		"PROTOCOL": {
 			"description": "The protocol to be used in gernerated links.",
 			"value": "https"

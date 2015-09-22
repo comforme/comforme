@@ -23,6 +23,7 @@ import (
 var (
 	fromEmail    = os.Getenv("EMAIL")
 	SiteName     = os.Getenv("SITENAME")
+	SiteLongName = os.Getenv("SITELONGNAME")
 	protocol     = os.Getenv("PROTOCOL")
 	sendgridUser = os.Getenv("SENDGRID_USERNAME")
 	sendgridKey  = os.Getenv("SENDGRID_PASSWORD")

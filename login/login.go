@@ -33,6 +33,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 	data["pageTitle"] = "Login"
 	data["recaptchaPublicKey"] = recaptchaPublicKey
 	data["siteName"] = common.SiteName
+	data["siteLongName"] = common.SiteLongName
 
 	if req.Method == "POST" {
 		isSignup := req.PostFormValue("sign-up") == "true"
@@ -109,7 +110,7 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) {
 
 const loginTemplateText = `
     <div class="content sign-up-and-log-in">
-		<h1 class="text-center">Welcome to Community for Me!</h1>
+		<h1 class="text-center">Welcome to {{.siteLongName}}!</h1>
 		<div class="row">
 			<div class="large-3 medium-3 show-for-medium-up columns">&nbsp;</div>
 			<div class="large-6 medium-6 columns" style="min-width: 320px;">{{if .formError}}
@@ -163,7 +164,7 @@ const loginTemplateText = `
 			<div class="large-12 columns">
 				<h2>What is {{.siteName}}?</h2>
 					<div>
-						<p>{{.siteName}} (Community for Me) is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. {{.siteName}} makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
+						<p>{{.siteName}}{{if not eq .siteLongName .siteName}} ({{.siteLongName}}){{end}} is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. {{.siteName}} makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
 					</div>
 				</div>
 			</div>
