@@ -164,7 +164,7 @@ const loginTemplateText = `
 			<div class="large-12 columns">
 				<h2>What is {{.siteName}}?</h2>
 					<div>
-						<p>{{.siteName}}{{if not eq .siteLongName .siteName}} ({{.siteLongName}}){{end}} is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. {{.siteName}} makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
+						<p>{{.siteName}}{{if not (eq .siteLongName .siteName)}} ({{.siteLongName}}){{end}} is a community-rated and identity-oriented social network/service listing. Users can find accepting communities and services based on a wide array of keywords. Users can also start their own communities categorized by aforementioned keywords. {{.siteName}} makes it easier for an individual to find communities and services which accept them for who they are.</a></p>
 					</div>
 				</div>
 			</div>
