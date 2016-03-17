@@ -122,12 +122,13 @@ func main() {
 		requireLogin.RequireLogin(home.HomeHandler),
 	)
 
-	// Start the server
-	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
-
 	// Export db page records to Alglolia index
 	err = algoliaUtil.ExportPageRecords()
   if err != nil {
     log.Printf("%s\n", err.Error())
   }
+	
+	// Start the server
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
+
 }
