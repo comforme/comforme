@@ -65,7 +65,7 @@ func ExportPageRecords() error {
     object["dateCreated"] = page.DateCreated
     objects[page.PageSlug] = object
   }
-  resp, err = pageIndex.AddObjects(objects)
+  resp, err = pageIndex.AddObjects(interface{}(objects))
   if err != nil { return errors.New(exportAbortError + err.Error()); }
   pageIndex.WaitTask(resp)
 
