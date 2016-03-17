@@ -486,16 +486,18 @@ func (db DB) ListCommunities(userid int) (communities []common.Community, err er
 func (db DB) GetPages() (pages []common.Page, err error) {
 	rows, err := db.conn.Query(`
 		SELECT
-		  id,
+			pages.id,
 			title,
-			slug,
-			category,
+			pages.slug,
+			categories.name,
+			categories.slug,
 			description,
-			address,
-			website,
 			date_created
 		FROM
-			pages
+			pages,
+			categories
+		WHERE
+			categories.id = pages.category
 		ORDER BY date_created DESC
 		`)
 	if err != nil {
@@ -512,11 +514,10 @@ func (db DB) GetPages() (pages []common.Page, err error) {
 		if err := rows.Scan(
 			&row.Id,
 			&row.Title,
-			&row.Category,
 			&row.PageSlug,
+			&row.Category,
+			&row.CategorySlug,
 			&row.Description,
-			&row.Address,
-			&row.Website,
 			&row.DateCreated,
 		); err != nil {
 			log.Fatal(err)
