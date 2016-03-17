@@ -4,7 +4,7 @@ const SearchBar = `
 	<form method="get" action="/search">
 		<div class="row collapse">
 			<div class="small-10 columns">
-			<input type="text" id="search-input" />
+			<input type="text" placeholder="Page Search" name="q" id="page-search-textbox" />
 			</div>
 			<div class="small-2 columns">
 				<button type="submit" class="button postfix">Search</button>
@@ -17,13 +17,13 @@ const SearchBar = `
 	<script>
 		var client = algoliasearch({{ .appId }}, {{ .publicSearchKey }})
 		var index = client.initIndex('Pages');
-		autocomplete('#search-input', {hint: false}, [
+		autocomplete('#page-search-textbox', {hint: false}, [
 			{
 				source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
 				displayKey: 'title',
 				templates: {
 					suggestion: function(suggestion) {
-						return suggestion._highlightResult.my_attribute.value;
+						return suggestion._highlightResult.title.value;
 					}
 				}
 			}
