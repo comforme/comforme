@@ -59,7 +59,14 @@ func ExportPageRecords() error {
 
   objects := make([]interface{}, len(pages))
   for ind, page := range pages {
-    objects[ind] = page
+    var object map[string]interface{}
+    object["title"] = page.Title
+    object["category"] = page.Category
+    object["objectID"] = page.PageSlug
+    object["address"] = page.Address
+    object["website"] = page.Website
+    object["dateCreated"] = page.DateCreated
+    objects[ind] = object
   }
   resp, err = pageIndex.AddObjects(objects)
   if err != nil { return errors.New(exportAbortError + err.Error()); }
@@ -67,8 +74,8 @@ func ExportPageRecords() error {
 
   // Set ranking information
   settings := make(map[string]interface{})
-  settings["attributesToIndex"] = []string{"Title", "Category"}
-  settings["ranking"] = []string{"words", "desc(name)", "desc(category)"}
+  settings["attributesToIndex"] = []string{"title", "category"}
+  settings["ranking"] = []string{"words", "desc(title)", "desc(category)"}
   resp, err = pageIndex.SetSettings(settings)
   if err != nil { return errors.New(exportAbortError + err.Error()); }
   pageIndex.WaitTask(resp)
