@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/julienschmidt/httprouter"
-  //"github.com/algolia/algoliasearch-client-go/algoliasearch"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
