@@ -512,6 +512,7 @@ func (db DB) GetPages() (pages []common.Page, err error) {
 		if err := rows.Scan(
 			&row.Id,
 			&row.Title,
+			&row.Category,
 			&row.PageSlug,
 			&row.Description,
 			&row.Address,
