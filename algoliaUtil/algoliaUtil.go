@@ -59,7 +59,7 @@ func ExportPageRecords() error {
 
   objects := make([]interface{}, len(pages))
   for ind, page := range pages {
-    var object map[string]interface{}
+    object := make(map[string]interface{})
     object["title"] = page.Title
     object["category"] = page.Category
     object["objectID"] = page.PageSlug
