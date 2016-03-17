@@ -57,7 +57,11 @@ func ExportPageRecords() error {
   pages, err := databaseActions.GetPages()
   if err != nil { return errors.New(exportAbortError + err.Error()) }
 
-  resp, err = pageIndex.AddObjects(pages)
+  objects := make([]interface{}, len(pages))
+  for ind, page := range pages {
+    objects[ind] = page
+  }
+  resp, err = pageIndex.AddObjects(objects)
   if err != nil { return errors.New(exportAbortError + err.Error()); }
   pageIndex.WaitTask(resp)
 
