@@ -4,8 +4,10 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
+  //"github.com/algolia/algoliasearch-client-go/algoliasearch"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
@@ -19,16 +21,19 @@ func init() {
 	template.Must(searchTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(searchTemplate.New("searchBar").Parse(templates.SearchBar))
 	template.Must(searchTemplate.New("content").Parse(searchTemplateText))
+
 }
 
 func SearchHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
-	data := map[string]interface{}{}
+  data := map[string]interface{}{}
 	data["siteName"] = common.SiteName
 	if common.CheckParam(req.URL.Query(), "q") {
 		query := req.URL.Query()["q"][0]
 		log.Println("Performing search for:", query)
 		data["query"] = query
 		data["pageTitle"] = query
+		data["appId"] = os.Getenv("ALGOLIASEARCH_APPLICATION_ID")
+		data["publicSearchKey"] = os.Getenv("ALGOLIASEARCH_API_KEY_SEARCH")
 		var err error
 		data["results"], err = databaseActions.SearchPages(userInfo.SessionID, query)
 		if err != nil {

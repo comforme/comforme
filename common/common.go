@@ -66,7 +66,7 @@ type Community struct {
 type Page struct {
 	Id           int
 	Title        string
-	PageSlug     string
+	PageSlug     string `json:objectID`
 	Category     string
 	CategorySlug string
 	Description  string

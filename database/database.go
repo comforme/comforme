@@ -483,24 +483,66 @@ func (db DB) ListCommunities(userid int) (communities []common.Community, err er
 	return
 }
 
-func (db DB) SearchPages(query string) (pages []common.Page, err error) {
+func (db DB) GetPages() (pages []common.Page, err error) {
 	rows, err := db.conn.Query(`
-		SELECT
-			pages.id,
-			title,
-			pages.slug,
-			categories.name,
-			categories.slug,
-			description,
-			date_created
+		SELECT *
 		FROM
-			pages,
-			categories
-		WHERE
-			categories.id = pages.category AND
-			to_tsvector('english', title) @@ to_tsquery($1) -- Full text search
+			pages
 		ORDER BY date_created DESC
-		`,
+		`)
+	if err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
+		return
+	}
+
+	defer rows.Close()
+
+	pages = []common.Page{}
+	for rows.Next() {
+		var row common.Page
+		if err := rows.Scan(
+			&row.Id,
+			&row.Title,
+			&row.PageSlug,
+			&row.Description,
+			&row.Address,
+			&row.Website,
+			&row.DateCreated,
+		); err != nil {
+			log.Fatal(err)
+		}
+		pages = append(pages, row)
+	}
+
+	if err = rows.Err(); err != nil {
+		common.LogError(err)
+		err = common.DatabaseError
+		return
+	}
+
+	// Success
+	return
+}
+
+func (db DB) SearchPages(query string) (pages []common.Page, err error) {
+		rows, err := db.conn.Query(`
+			SELECT
+				pages.id,
+				title,
+				pages.slug,
+				categories.name,
+				categories.slug,
+				description,
+				date_created
+			FROM
+				pages,
+				categories
+			WHERE
+				categories.id = pages.category AND
+				to_tsvector('english', title) @@ to_tsquery($1) -- Full text search
+			ORDER BY date_created DESC
+			`,
 		query,
 	)
 	if err != nil {
