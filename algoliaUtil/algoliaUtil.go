@@ -58,9 +58,6 @@ func ExportPageRecords() error {
   pages, err := databaseActions.GetPages()
   if err != nil { return errors.New(exportAbortError + err.Error()) }
 
-  pagesJsonEncd, err := json.Marshal(pages)
-  if err != nil { return errors.New(exportAbortError + err.Error()) }
-
   resp, err = pageIndex.AddObjects(pagesJsonEncd)
   if err != nil { return errors.New(exportAbortError + err.Error()); }
   pageIndex.WaitTask(resp)
