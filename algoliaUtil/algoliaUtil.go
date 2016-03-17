@@ -57,13 +57,14 @@ func ExportPageRecords() error {
   pages, err := databaseActions.GetPages()
   if err != nil { return errors.New(exportAbortError + err.Error()) }
 
-  objects := make(map[string]interface{}, len(pages))
-  for _, page := range pages {
+  objects := make([]interface{}, len(pages))
+  for ind, page := range pages {
     object := make(map[string]interface{})
+    object["objectID"] = page.PageSlug
     object["title"] = page.Title
     object["category"] = page.Category
     object["dateCreated"] = page.DateCreated
-    objects[page.PageSlug] = object
+    objects[ind] = object
   }
   resp, err = pageIndex.AddObjects(interface{}(objects))
   if err != nil { return errors.New(exportAbortError + err.Error()); }
