@@ -485,7 +485,15 @@ func (db DB) ListCommunities(userid int) (communities []common.Community, err er
 
 func (db DB) GetPages() (pages []common.Page, err error) {
 	rows, err := db.conn.Query(`
-		SELECT *
+		SELECT
+		  id,
+			title,
+			slug,
+			category,
+			description,
+			address,
+			website,
+			date_created
 		FROM
 			pages
 		ORDER BY date_created DESC
