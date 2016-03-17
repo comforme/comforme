@@ -38,6 +38,9 @@
 		},
 		"ALGOLIASEARCH_API_KEY_SEARCH": {
 			"description": "STUB"
+		},
+		"ALGOLIA_APPLICATION_ID": {
+			"description": "STUB"
 		}
 	},
 	"scripts": {
