@@ -54,9 +54,11 @@ func ExportPageRecords() error {
 
   log.Println("Exporting records to Algolia servers...")
 
+  log.Println("Gathering pages for export...")
   pages, err := databaseActions.GetPages()
   if err != nil { return errors.New(exportAbortError + err.Error()) }
 
+  log.Println("Contructing page objects for transport...")
   objects := make([]interface{}, len(pages))
   for ind, page := range pages {
     object := make(map[string]interface{})
@@ -66,6 +68,8 @@ func ExportPageRecords() error {
     object["dateCreated"] = page.DateCreated
     objects[ind] = object
   }
+
+  fmt.Println("Adding objects to 'Pages' index")
   resp, err = pageIndex.AddObjects(interface{}(objects))
   if err != nil { return errors.New(exportAbortError + err.Error()); }
   pageIndex.WaitTask(resp)
