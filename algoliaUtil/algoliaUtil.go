@@ -2,6 +2,7 @@ package algoliaUtil
 
 import (
   "errors"
+  "fmt"
   "log"
   "os"
 
@@ -75,7 +76,7 @@ func ExportPageRecords() error {
   pageIndex.WaitTask(resp)
 
   // Set ranking information
-  
+
   settings := make(map[string]interface{})
   settings["attributesToIndex"] = []string{"title", "category"}
   settings["ranking"] = []string{"words", "desc(title)", "desc(category)"}
