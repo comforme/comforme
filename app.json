@@ -33,15 +33,6 @@
 		"RECAPTCHA_PRIVATE_KEY": {
 			"description": "Go to https://www.google.com/recaptcha to generate a private key."
 		},
-		"ALGOLIASEARCH_API_KEY": {
-			"description": "STUB"
-		},
-		"ALGOLIASEARCH_API_KEY_SEARCH": {
-			"description": "STUB"
-		},
-		"ALGOLIA_APPLICATION_ID": {
-			"description": "STUB"
-		}
 	},
 	"scripts": {
 		"postdeploy": "./scripts/heroku_postdeploy.sh"
