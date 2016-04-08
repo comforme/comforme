@@ -58,6 +58,7 @@ func ExportPageRecords() error {
   log.Println("Gathering pages for export...")
   pages, err := databaseActions.GetPages()
   if err != nil { return errors.New(exportAbortError + err.Error()) }
+  if len(pages) == 0 { return nil }
 
   log.Println("Contructing page objects for transport...")
   objects := make([]interface{}, len(pages))
