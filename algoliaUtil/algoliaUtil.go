@@ -72,6 +72,7 @@ func ExportPageRecords() error {
 
   fmt.Println("Adding objects to 'Pages' index")
   resp, err = pageIndex.AddObjects(interface{}(objects))
+  log.Println("Algolia Response:" + resp)
   if err != nil { return errors.New(exportAbortError + err.Error()); }
   pageIndex.WaitTask(resp)
 
