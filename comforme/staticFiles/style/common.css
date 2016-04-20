@@ -1,0 +1,89 @@
+/* ---------- Sign Up/Log In ---------- */
+
+span#noscript {
+    color: red;
+    font-size: small;
+}
+.sign-up-and-log-in.content {
+	padding-top: 4rem;
+	padding-bottom: 4rem;
+}
+
+.sign-up-and-log-in.login-tabs {
+	margin-bottom: 4rem;
+}
+
+.login-tabs {
+	border: 1px solid #CCCCCC;
+}
+
+.login-tabs dd {
+	width: 50%;
+	text-align: center;
+}
+.login-tabs dd.active a {
+	background-color: #C8C8C8;
+}
+
+.tabs-content {
+	border-top: 1px solid #CCCCCC;
+	padding: 0 1rem 0;
+}
+.tabs-content .content {
+	float: none;
+	padding-bottom: 0;
+}
+.tabs-content, .tabs-content form {
+	margin: 0;
+}
+.g-recaptcha {
+	margin: 0 auto 1rem auto;
+	width: 304px;
+}
+
+/* ---------- Communities Settings ---------- */
+.communities-settings section {
+	margin-bottom: 1rem;
+}
+
+.communities-settings section form {
+	margin-bottom: 0;
+}
+
+/* ----------------- Tabs ------------------- */
+.tabs li {
+	padding:0;
+	margin:0;
+}
+ul.tabs {
+	padding:0;
+	margin:0;
+}
+
+/* ---------- Algolia Search Bar ------------ */
+.algolia-autocomplete {
+  width: 100%;
+}
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 100%;
+}
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #999;
+  border-top: none;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #B2D7FF;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
