@@ -28,6 +28,10 @@ func ExportPageRecords(pages []common.Page) error {
 	if appId == "" || apiKey == "" {
 		return errors.New("Missing Algolia API keys")
 	}
+	
+	if len(pages) == 0 {
+	    return errors.New("Nothin to export.")
+	}
 
 	client := algoliasearch.NewClient(appId, apiKey)
 
@@ -42,7 +46,7 @@ func ExportPageRecords(pages []common.Page) error {
 		item := value.(map[string]interface{})
 		if item["name"] == "Pages" {
 			numOfEntries := item["entries"].(float64)
-			if numOfEntries <= float64(len(pages)) {
+			if numOfEntries < float64(len(pages)) {
 				log.Println("Index 'Pages' already exists, aborting export.")
 				return nil
 			}
