@@ -9,6 +9,8 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
+
+	"github.com/comforme/comforme/algoliaUtil"
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/templates"
@@ -68,6 +70,14 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Pa
 		categorySlug, pageSlug, err := databaseActions.CreatePage(userInfo.UserID, title, description, address, website, int(category))
 		if err == nil {
 			log.Printf("Created %s!\n", title)
+
+			// Update algolia index
+			page, err := databaseActions.GetPage(categorySlug, pageSlug)
+			err = algoliaUtil.ExportPageRecord(page)
+		  if err != nil {
+				return
+			}
+
 			http.Redirect(res, req, "/page/"+categorySlug+"/"+pageSlug, http.StatusFound)
 			return
 		} else {
@@ -110,5 +120,5 @@ const newPageTemplateText = `
 			</form>
 		</div>
 	</div>
-</div>		
+</div>
 `

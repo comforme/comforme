@@ -10,6 +10,7 @@ import (
 
 	"github.com/comforme/comforme/ajax"
 	"github.com/comforme/comforme/algoliaUtil"
+	"github.com/comforme/comforme/databaseActions"
 	"github.com/comforme/comforme/hashLinks"
 	"github.com/comforme/comforme/home"
 	"github.com/comforme/comforme/logout"
@@ -22,7 +23,7 @@ import (
 )
 
 func main() {
-	log.Println("Starting server on port " + os.Getenv("PORT") + "...")
+	log.Println("Main.go: Starting server on port " + os.Getenv("PORT") + "...")
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Panic(err)
@@ -123,11 +124,17 @@ func main() {
 	)
 
 	// Export db page records to Alglolia index
-	err = algoliaUtil.ExportPageRecords()
+	log.Println("Exporting records to Algolia servers...")
+	pages, err := databaseActions.GetPages()
+	if err != nil {
+		log.Println("%s", err.Error())
+	}
+	err = algoliaUtil.ExportPageRecords(pages)
   if err != nil {
-    log.Printf("%s\n", err.Error())
+    log.Printf("Error during export: %s", err.Error())
   }
-	
+	log.Println("Finished export")
+
 	// Start the server
 	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
 

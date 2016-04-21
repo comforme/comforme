@@ -9,7 +9,6 @@ import (
 
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 	"github.com/comforme/comforme/common"
-	"github.com/comforme/comforme/databaseActions"
 )
 
 const exportAbortError string = `Export aborted: `
@@ -26,49 +25,37 @@ func init() {
 	appId = os.Getenv("ALGOLIASEARCH_APPLICATION_ID")
 }
 
-func ExportPageRecords() error {
+func ExportPageRecords(pages []common.Page) error {
   if appId == "" || apiKey == "" {
     return errors.New("Missing Algolia API keys")
   }
 
   client := algoliasearch.NewClient(appId, apiKey)
 
-  // Check if we need to export all page records (only checks to see if Algolia
-  // has a page index set up, does not check for differences in postgres db and algolia index)
+  // Check if we need to export all page records
   resp, err := client.ListIndexes()
   if err != nil { return errors.New(exportAbortError + err.Error()) }
   indexBlob := resp.(map[string]interface{})
   itemBlob := indexBlob["items"].([]interface{})
-  found := false
   for _, value := range itemBlob {
     item := value.(map[string]interface{})
-    if item["name"] == "Pages" {
-      found = true
+    numOfEntries := item["entries"].(float64)
+    if numOfEntries < float64(len(pages)) {
+      log.Println("Index 'Pages' already exists, aborting export.")
+      return nil
     }
-  }
-
-  if found {
-    return nil
   }
 
   // Start export
   pageIndex := client.InitIndex("Pages")
 
-  log.Println("Exporting records to Algolia servers...")
-
-  log.Println("Gathering pages for export...")
-  pages, err := databaseActions.GetPages()
-  if err != nil { return errors.New(exportAbortError + err.Error()) }
   if len(pages) == 0 { return nil }
 
   log.Println("Contructing page objects for transport...")
   objects := make([]interface{}, len(pages))
   for ind, page := range pages {
     object := make(map[string]interface{})
-    object["objectID"] = page.PageSlug
-    object["title"] = page.Title
-    object["category"] = page.Category
-    object["dateCreated"] = page.DateCreated
+    object = pageToObject(page)
     objects[ind] = object
   }
 
@@ -86,27 +73,21 @@ func ExportPageRecords() error {
   if err != nil { return errors.New(exportAbortError + err.Error()); }
   pageIndex.WaitTask(resp)
 
-  log.Println("Finished export")
   return err
 }
 
-func ExportNewPageRecord(page common.Page) (err error) {
-	resp, err := pageIndex.AddObject(page)
+func ExportPageRecord(page common.Page) (err error) {
+  log.Println("Exporting page:" + page.Title + " to algolia servers..")
+  object := pageToObject(page)
+	resp, err := pageIndex.AddObject(object)
 	if err != nil {
 		return errors.New(exportAbortError + err.Error())
 	}
 	pageIndex.WaitTask(resp)
+  log.Println("Done exporting.")
 	return
 }
 
-func ExportUpdatedPage(page common.Page) (err error) {
-	resp, err := pageIndex.UpdateObject(page)
-	if err != nil {
-		return errors.New(exportAbortError + err.Error())
-	}
-	pageIndex.WaitTask(resp)
-	return
-}
 
 func DeleteExportedPage(objectId string) error {
 	resp, err := pageIndex.DeleteObject(objectId)
@@ -115,4 +96,12 @@ func DeleteExportedPage(objectId string) error {
 	}
 	pageIndex.WaitTask(resp)
 	return nil
+}
+
+func pageToObject(page common.Page) (object map[string]interface{}) {
+  object["objectID"] = page.PageSlug
+  object["title"] = page.Title
+  object["category"] = page.Category
+  object["dateCreated"] = page.DateCreated
+  return
 }
