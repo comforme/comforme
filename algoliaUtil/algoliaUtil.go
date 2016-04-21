@@ -64,8 +64,8 @@ func ExportPageRecords(pages []common.Page) error {
 	log.Println("Contructing page objects for transport...")
 	objects := make([]interface{}, len(pages))
 	for ind, page := range pages {
-		object := make(map[string]interface{})
-		object = pageToObject(page)
+		//object := make(map[string]interface{})
+		object := pageToObject(page)
 		objects[ind] = object
 	}
 
@@ -112,6 +112,7 @@ func DeleteExportedPage(objectId string) error {
 }
 
 func pageToObject(page common.Page) (object map[string]interface{}) {
+  log.Println("pageToObject called.")
 	object["objectID"] = page.PageSlug
 	object["title"] = page.Title
 	object["category"] = page.Category
