@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 	"github.com/comforme/comforme/common"
@@ -56,7 +57,7 @@ func ExportPageRecords(pages []common.Page) error {
 		return nil
 	}
 	
-	log.Println("Number of pages to export:" + string(len(pages)))
+	log.Println("Number of pages to export:" + strconv.itoA(len(pages)))
 
 	log.Println("Contructing page objects for transport...")
 	objects := make([]interface{}, len(pages))
