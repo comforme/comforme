@@ -130,9 +130,9 @@ func main() {
 		log.Println("%s", err.Error())
 	}
 	err = algoliaUtil.ExportPageRecords(pages)
-  if err != nil {
-    log.Printf("Error during export: %s", err.Error())
-  }
+	if err != nil {
+		log.Printf("Error during export: %s", err.Error())
+	}
 	log.Println("Finished export")
 
 	// Start the server
