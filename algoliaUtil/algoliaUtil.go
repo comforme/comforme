@@ -57,7 +57,7 @@ func ExportPageRecords(pages []common.Page) error {
 		return nil
 	}
 	
-	log.Println("Number of pages to export:" + strconv.itoA(len(pages)))
+	log.Println("Number of pages to export:" + strconv.Itoa(len(pages)))
 
 	log.Println("Contructing page objects for transport...")
 	objects := make([]interface{}, len(pages))
