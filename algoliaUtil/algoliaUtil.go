@@ -111,8 +111,7 @@ func DeleteExportedPage(objectId string) error {
 	return nil
 }
 
-func pageToObject(page common.Page) map[string]interface{} {
-  object := make(map[string]interface{}, 4)
+func pageToObject(page common.Page) (object map[string]interface{}) {
   log.Println("pageToObject called.")
   log.Println(page)
 	object["objectID"] = page.PageSlug
@@ -122,5 +121,5 @@ func pageToObject(page common.Page) map[string]interface{} {
 	object["dateCreated"] = page.DateCreated
 	fmt.Println("Object created.")
 	fmt.Println(object)
-	return object
+	return
 }
