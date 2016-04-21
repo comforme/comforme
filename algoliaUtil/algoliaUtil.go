@@ -115,6 +115,7 @@ func pageToObject(page common.Page) (object map[string]interface{}) {
   log.Println("pageToObject called.")
   log.Println(page)
 	object["objectID"] = page.PageSlug
+	log.Println("Assigned objectID")
 	object["title"] = page.Title
 	object["category"] = page.Category
 	object["dateCreated"] = page.DateCreated
