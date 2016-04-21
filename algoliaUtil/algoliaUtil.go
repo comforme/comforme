@@ -28,10 +28,6 @@ func ExportPageRecords(pages []common.Page) error {
 	if appId == "" || apiKey == "" {
 		return errors.New("Missing Algolia API keys")
 	}
-	
-	if len(pages) == 0 {
-	    return errors.New("Nothin to export.")
-	}
 
 	client := algoliasearch.NewClient(appId, apiKey)
 
@@ -59,6 +55,8 @@ func ExportPageRecords(pages []common.Page) error {
 	if len(pages) == 0 {
 		return nil
 	}
+	
+	log.Println("Number of pages to export:" + string(len(pages)))
 
 	log.Println("Contructing page objects for transport...")
 	objects := make([]interface{}, len(pages))
