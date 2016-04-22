@@ -41,7 +41,7 @@ func ExportPageRecords(pages []common.Page) error {
 		item := value.(map[string]interface{})
 		if item["name"] == "Pages" {
 			numOfEntries := item["entries"].(float64)
-			if numOfEntries < float64(len(pages)) {
+			if numOfEntries == float64(len(pages)) {
 				log.Println("Index 'Pages' already exists, aborting export.")
 				return nil
 			}
