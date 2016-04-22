@@ -93,7 +93,6 @@ func ExportPageRecord(page common.Page) (err error) {
 	log.Println("Exporting page:" + page.Title + " to algolia servers..")
 	object := pageToObject(page)
 	pageIndex := client.InitIndex("Pages")
-	log.Println(pageIndex)
 	resp, err := pageIndex.AddObject(object)
 	if err != nil {
 		return errors.New(exportAbortError + err.Error())
