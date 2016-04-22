@@ -73,6 +73,9 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Pa
 
 			// Update algolia index
 			page, err := databaseActions.GetPage(categorySlug, pageSlug)
+			if err != nil {
+				return
+			}
 			err = algoliaUtil.ExportPageRecord(page)
 		  if err != nil {
 				return
