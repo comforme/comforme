@@ -52,12 +52,9 @@ func ExportPageRecords(pages []common.Page) error {
 	pageIndex := client.InitIndex("Pages")
 
 	if len(pages) == 0 {
+	  log.Println("No pages to export.")
 		return nil
 	}
-	
-	log.Println("Number of pages to export:" + strconv.Itoa(len(pages)))
-	log.Println("Pages:")
-	log.Println(pages)
 
 	log.Println("Contructing page objects for transport...")
 	objects := make([]interface{}, len(pages))
@@ -120,14 +117,9 @@ func DeleteExportedPage(objectId string) error {
 
 func pageToObject(page common.Page) map[string]interface{} {
   object := make(map[string]interface{}, 4)
-  log.Println("pageToObject called.")
-  log.Println(page)
 	object["objectID"] = page.PageSlug
-	log.Println("Assigned objectID")
 	object["title"] = page.Title
 	object["category"] = page.Category
 	object["dateCreated"] = page.DateCreated
-	fmt.Println("Object created.")
-	fmt.Println(object)
 	return object
 }
