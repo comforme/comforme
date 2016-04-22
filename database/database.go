@@ -536,7 +536,7 @@ func (db DB) GetPages() (pages []common.Page, err error) {
 }
 
 func (db DB) SearchPages(query string) (pages []common.Page, err error) {
-		rows, err := db.conn.Query(`
+	rows, err := db.conn.Query(`
 			SELECT
 				pages.id,
 				title,

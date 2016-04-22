@@ -13,8 +13,8 @@ import (
 const exportAbortError string = `Export aborted: `
 
 var (
-	apiKey    string
-	appId     string
+	apiKey string
+	appId  string
 )
 
 func init() {
@@ -51,7 +51,7 @@ func ExportPageRecords(pages []common.Page) error {
 	pageIndex := client.InitIndex("Pages")
 
 	if len(pages) == 0 {
-	  log.Println("No pages to export.")
+		log.Println("No pages to export.")
 		return nil
 	}
 
@@ -84,12 +84,12 @@ func ExportPageRecords(pages []common.Page) error {
 }
 
 func ExportPageRecord(page common.Page) (err error) {
-  if appId == "" || apiKey == "" {
+	if appId == "" || apiKey == "" {
 		return errors.New("Missing Algolia API keys")
 	}
 
 	client := algoliasearch.NewClient(appId, apiKey)
-	
+
 	log.Println("Exporting page:" + page.Title + " to algolia servers..")
 	object := pageToObject(page)
 	pageIndex := client.InitIndex("Pages")
@@ -103,8 +103,8 @@ func ExportPageRecord(page common.Page) (err error) {
 }
 
 func DeleteExportedPage(objectId string) error {
-  client := algoliasearch.NewClient(appId, apiKey)
-  pageIndex := client.InitIndex("Pages")
+	client := algoliasearch.NewClient(appId, apiKey)
+	pageIndex := client.InitIndex("Pages")
 	resp, err := pageIndex.DeleteObject(objectId)
 	if err != nil {
 		return errors.New(exportAbortError + err.Error())
@@ -114,7 +114,7 @@ func DeleteExportedPage(objectId string) error {
 }
 
 func pageToObject(page common.Page) map[string]interface{} {
-  object := make(map[string]interface{}, 4)
+	object := make(map[string]interface{}, 4)
 	object["objectID"] = page.PageSlug + "-" + page.Category
 	object["title"] = page.Title
 	object["category"] = page.Category
