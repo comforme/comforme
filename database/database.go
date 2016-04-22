@@ -550,7 +550,7 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 				categories
 			WHERE
 				categories.id = pages.category AND
-				to_tsvector('english', title) @@ to_tsquery($1) -- Full text search
+				to_tsvector('english', title) @@ plainto_tsquery($1) -- Full text search
 			ORDER BY date_created DESC
 			`,
 		query,
