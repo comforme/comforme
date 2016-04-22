@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 	"github.com/comforme/comforme/common"
