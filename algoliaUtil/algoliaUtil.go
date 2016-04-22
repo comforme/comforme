@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 	"github.com/comforme/comforme/common"
@@ -117,7 +116,7 @@ func DeleteExportedPage(objectId string) error {
 
 func pageToObject(page common.Page) map[string]interface{} {
   object := make(map[string]interface{}, 4)
-	object["objectID"] = page.PageSlug + strconv.Itoa(page.Category)
+	object["objectID"] = page.PageSlug + page.Category
 	object["title"] = page.Title
 	object["category"] = page.Category
 	object["dateCreated"] = page.DateCreated
