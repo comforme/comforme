@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/julienschmidt/httprouter"
-  //"github.com/algolia/algoliasearch-client-go/algoliasearch"
 
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
@@ -25,7 +24,7 @@ func init() {
 }
 
 func SearchHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
-  data := map[string]interface{}{}
+	data := map[string]interface{}{}
 	data["siteName"] = common.SiteName
 	if common.CheckParam(req.URL.Query(), "q") {
 		query := req.URL.Query()["q"][0]

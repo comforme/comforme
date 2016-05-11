@@ -1,7 +1,13 @@
 {
 	"ImportPath": "github.com/comforme/comforme",
 	"GoVersion": "go1.5.1",
+	"GodepVersion": "v58",
 	"Deps": [
+		{
+			"ImportPath": "github.com/algolia/algoliasearch-client-go/algoliasearch",
+			"Comment": "1.4.0-9-g014752b",
+			"Rev": "014752bdad6f8bbf05510219b1b7b0d1ac2e5243"
+		},
 		{
 			"ImportPath": "github.com/julienschmidt/httprouter",
 			"Comment": "v1.1-5-g109e267",
@@ -9,8 +15,13 @@
 		},
 		{
 			"ImportPath": "github.com/lib/pq",
-			"Comment": "go1.0-cutoff-59-gb269bd0",
-			"Rev": "b269bd035a727d6c1081f76e7a239a1b00674c40"
+			"Comment": "go1.0-cutoff-83-g165a352",
+			"Rev": "165a3529e799da61ab10faed1fabff3662d6193f"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/oid",
+			"Comment": "go1.0-cutoff-83-g165a352",
+			"Rev": "165a3529e799da61ab10faed1fabff3662d6193f"
 		},
 		{
 			"ImportPath": "github.com/sendgrid/sendgrid-go",

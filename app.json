@@ -5,7 +5,7 @@
 	"website": "https://github.com/comforme/comforme",
 	"repository": "https://github.com/comforme/comforme",
 	"keywords": ["go", "comfor.me", "comfor", "comforme", "community", "social"],
-	"addons": ["heroku-postgresql:hobby-dev", "papertrail", "sendgrid:starter"],
+	"addons": ["heroku-postgresql:hobby-dev", "papertrail", "sendgrid:starter", "algoliasearch:free"],
 	"env": {
 		"SECRET": {
 			"description": "This gets generated",
@@ -33,12 +33,6 @@
 		"RECAPTCHA_PRIVATE_KEY": {
 			"description": "Go to https://www.google.com/recaptcha to generate a private key."
 		},
-		"ALGOLIASEARCH_API_KEY": {
-			"description": "STUB"
-		},
-		"ALGOLIASEARCH_API_KEY_SEARCH": {
-			"description": "STUB"
-		}
 	},
 	"scripts": {
 		"postdeploy": "./scripts/heroku_postdeploy.sh"

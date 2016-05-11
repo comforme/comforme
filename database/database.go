@@ -485,9 +485,19 @@ func (db DB) ListCommunities(userid int) (communities []common.Community, err er
 
 func (db DB) GetPages() (pages []common.Page, err error) {
 	rows, err := db.conn.Query(`
-		SELECT *
+		SELECT
+			pages.id,
+			title,
+			pages.slug,
+			categories.name,
+			categories.slug,
+			description,
+			date_created
 		FROM
-			pages
+			pages,
+			categories
+		WHERE
+			categories.id = pages.category
 		ORDER BY date_created DESC
 		`)
 	if err != nil {
@@ -505,9 +515,9 @@ func (db DB) GetPages() (pages []common.Page, err error) {
 			&row.Id,
 			&row.Title,
 			&row.PageSlug,
+			&row.Category,
+			&row.CategorySlug,
 			&row.Description,
-			&row.Address,
-			&row.Website,
 			&row.DateCreated,
 		); err != nil {
 			log.Fatal(err)
@@ -526,7 +536,7 @@ func (db DB) GetPages() (pages []common.Page, err error) {
 }
 
 func (db DB) SearchPages(query string) (pages []common.Page, err error) {
-		rows, err := db.conn.Query(`
+	rows, err := db.conn.Query(`
 			SELECT
 				pages.id,
 				title,
@@ -540,7 +550,7 @@ func (db DB) SearchPages(query string) (pages []common.Page, err error) {
 				categories
 			WHERE
 				categories.id = pages.category AND
-				to_tsvector('english', title) @@ to_tsquery($1) -- Full text search
+				to_tsvector('english', title) @@ plainto_tsquery($1) -- Full text search
 			ORDER BY date_created DESC
 			`,
 		query,
