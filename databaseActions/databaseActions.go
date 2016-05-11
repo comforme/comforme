@@ -271,6 +271,10 @@ func SearchPages(sessionid, query string) ([]common.Page, error) {
 	return db.SearchPages(query)
 }
 
+func GetPages() ([]common.Page, error) {
+	return db.GetPages()
+}
+
 func GetPage(categorySlug, pageSlug string) (page common.Page, err error) {
 	page, err = db.GetPage(categorySlug, pageSlug)
 	if err != nil {
