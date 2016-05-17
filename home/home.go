@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
 
@@ -24,6 +25,8 @@ func init() {
 func HomeHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
 	data := map[string]interface{}{}
 	data["siteName"] = common.SiteName
+	data["appId"] = os.Getenv("ALGOLIASEARCH_APPLICATION_ID")
+	data["publicSearchKey"] = os.Getenv("ALGOLIASEARCH_API_KEY_SEARCH")
 	topPages, err := databaseActions.GetTopPages()
 	if err != nil {
 		log.Println("Failed to retrieve top results:", err)
