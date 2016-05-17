@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
 
@@ -19,6 +20,7 @@ func init() {
 	template.Must(searchTemplate.New("nav").Parse(templates.NavBar))
 	template.Must(searchTemplate.New("searchBar").Parse(templates.SearchBar))
 	template.Must(searchTemplate.New("content").Parse(searchTemplateText))
+
 }
 
 func SearchHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Params, userInfo common.UserInfo) {
@@ -29,6 +31,8 @@ func SearchHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Par
 		log.Println("Performing search for:", query)
 		data["query"] = query
 		data["pageTitle"] = query
+		data["appId"] = os.Getenv("ALGOLIASEARCH_APPLICATION_ID")
+		data["publicSearchKey"] = os.Getenv("ALGOLIASEARCH_API_KEY_SEARCH")
 		var err error
 		data["results"], err = databaseActions.SearchPages(userInfo.SessionID, query)
 		if err != nil {
