@@ -32,9 +32,9 @@
 		},
 		"RECAPTCHA_PRIVATE_KEY": {
 			"description": "Go to https://www.google.com/recaptcha to generate a private key."
-		},
-	},
-	"scripts": {
+		}
+    }
+    "scripts": {
 		"postdeploy": "./scripts/heroku_postdeploy.sh"
 	}
 }
