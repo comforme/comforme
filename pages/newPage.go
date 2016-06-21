@@ -9,7 +9,6 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-
 	"github.com/comforme/comforme/algoliaUtil"
 	"github.com/comforme/comforme/common"
 	"github.com/comforme/comforme/databaseActions"
@@ -61,7 +60,7 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Pa
 		}
 
 		category, err := strconv.ParseInt(req.PostFormValue("category"), 0, 0)
-		if err != nil || category < 0 {
+	if err != nil || category < 0 {
 			log.Println("Invalid category:", req.PostFormValue("category"))
 			data["errorMsg"] = "Invalid category."
 			goto render
@@ -74,11 +73,12 @@ func NewPageHandler(res http.ResponseWriter, req *http.Request, ps httprouter.Pa
 			// Update algolia index
 			page, err := databaseActions.GetPage(categorySlug, pageSlug)
 			if err != nil {
-				return
+				fmt.Errorf("newPage.go: Cannot update Algolia index: %s", err)
+                return
 			}
-			err = algoliaUtil.ExportPageRecord(page)
-		  if err != nil {
-				return
+			if err = algoliaUtil.ExportPageRecord(page); err != nil {
+				fmt.Errorf("newPage.go: Cannot update Algolia index: %s", err)
+                return
 			}
 
 			http.Redirect(res, req, "/page/"+categorySlug+"/"+pageSlug, http.StatusFound)
