@@ -1,7 +1,7 @@
 package templates
 
 const SearchBar = `
-	<form method="get" action="/search">
+	<form id="query-form" method="get" action="/search">
 		<div class="row collapse">
 			<div class="small-10 columns">
 			<input type="text" placeholder="Page Search" name="q" id="page-search-textbox" />
@@ -29,6 +29,7 @@ const SearchBar = `
 			}
 		]).on('autocomplete:selected', function(event, suggestion, dataset) {
 			console.log(suggestion, dataset);
+                        $('#query-form').submit();
 		});
 	</script>
 
