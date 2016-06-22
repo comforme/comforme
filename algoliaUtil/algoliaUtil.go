@@ -8,7 +8,7 @@ import (
 
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 	"github.com/comforme/comforme/common"
-    "github.com/comforme/comforme/databaseActions"
+	"github.com/comforme/comforme/databaseActions"
 )
 
 const exportAbortError string = `Export aborted: `
@@ -29,11 +29,11 @@ func ExportPageRecords() error {
 	}
 
 	client := algoliasearch.NewClient(appId, apiKey)
-    pages, err := databaseActions.GetPages()
-    if err != nil {
-        log.Println("algoliaUtil: Error retrieving pages from database")
-        return err
-    }
+	pages, err := databaseActions.GetPages()
+	if err != nil {
+		log.Println("algoliaUtil: Error retrieving pages from database")
+		return err
+	}
 
 	// Check if we need to export all page records
 	resp, err := client.ListIndexes()
@@ -41,27 +41,27 @@ func ExportPageRecords() error {
 		return errors.New(exportAbortError + err.Error())
 	}
 	indexBlob, ok := resp.(map[string]interface{})
-    if !ok {
-        fmt.Errorf("algoliaUtil: ExportPageRecords: Unable to extract index")
-        return err
-    }
+	if !ok {
+		fmt.Errorf("algoliaUtil: ExportPageRecords: Unable to extract index")
+		return err
+	}
 	itemBlob, ok := indexBlob["items"].([]interface{})
-    if !ok {
-        fmt.Errorf("algoliaUtil: ExportPageRecords: Unable to extract items from index")
-        return err
-    }
+	if !ok {
+		fmt.Errorf("algoliaUtil: ExportPageRecords: Unable to extract items from index")
+		return err
+	}
 	for _, value := range itemBlob {
 		item, ok := value.(map[string]interface{})
-        if !ok {
-            fmt.Errorf("algoliaUtil: ExportPageRecords: Unable to extract item values")
-            return err
-        }
+		if !ok {
+			fmt.Errorf("algoliaUtil: ExportPageRecords: Unable to extract item values")
+			return err
+		}
 		if item["name"] == "Pages" {
 			numOfEntries, ok := item["entries"].(float64)
-            if !ok {
-                fmt.Errorf("algoliaUtil: ExportPageRecords: Unable to extract number of entries in index")
-                return err
-            }
+			if !ok {
+				fmt.Errorf("algoliaUtil: ExportPageRecords: Unable to extract number of entries in index")
+				return err
+			}
 			if numOfEntries == float64(len(pages)) {
 				log.Println("Index 'Pages' already exists, aborting export.")
 				return nil
